@@ -1,7 +1,10 @@
 # Lab 5 - Features 
 
-In this lab you will create a code to represent images using Textons. Then train and test a classifier based on the texton representation. 
+In this lab you will use a strategy to represent images using Textons. Then you will train, and evaluate a classifier based on the texton representation. 
+
 Try to develop quality code so that you can reuse it in the following labs.
+
+**The code for this lab takes a VERY LONG time to execute, plan ahead a use wisely the course servers, you are not the only one there!!!**
 
 ## Database
 
@@ -15,14 +18,14 @@ You can download it from the following mirrors in the university (might be faste
 
 The *lib* folder contains functions that can be used to represent images as textons.
 
-Pay special attention to the following functions (you will find them in the example), try to figure out what they do, what their inputs and outputs are.
+Pay special attention to the following functions (you will see the again in the example), try to figure out what they do, what their inputs and outputs are.
 
     -   fbCreate
     -   fbRun
     -   computeTextons
     -   assignTextons
 
-The following script will give you some ideas on how to create a texton dictionary from 2 sample images, then use it  to compare another 2 images
+The following script will give you some ideas on how to create a texton dictionary from 2 sample images, then use it  to compare another 2 images:
 
 ```Matlab
 addpath('/home/jcleon/visionTest/Lab05/lib')
@@ -64,7 +67,7 @@ D = norm(histc(tmapBase2(:),1:k)/numel(tmapBase2)  - histc(tmapTest2(:),1:k)/num
     
 ## Classification
 
-After the images are represented using a learnt texton dictionary, train and test a classifier using the provided database. Notice that the images in the mirror have been already divided into train and test sets. This was done by randomly assigning 10 images from each category to the test. Try two different classifiers:
+After the images are represented using a texton dictionary, train and evaluate a classifier using the provided database. Notice that the images in the mirror have been already divided into train and test sets, use this split. This was done by randomly assigning 10 images from each category to the test. Try two different classifiers:
 
 -   **Nearest neighbour:** Use intersection of histograms or Chi-Square metrics (see The matlab documentation for  [KNN Clasifiers](https://www.mathworks.com/help/stats/classification-using-nearest-neighbors.html#btap7k2) and [distance metrics] (https://www.mathworks.com/help/stats/classification-using-nearest-neighbors.html)
     for more information).
@@ -95,14 +98,16 @@ The report for this laboratory must include:
     -   How much time does it takes to train and apply both kinds of classifiers?
     -   What categories cause the most confusion? could you give some insight on why this happens?
     -   What are the limitations of the method? (CPU and RAM constraints are well known limitations, go beyond this!!)
-    -   What are the limitations of the database?
     -   How could your method be improved?
 
 ###Some advice on creating your texton dictionary
-Creating a large texton dictionary takes A LOT of time and uses A LOT of memory. Creating a dictionary with the full set of training images **Is not possible, on the course server**. Unless you can find a larger machine on your own, you will have to subsample the training database. Be sure to report and discuss your sub-sampling strategy. Do not forget that textures are local patterns that repeat over the whole images.
+Creating a large texton dictionary takes A LOT of time and uses A LOT of memory. Creating a dictionary with the full set of training images **Is not possible, on the course server**. Unless you can find a larger machine on your own, you will have to subsample the training database. Your subsample strategy is critical for the success in this laboratory, be sure to report and discuss it. Do not forget that textures are **local patterns** that repeat over the whole images.
 
+The report should have max 5 pages, if it is necessary use any additional pages **for references and images only**.
+Use the standard CVPR sections: abstract, introduction (be concise), materials and methods, results, conclusions and references. There is no need for an 'State of art' section. 
+
+Upload the code you used into a directory named 'code', by extraordinary results (either good or bad), I will check it.
 
 ## Deadline 
-**March 2 11:59 pm,**, as usual just upload your report to you github repo.
-
+**March 2 11:59 pm,**, as usual just upload your report to your github repo.
 
