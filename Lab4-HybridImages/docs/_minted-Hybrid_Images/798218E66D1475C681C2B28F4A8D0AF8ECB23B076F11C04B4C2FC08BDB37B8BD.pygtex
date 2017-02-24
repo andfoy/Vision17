@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{lp\PYGZus{}img} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{GaussianBlur}\PYG{p}{(}\PYG{n}{img1}\PYG{p}{,} \PYG{n}{size\PYGZus{}1}\PYG{p}{,} \PYG{n}{lp\PYGZus{}freq}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} Apply Gaussian filter (LP)}
+\PYG{n}{hp\PYGZus{}img} \PYG{o}{=} \PYG{n}{img2} \PYG{o}{\PYGZhy{}} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{GaussianBlur}\PYG{p}{(}\PYG{n}{img2}\PYG{p}{,} \PYG{n}{size\PYGZus{}2}\PYG{p}{,} \PYG{n}{hp\PYGZus{}freq}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} Apply Gaussian filter (HP)}
+
+\PYG{n}{synth} \PYG{o}{=} \PYG{n}{lp\PYGZus{}img} \PYG{o}{+} \PYG{n}{hp\PYGZus{}img} \PYG{c+c1}{\PYGZsh{} Build Hybrid Image}
+\end{Verbatim}

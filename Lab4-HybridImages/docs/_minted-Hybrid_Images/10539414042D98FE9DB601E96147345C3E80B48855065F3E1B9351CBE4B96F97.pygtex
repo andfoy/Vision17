@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+python main.py  \PYGZhy{}\PYGZhy{}lowpass 0.1 \PYGZhy{}\PYGZhy{}highpass \PYG{l+m}{21} \PYGZhy{}\PYGZhy{}save output.jpg \PYGZhy{}\PYGZhy{}lker\PYGZus{}size \PYG{l+m}{21} \PYG{l+m}{21} \PYGZhy{}\PYGZhy{}hker\PYGZus{}size \PYG{l+m}{41} \PYG{l+m}{41} ./data/Moscow.jpg ./data/Liberty.jpg
+\end{Verbatim}

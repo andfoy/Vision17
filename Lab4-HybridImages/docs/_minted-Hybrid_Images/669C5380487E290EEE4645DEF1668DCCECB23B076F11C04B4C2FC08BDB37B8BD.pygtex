@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{lp1} \PYG{o}{=} \PYG{n}{butterworth}\PYG{p}{(}\PYG{n}{size\PYGZus{}1}\PYG{p}{,} \PYG{n}{lp\PYGZus{}freq}\PYG{p}{,} \PYG{n}{order}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} Low pass frequency response}
+\PYG{n}{lp1\PYGZus{}t} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{fft}\PYG{o}{.}\PYG{n}{ifft2}\PYG{p}{(}\PYG{n}{lp1}\PYG{p}{))} \PYG{c+c1}{\PYGZsh{} Time domain representation}
+\PYG{n}{lp2} \PYG{o}{=} \PYG{n}{butterworth}\PYG{p}{(}\PYG{n}{size\PYGZus{}2}\PYG{p}{,} \PYG{n}{hp\PYGZus{}freq}\PYG{p}{,} \PYG{n}{order}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} High pass frequency response}
+\PYG{n}{lp2\PYGZus{}t} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{fft}\PYG{o}{.}\PYG{n}{ifft2}\PYG{p}{(}\PYG{n}{lp2}\PYG{p}{))} \PYG{c+c1}{\PYGZsh{} Time domain representation}
+\end{Verbatim}

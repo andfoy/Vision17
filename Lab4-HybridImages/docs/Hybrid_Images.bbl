@@ -1,0 +1,74 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.8 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \sortlist[entry]{nty/global/}
+    \entry{Oliva:2006:HI:1141911.1141919}{article}{}
+      \name{author}{3}{}{%
+        {{hash=b7446de83b2320d904225a0730e3389a}{%
+           family={Oliva},
+           familyi={O\bibinitperiod},
+           given={Aude},
+           giveni={A\bibinitperiod}}}%
+        {{hash=2a80dd1cae02059e95bfed2f2715fd0a}{%
+           family={Torralba},
+           familyi={T\bibinitperiod},
+           given={Antonio},
+           giveni={A\bibinitperiod}}}%
+        {{hash=d90d3201a4170e6ac27822f5b384ebd4}{%
+           family={Schyns},
+           familyi={S\bibinitperiod},
+           given={Philippe\bibnamedelima G.},
+           giveni={P\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY, USA}%
+      }
+      \list{publisher}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{66b3ca841432734a99ca78271992d804}
+      \strng{fullhash}{66b3ca841432734a99ca78271992d804}
+      \strng{authornamehash}{66b3ca841432734a99ca78271992d804}
+      \strng{authorfullhash}{66b3ca841432734a99ca78271992d804}
+      \field{sortinit}{O}
+      \field{sortinithash}{f5d80ef71b5b58852663ecfd775b175a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0730-0301}
+      \field{journaltitle}{ACM Trans. Graph.}
+      \field{month}{7}
+      \field{number}{3}
+      \field{title}{Hybrid Images}
+      \field{volume}{25}
+      \field{year}{2006}
+      \field{pages}{527\bibrangedash 532}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1145/1141911.1141919
+      \endverb
+      \verb{url}
+      \verb http://doi.acm.org/10.1145/1141911.1141919
+      \endverb
+      \keyw{human perception,hybrid images,scale space}
+    \endentry
+  \endsortlist
+\endrefsection
+\endinput
+

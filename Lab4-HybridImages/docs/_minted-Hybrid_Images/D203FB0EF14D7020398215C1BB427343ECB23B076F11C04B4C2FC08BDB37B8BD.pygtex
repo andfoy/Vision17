@@ -1,0 +1,24 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{def} \PYG{n+nf}{pyramid\PYGZus{}built\PYGZus{}up}\PYG{p}{(}\PYG{n}{img}\PYG{p}{,} \PYG{n}{n}\PYG{p}{):}
+    \PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{l+s+sd}{    Given an in imput image, build an image that contains n levels of the Gaussian Pyramid.}
+
+\PYG{l+s+sd}{    Parameters}
+\PYG{l+s+sd}{    \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{l+s+sd}{    img: array\PYGZus{}like}
+\PYG{l+s+sd}{        Input image.}
+\PYG{l+s+sd}{    n: int}
+\PYG{l+s+sd}{        Number of pyramid levels to display.}
+\PYG{l+s+sd}{    \PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{composite} \PYG{o}{=} \PYG{n}{img}
+    \PYG{n}{last\PYGZus{}lvl}\PYG{p}{,} \PYG{n}{cur\PYGZus{}lvl} \PYG{o}{=} \PYG{n}{img}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{pyrDown}\PYG{p}{(}\PYG{n}{img}\PYG{p}{)}
+    \PYG{n}{n} \PYG{o}{\PYGZhy{}=} \PYG{l+m+mi}{1}
+    \PYG{k}{for} \PYG{n}{lvl} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{n}\PYG{p}{):}
+       \PYG{n}{H}\PYG{p}{,} \PYG{n}{W}\PYG{p}{,} \PYG{n}{C} \PYG{o}{=} \PYG{n}{composite}\PYG{o}{.}\PYG{n}{shape}
+       \PYG{n}{mask} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{((}\PYG{n}{H}\PYG{p}{,} \PYG{n}{W} \PYG{o}{+} \PYG{n}{cur\PYGZus{}lvl}\PYG{o}{.}\PYG{n}{shape}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{],} \PYG{n}{C}\PYG{p}{))}
+       \PYG{n}{mask}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{n}{H}\PYG{p}{:,} \PYG{l+m+mi}{0}\PYG{p}{:}\PYG{n}{W}\PYG{p}{]} \PYG{o}{=} \PYG{n}{composite}
+       \PYG{n}{mask}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{n}{cur\PYGZus{}lvl}\PYG{o}{.}\PYG{n}{shape}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]:,} \PYG{n}{W}\PYG{p}{:}\PYG{n}{W} \PYG{o}{+} \PYG{n}{cur\PYGZus{}lvl}\PYG{o}{.}\PYG{n}{shape}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]]} \PYG{o}{=} \PYG{n}{cur\PYGZus{}lvl}
+       \PYG{n}{composite} \PYG{o}{=} \PYG{n}{mask}
+       \PYG{n}{last\PYGZus{}lvl}\PYG{p}{,} \PYG{n}{cur\PYGZus{}lvl} \PYG{o}{=} \PYG{n}{cur\PYGZus{}lvl}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{pyrDown}\PYG{p}{(}\PYG{n}{cur\PYGZus{}lvl}\PYG{p}{)}
+    \PYG{k}{return} \PYG{n}{composite}
+\end{Verbatim}
