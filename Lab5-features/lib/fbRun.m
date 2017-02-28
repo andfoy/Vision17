@@ -14,7 +14,7 @@ for i = 1:numel(fb),
   maxsz = max(maxsz,max(size(fb{i})));
 end
 
-% pad the image 
+% pad the image
 r = floor(maxsz/2);
 impad = padReflect(im,r);
 
