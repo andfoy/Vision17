@@ -96,7 +96,11 @@ end
 
 % Evaluate the function with NN interpolation.
 xi = round(su/gap) + floor(fsamples/2) + 1;
+% size(xi)
 yi = round(sv/gap) + floor(fsamples/2) + 1;
+% size(yi)
+% size(fx)
+% size(fy)
 f = fx(xi) .* fy(yi);
 
 % Accumulate the samples into each bin.

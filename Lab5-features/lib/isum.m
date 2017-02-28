@@ -9,7 +9,8 @@ function acc = isum(x,idx,nbins)
 %
 % David R. Martin <dmartin@eecs.berkeley.edu>
 % March 2003
-
+disp(size(x));
+% numel(x)
 acc = zeros(nbins,1);
 for i = 1:numel(x),
   if idx(i)<1, continue; end
