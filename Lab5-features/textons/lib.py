@@ -5,6 +5,11 @@ import matplotlib.pyplot as plt
 from scipy.cluster.vq import kmeans
 
 
+def rgb2gray(rgb):
+    r, g, b = np.rollaxis(rgb[..., :3], axis=-1)
+    return 0.299 * r + 0.587 * g + 0.114 * b
+
+
 def fb_create(num_orient=8, start_sigma=1.0, num_scales=2,
               scaling=np.sqrt(2), elong=2):
     support = 3
@@ -109,8 +114,7 @@ def fb_run(fb, im):
     for x in fb_r:
         maxsz = max(maxsz, max(x.shape))
 
-    r = np.floor(maxsz / 2)
-    # impad = pad_reflect(im, r)
+    r = int(np.floor(maxsz / 2))
     impad = np.lib.pad(im, (r, r), 'symmetric')
     fim = np.empty(fb_r.shape, dtype='object')
     for i, f in enumerate(fb_r):
@@ -118,14 +122,14 @@ def fb_run(fb, im):
             fim[i] = scs.convolve2d(impad, f, 'same')
         else:
             fim[i] = scs.fftconvolve(impad, f, mode='same')
-        fim[i] = fim[i][r + 1:-r, r + 1:-r]
+        fim[i] = fim[i][r + 1:-r + 1, r + 1:-r + 1]
     return fim
 
 
 def compute_textons(fim, k):
     d = len(fim)
     n = np.prod(fim[0].shape)
-    data = np.zeros(d, n)
+    data = np.zeros((d, n))
     for i in range(0, d):
         data[i, :] = fim[i].ravel()
     textons, _ = kmeans(data.T, k)
