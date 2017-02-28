@@ -15,8 +15,7 @@ for i = 1:numel(fb),
 end
 
 % pad the image
-r = floor(maxsz/2)
-% disp(size(r));
+r = floor(maxsz/2);
 impad = padReflect(im,r);
 
 % run the filterbank on the padded image, and crop the result back

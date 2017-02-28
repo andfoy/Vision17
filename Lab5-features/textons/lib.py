@@ -2,6 +2,7 @@
 import numpy as np
 import scipy.signal as scs
 import matplotlib.pyplot as plt
+from scipy.cluster.vq import kmeans
 
 
 def fb_create(num_orient=8, start_sigma=1.0, num_scales=2,
@@ -21,8 +22,6 @@ def fb_create(num_orient=8, start_sigma=1.0, num_scales=2,
 
 def isum(x, idx, nbins):
     acc = np.zeros(nbins)
-    # print(idx)
-    # print(x.shape)
     idx = (idx.T).ravel()
     x = (x.T).ravel()
     for i in range(0, len(x)):
@@ -34,7 +33,7 @@ def isum(x, idx, nbins):
     return acc
 
 
-def oe_filter(sigma, support, theta, deriv, hil, vis=True):
+def oe_filter(sigma, support, theta, deriv, hil, vis=False):
     hsz = np.max(np.ceil(support * sigma))
     sz = 2 * hsz + 1
 
@@ -99,6 +98,60 @@ def oe_filter(sigma, support, theta, deriv, hil, vis=True):
     return f
 
 
+def pad_reflect(im, r):
+    impad = np.zeros(np.array(im.shape) + 2 * r)
+    return impad
+
+
+def fb_run(fb, im):
+    fb_r = (fb.T).ravel()
+    maxsz = 0
+    for x in fb_r:
+        maxsz = max(maxsz, max(x.shape))
+
+    r = np.floor(maxsz / 2)
+    # impad = pad_reflect(im, r)
+    impad = np.lib.pad(im, (r, r), 'symmetric')
+    fim = np.empty(fb_r.shape, dtype='object')
+    for i, f in enumerate(fb_r):
+        if f.shape[0] < 50:
+            fim[i] = scs.convolve2d(impad, f, 'same')
+        else:
+            fim[i] = scs.fftconvolve(impad, f, mode='same')
+        fim[i] = fim[i][r + 1:-r, r + 1:-r]
+    return fim
+
+
+def compute_textons(fim, k):
+    d = len(fim)
+    n = np.prod(fim[0].shape)
+    data = np.zeros(d, n)
+    for i in range(0, d):
+        data[i, :] = fim[i].ravel()
+    textons, _ = kmeans(data.T, k)
+    return textons
+
+
+def dist_sqr(x, y):
+    assert x.shape[0] == y.shape[0]
+    d, n = x.shape
+    d, m = y.shape
+    z = np.dot(x.T, y)
+    x2 = np.sum(x**2, axis=0).T
+    y2 = np.sum(y**2, axis=0)
+    for i in range(0, m):
+        z[:, i] = x2 + y2[i] - 2 * z[:, i]
+    return z
+
+
 def assign_textons(fim, textons):
-    d = 0
-    print(d)
+    d = len(fim)
+    n = np.prod(fim[0].shape)
+    data = np.zeros(d, n)
+    for i in range(0, d):
+        data[i, :] = fim[i].ravel()
+    d2 = dist_sqr(data, textons)
+    map = np.min(d2, axis=1)
+    w, h = fim[0].shape
+    map = map.reshape(w, h)
+    return map
