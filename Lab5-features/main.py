@@ -33,6 +33,7 @@ act_4 = lib_textons.fb_run(fb, im_test2)
 tmap_test2 = lib_textons.assign_textons(act_4, textons.T)
 tmap_test2 = (tmap_test2.T).ravel()
 
-D = np.norm(np.histogram(tmap_base1, np.arange(0, k + 1)) / len(tmap_base1) -
-            np.histogram(tmap_test1, np.arange(0, k + 1)) / len(tmap_test1))
+norm = np.linalg.norm
+D = norm(np.histogram(tmap_base1, np.arange(0, k + 1))[0] / len(tmap_base1) -
+         np.histogram(tmap_test2, np.arange(0, k + 1))[0] / len(tmap_test1))
 print(D)
