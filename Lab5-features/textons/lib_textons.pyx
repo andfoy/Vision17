@@ -178,7 +178,7 @@ def assign_textons(np.ndarray fim, np.ndarray[DTYPE_t, ndim=2] textons):
     for i in range(0, d):
         data[i, :] = fim[i].ravel()
     cdef np.ndarray[DTYPE_t, ndim=2] d2 = dist_sqr(data, textons)
-    cdef np.ndarray[DTYPE_t, ndim=1] map = np.min(d2, axis=1)
+    cdef np.ndarray[DTYPE_t, ndim=1] map = np.argmin(d2, axis=1)
     w, h = fim[0].shape
     cdef np.ndarray[DTYPE_t, ndim=2] map_r = map.reshape(w, h)
     return map_r
