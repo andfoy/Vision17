@@ -90,6 +90,7 @@ def oe_filter(sigma, support, theta, deriv, hil, vis=False):
     xi = np.round(su / gap) + np.floor(fsamples / 2) + 1
     yi = np.round(sv / gap) + np.floor(fsamples / 2) + 1
     f = fx[np.int32(xi)] * fy[np.int32(yi)]
+    # print(f.shape)
     f = isum(f, np.int32(membership), int(sz**2))
     f = f.reshape(int(sz), int(sz))
 
