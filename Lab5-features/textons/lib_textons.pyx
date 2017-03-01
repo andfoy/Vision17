@@ -3,7 +3,7 @@ cimport cython
 import numpy as np
 cimport numpy as np
 import scipy.signal as scs
-cimport kmc2
+from kmc.kmc2 cimport kmc2
 import matplotlib.pyplot as plt
 from scipy.cluster.vq import kmeans
 
@@ -154,7 +154,7 @@ def compute_textons(np.ndarray fim, int k):
     for i in range(0, d):
         data[i, :] = fim[i].ravel()
     # textons, _ = kmeans(data.T, k)
-    textons = kmc2.kmc2(data.T, k)
+    textons = kmc2(data.T, k)
     return textons
 
 @cython.boundscheck(False)

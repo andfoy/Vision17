@@ -5,7 +5,7 @@
     "distutils": {
         "depends": []
     }, 
-    "module_name": "textons.lib_textons"
+    "module_name": "lib_textons"
 }
 END: Cython Metadata */
 
@@ -978,13 +978,13 @@ typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
  * cdef inline object PyArray_MultiIterNew1(a):
  */
 typedef npy_cdouble __pyx_t_5numpy_complex_t;
-struct __pyx_opt_args_7textons_4kmc2_kmc2;
+struct __pyx_opt_args_7textons_4kmc2_4kmc2_kmc2;
 
-/* "kmc2.pxd":2
+/* "kmc2/kmc2.pxd":2
  * 
  * cpdef kmc2(X, k, chain_length=*, afkmc2=*, random_state=*, weights=*)             # <<<<<<<<<<<<<<
  */
-struct __pyx_opt_args_7textons_4kmc2_kmc2 {
+struct __pyx_opt_args_7textons_4kmc2_4kmc2_kmc2 {
   int __pyx_n;
   PyObject *chain_length;
   PyObject *afkmc2;
@@ -1516,8 +1516,8 @@ static PyTypeObject *__pyx_ptype_5numpy_ndarray = 0;
 static PyTypeObject *__pyx_ptype_5numpy_ufunc = 0;
 static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, char *, char *, int *); /*proto*/
 
-/* Module declarations from 'textons.kmc2' */
-static PyObject *(*__pyx_f_7textons_4kmc2_kmc2)(PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_7textons_4kmc2_kmc2 *__pyx_optional_args); /*proto*/
+/* Module declarations from 'textons.kmc2.kmc2' */
+static PyObject *(*__pyx_f_7textons_4kmc2_4kmc2_kmc2)(PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_7textons_4kmc2_4kmc2_kmc2 *__pyx_optional_args); /*proto*/
 
 /* Module declarations from 'textons.lib_textons' */
 static CYTHON_INLINE __pyx_t_7textons_11lib_textons_DTYPE_t __pyx_f_7textons_11lib_textons_float_max(__pyx_t_7textons_11lib_textons_DTYPE_t, __pyx_t_7textons_11lib_textons_DTYPE_t); /*proto*/
@@ -7491,7 +7491,7 @@ static PyObject *__pyx_pf_7textons_11lib_textons_10compute_textons(CYTHON_UNUSED
  *     for i in range(0, d):
  *         data[i, :] = fim[i].ravel()             # <<<<<<<<<<<<<<
  *     # textons, _ = kmeans(data.T, k)
- *     textons = kmc2.kmc2(data.T, k)
+ *     textons = kmc2(data.T, k)
  */
     __pyx_t_6 = __Pyx_GetItemInt(((PyObject *)__pyx_v_fim), __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 155, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
@@ -7534,7 +7534,7 @@ static PyObject *__pyx_pf_7textons_11lib_textons_10compute_textons(CYTHON_UNUSED
   /* "textons/lib_textons.pyx":157
  *         data[i, :] = fim[i].ravel()
  *     # textons, _ = kmeans(data.T, k)
- *     textons = kmc2.kmc2(data.T, k)             # <<<<<<<<<<<<<<
+ *     textons = kmc2(data.T, k)             # <<<<<<<<<<<<<<
  *     return textons
  * 
  */
@@ -7542,7 +7542,7 @@ static PyObject *__pyx_pf_7textons_11lib_textons_10compute_textons(CYTHON_UNUSED
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_k); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_4 = __pyx_f_7textons_4kmc2_kmc2(__pyx_t_2, __pyx_t_6, 0, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 157, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_7textons_4kmc2_4kmc2_kmc2(__pyx_t_2, __pyx_t_6, 0, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -7570,7 +7570,7 @@ static PyObject *__pyx_pf_7textons_11lib_textons_10compute_textons(CYTHON_UNUSED
 
   /* "textons/lib_textons.pyx":158
  *     # textons, _ = kmeans(data.T, k)
- *     textons = kmc2.kmc2(data.T, k)
+ *     textons = kmc2(data.T, k)
  *     return textons             # <<<<<<<<<<<<<<
  * 
  * @cython.boundscheck(False)
@@ -11459,7 +11459,7 @@ static int __Pyx_InitCachedConstants(void) {
  *     for i in range(0, d):
  *         data[i, :] = fim[i].ravel()             # <<<<<<<<<<<<<<
  *     # textons, _ = kmeans(data.T, k)
- *     textons = kmc2.kmc2(data.T, k)
+ *     textons = kmc2(data.T, k)
  */
   __pyx_slice__5 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__5)) __PYX_ERR(0, 155, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__5);
@@ -11806,8 +11806,8 @@ PyMODINIT_FUNC PyInit_lib_textons(void)
   __pyx_ptype_5numpy_ufunc = __Pyx_ImportType("numpy", "ufunc", sizeof(PyUFuncObject), 0); if (unlikely(!__pyx_ptype_5numpy_ufunc)) __PYX_ERR(1, 861, __pyx_L1_error)
   /*--- Variable import code ---*/
   /*--- Function import code ---*/
-  __pyx_t_1 = __Pyx_ImportModule("textons.kmc2"); if (!__pyx_t_1) __PYX_ERR(0, 2, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "kmc2", (void (**)(void))&__pyx_f_7textons_4kmc2_kmc2, "PyObject *(PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_7textons_4kmc2_kmc2 *__pyx_optional_args)") < 0) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportModule("textons.kmc2.kmc2"); if (!__pyx_t_1) __PYX_ERR(0, 2, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "kmc2", (void (**)(void))&__pyx_f_7textons_4kmc2_4kmc2_kmc2, "PyObject *(PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_7textons_4kmc2_4kmc2_kmc2 *__pyx_optional_args)") < 0) __PYX_ERR(0, 2, __pyx_L1_error)
   Py_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   /*--- Execution code ---*/
   #if defined(__Pyx_Generator_USED) || defined(__Pyx_Coroutine_USED)
@@ -11830,7 +11830,7 @@ PyMODINIT_FUNC PyInit_lib_textons(void)
  * import numpy as np
  * cimport numpy as np
  * import scipy.signal as scs             # <<<<<<<<<<<<<<
- * cimport kmc2
+ * from kmc2.kmc2 cimport kmc2
  * import matplotlib.pyplot as plt
  */
   __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5, __pyx_L1_error)
@@ -11846,7 +11846,7 @@ PyMODINIT_FUNC PyInit_lib_textons(void)
 
   /* "textons/lib_textons.pyx":7
  * import scipy.signal as scs
- * cimport kmc2
+ * from kmc2.kmc2 cimport kmc2
  * import matplotlib.pyplot as plt             # <<<<<<<<<<<<<<
  * from scipy.cluster.vq import kmeans
  * 
@@ -11863,7 +11863,7 @@ PyMODINIT_FUNC PyInit_lib_textons(void)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "textons/lib_textons.pyx":8
- * cimport kmc2
+ * from kmc2.kmc2 cimport kmc2
  * import matplotlib.pyplot as plt
  * from scipy.cluster.vq import kmeans             # <<<<<<<<<<<<<<
  * 
