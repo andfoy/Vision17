@@ -155,8 +155,8 @@ def compute_textons(np.ndarray fim, int k):
     for i in range(0, d):
         data[i, :] = fim[i].ravel()
     # textons, _ = kmeans(data.T, k)
-    #cdef np.ndarray[DTYPE_t, ndim=2] seeding = kmc2(data.T, k)
-    model = MiniBatchKMeans(k).fit(data.T)
+    cdef np.ndarray[DTYPE_t, ndim=2] seeding = kmc2(data.T, k)
+    model = MiniBatchKMeans(k, init=seeding).fit(data.T)
     textons = model.cluster_centers_
     return textons
 

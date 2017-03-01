@@ -35,5 +35,5 @@ tmap_test2 = (tmap_test2.T).ravel()
 
 norm = np.linalg.norm
 D = norm(np.histogram(tmap_base1, np.arange(0, k + 1))[0] / len(tmap_base1) -
-         np.histogram(tmap_test2, np.arange(0, k + 1))[0] / len(tmap_test1))
+         np.histogram(tmap_test1, np.arange(0, k + 1))[0] / len(tmap_test1))
 print(D)
