@@ -19,3 +19,20 @@ im_test2 = lib_textons.rgb2gray(mpimg.imread('img/goat2.bmp') / 255)
 
 act_1 = lib_textons.fb_run(fb, img1)
 tmap_base1 = lib_textons.assign_textons(act_1, textons.T)
+tmap_base1 = (tmap_base1.T).ravel()
+
+act_2 = lib_textons.fb_run(fb, img2)
+tmap_base2 = lib_textons.assign_textons(act_2, textons.T)
+tmap_base2 = (tmap_base2.T).ravel()
+
+act_3 = lib_textons.fb_run(fb, im_test1)
+tmap_test1 = lib_textons.assign_textons(act_3, textons.T)
+tmap_test1 = (tmap_test1.T).ravel()
+
+act_4 = lib_textons.fb_run(fb, im_test2)
+tmap_test2 = lib_textons.assign_textons(act_4, textons.T)
+tmap_test2 = (tmap_test2.T).ravel()
+
+D = np.norm(np.histogram(tmap_base1, np.arange(0, k + 1)) / len(tmap_base1) -
+            np.histogram(tmap_test1, np.arange(0, k + 1)) / len(tmap_test1))
+print(D)
