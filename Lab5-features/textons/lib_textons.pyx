@@ -153,8 +153,8 @@ def compute_textons(np.ndarray fim, int k):
     cdef int i
     for i in range(0, d):
         data[i, :] = fim[i].ravel()
-    # textons, _ = kmeans(data.T, k)
-    textons = kmc2(data.T, k)
+    textons, _ = kmeans(data.T, k)
+    # textons = kmc2(data.T, k)
     return textons
 
 @cython.boundscheck(False)
