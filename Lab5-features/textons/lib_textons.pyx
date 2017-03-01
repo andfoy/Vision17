@@ -3,7 +3,7 @@ cimport cython
 import numpy as np
 cimport numpy as np
 import scipy.signal as scs
-from kmc.kmc2 cimport kmc2
+from kmc2 import kmc2
 import matplotlib.pyplot as plt
 from scipy.cluster.vq import kmeans
 
