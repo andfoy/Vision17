@@ -2,10 +2,10 @@
 cimport cython
 import numpy as np
 cimport numpy as np
-import scipy.signal as scs
 from kmc2 import kmc2
+import scipy.signal as scs
 import matplotlib.pyplot as plt
-from scipy.cluster.vq import kmeans
+# from scipy.cluster.vq import kmeans
 from sklearn.cluster import MiniBatchKMeans
 
 DTYPE = np.float64
