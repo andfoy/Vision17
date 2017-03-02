@@ -21,6 +21,7 @@ plt.ion()
 EXT = 'jpg'
 CLASS_FILE = 'data/names.txt'
 TRAIN_PATH = 'data/train'
+TEST_PATH = 'data/test'
 
 with open(CLASS_FILE, 'r') as fp:
     lines = fp.readlines()
@@ -171,16 +172,22 @@ def load_data_set(fb, textons, k):
     return inputs, labels
 
 
-def __process_labels():
-    """Private use."""
+def process_test_set(fb, textons, k):
+    test = None
     labels = []
     for cat in CLASSES:
         label = int(cat.split('T')[1])
-        regex = osp.join(TRAIN_PATH, cat + '*.jpg')
+        regex = osp.join(TEST_PATH, cat + '*.jpg')
         imgs = glob.glob(regex)
-        for _ in imgs:
+        for img in imgs:
+            hist = compute_texton_histogram(img, fb, textons, k)
+            hist = hist.reshape(len(hist), 1)
+            if test is None:
+                test = hist
+            else:
+                test = np.hstack((test, hist))
             labels.append(label)
-    return labels
+    return test, labels
 
 
 def classify_knn(inputs, labels, N=15):
@@ -226,9 +233,14 @@ def main():
         file_load = np.load('dataset.npz')
         inputs = file_load['inputs']
         labels = file_load['labels']
+
     model = classify_knn(inputs.T, labels)
     with open('KNN_model.pkl', 'wb') as fp:
         pickle.dump(model, fp)
+
+    test, test_labels = process_test_set(fb, textons, k)
+    pred = model.predict(test)
+    print(pred)
 
 
 if __name__ == '__main__':
