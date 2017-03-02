@@ -1,11 +1,20 @@
 #! /usr/bin/env/python
 
+import sys
 import glob
 import numpy as np
+import progressbar
 import os.path as osp
+from sklearn import neighbors
 from textons import lib_textons
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
+from sklearn.metrics.pairwise import chi2_kernel
+
+if sys.version_info.major == 3:
+    import pickle
+else:
+    import cPickle as pickle
 
 plt.ion()
 
@@ -121,10 +130,32 @@ def compute_texton_histogram(file, fb, textons, k):
 
 
 def load_data_set(fb, textons, k):
+    """
+    Load image data set and represent it by using texton histograms.
+
+    Parameters
+    ----------
+    fb: array_like
+        Multidimensional matrix that contains the set of filters to be applied.
+    textons: array_like
+        Multidimensional matrix that contains the centroids assigned to each
+        group of textons.
+    k: int
+        Number of texton categories.
+
+    Returns
+    -------
+    inputs: array_like
+        Matrix that contains each image represented by its texton histogram
+        (Stored columnwise)
+    labels: array_like
+        Binary groundtruth that contains each image category.
+    """
     labels = np.zeros((len(CLASSES), 30 * len(CLASSES)))
     inputs = None
     i = 0
-    for cat in CLASSES:
+    bar = progressbar.Bar()
+    for cat in bar(CLASSES):
         label = int(cat.split('T')[1])
         regex = osp.join(TRAIN_PATH, cat + '*.jpg')
         imgs = glob.glob(regex)
@@ -140,6 +171,26 @@ def load_data_set(fb, textons, k):
     return inputs, labels
 
 
+def __process_labels():
+    """Private use."""
+    labels = []
+    for cat in CLASSES:
+        label = int(cat.split('T')[1])
+        regex = osp.join(TRAIN_PATH, cat + '*.jpg')
+        imgs = glob.glob(regex)
+        for _ in imgs:
+            labels.append(label)
+    return labels
+
+
+def classify_knn(inputs, labels, N=15):
+    KNN = neighbors.KNeighborsClassifier(n_neighbors=5,
+                                         metric=chi2_kernel,
+                                         n_jobs=-1)
+    KNN.fit(inputs, labels)
+    return KNN
+
+
 def main():
     num_orient = 20
     start_sigma = 0.1
@@ -149,6 +200,7 @@ def main():
     k = 256
     n = 10
     load = False
+    process_dataset = False
 
     if not load:
         print("Creating filter bank...\n")
@@ -167,8 +219,15 @@ def main():
         fb = file_load['fb']
         k = file_load['k']
 
-    inputs, labels = load_data_set(fb, textons, k)
-    print(labels)
+    if not process_dataset:
+        inputs, labels = load_data_set(fb, textons, k)
+        print(labels)
+    else:
+        file_load = np.load('dataset.npz')
+        inputs = file_load['inputs']
+        labels = file_load['labels']
+    model = classify_knn(inputs, labels)
+    pickle.dump(open('KNN_model.pkl', 'wb'), model)
 
 
 if __name__ == '__main__':
