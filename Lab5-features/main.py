@@ -13,7 +13,7 @@ EXT = 'jpg'
 CLASS_FILE = 'data/names.txt'
 TRAIN_PATH = 'data/train'
 
-with open(CLASS_FILE, 'rb') as fp:
+with open(CLASS_FILE, 'r') as fp:
     lines = fp.readlines()
 
 lines = [x.rstrip().split('\t') for x in lines]
@@ -125,9 +125,12 @@ def main():
     k = 48
     n = 4
 
+    print("Creating filter bank...\n")
     fb = lib_textons.fb_create(num_orient, start_sigma, num_scales,
                                scaling, elong)
+    print("Subsampling images...\n")
     files = subsample_images(n)
+    print("Computing textons...\n")
     textons = compute_texton_set(files, fb, k)
     np.savez('textons.npz', textons=textons)
 
