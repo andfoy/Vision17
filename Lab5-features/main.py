@@ -122,7 +122,7 @@ def main():
     num_orient = 12
     start_sigma = 0.1
     num_scales = 4
-    scaling = 1
+    scaling = np.sqrt(2)
     elong = 2
     k = 48
     n = 4
