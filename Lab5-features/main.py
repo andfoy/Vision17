@@ -148,15 +148,22 @@ def main():
     elong = 2
     k = 256
     n = 10
+    load = False
 
     print("Creating filter bank...\n")
     fb = lib_textons.fb_create(num_orient, start_sigma, num_scales,
                                scaling, elong)
-    print("Subsampling images...\n")
-    files = subsample_images(n)
-    print("Computing textons...\n")
-    textons = compute_texton_set(files, fb, k, False)
-    np.savez('textons.npz', textons=textons)
+    if not load:
+        print("Subsampling images...\n")
+        files = subsample_images(n)
+        print("Computing textons...\n")
+        textons = compute_texton_set(files, fb, k, True)
+        np.savez('textons.npz', textons=textons)
+    else:
+        textons = np.load('textons.npz')['textons']
+
+    inputs, labels = load_data_set(fb, textons, k)
+    print(labels)
 
 
 if __name__ == '__main__':
