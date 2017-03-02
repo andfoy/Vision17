@@ -76,9 +76,11 @@ def compute_texton_set(files, fb, k, debug=False):
         stack.append(img / 255)
     stack = np.hstack(stack)
 
+    print("Convolving image set with filter bank...\n")
     filter_responses = lib_textons.fb_run(fb, stack)
     if debug:
         np.savez('filter_responses', resp=filter_responses)
+    print('Running K-Means...\n')
     textons = lib_textons.compute_textons(filter_responses, k)
     return textons
 
@@ -125,7 +127,7 @@ def main():
     scaling = np.sqrt(2)
     elong = 2
     k = 48
-    n = 4
+    n = 15
 
     print("Creating filter bank...\n")
     fb = lib_textons.fb_create(num_orient, start_sigma, num_scales,
