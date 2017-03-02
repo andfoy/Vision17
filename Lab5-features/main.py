@@ -180,6 +180,7 @@ def process_test_set(fb, textons, k):
         regex = osp.join(TEST_PATH, cat + '*.jpg')
         imgs = glob.glob(regex)
         for img in imgs:
+            print(img)
             hist = compute_texton_histogram(img, fb, textons, k)
             hist = hist.reshape(len(hist), 1)
             if test is None:
