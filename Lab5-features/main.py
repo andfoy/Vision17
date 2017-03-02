@@ -121,13 +121,13 @@ def compute_texton_histogram(file, fb, textons, k):
 
 
 def main():
-    num_orient = 12
+    num_orient = 20
     start_sigma = 0.1
-    num_scales = 4
+    num_scales = 7
     scaling = np.sqrt(2)
     elong = 2
-    k = 48
-    n = 15
+    k = 256
+    n = 10
 
     print("Creating filter bank...\n")
     fb = lib_textons.fb_create(num_orient, start_sigma, num_scales,
@@ -135,7 +135,7 @@ def main():
     print("Subsampling images...\n")
     files = subsample_images(n)
     print("Computing textons...\n")
-    textons = compute_texton_set(files, fb, k, True)
+    textons = compute_texton_set(files, fb, k, False)
     np.savez('textons.npz', textons=textons)
 
 
