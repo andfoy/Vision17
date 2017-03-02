@@ -199,8 +199,8 @@ def main():
     elong = 2
     k = 256
     n = 10
-    load = False
-    process_dataset = False
+    load = True
+    process_dataset = True
 
     if not load:
         print("Creating filter bank...\n")
@@ -226,8 +226,9 @@ def main():
         file_load = np.load('dataset.npz')
         inputs = file_load['inputs']
         labels = file_load['labels']
-    model = classify_knn(inputs, labels)
-    pickle.dump(open('KNN_model.pkl', 'wb'), model)
+    model = classify_knn(inputs.T, labels)
+    with open('KNN_model.pkl', 'wb') as fp:
+        pickle.dump(model, fp)
 
 
 if __name__ == '__main__':
