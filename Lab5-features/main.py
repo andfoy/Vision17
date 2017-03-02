@@ -143,24 +143,29 @@ def load_data_set(fb, textons, k):
 def main():
     num_orient = 20
     start_sigma = 0.1
-    num_scales = 7
+    num_scales = 6
     scaling = np.sqrt(2)
     elong = 2
     k = 256
     n = 10
     load = False
 
-    print("Creating filter bank...\n")
-    fb = lib_textons.fb_create(num_orient, start_sigma, num_scales,
-                               scaling, elong)
     if not load:
+        print("Creating filter bank...\n")
+        fb = lib_textons.fb_create(num_orient, start_sigma, num_scales,
+                                   scaling, elong)
+        # np.savez('filters.npz', fb=fb)
         print("Subsampling images...\n")
         files = subsample_images(n)
         print("Computing textons...\n")
         textons = compute_texton_set(files, fb, k, True)
-        np.savez('textons.npz', textons=textons)
+        np.savez('params.npz', textons=textons, fb=fb, k=k)
     else:
-        textons = np.load('textons.npz')['textons']
+        print("Loading previously saved params...")
+        file_load = np.load('params.npz')
+        textons = file_load['textons']
+        fb = file_load['fb']
+        k = file_load['k']
 
     inputs, labels = load_data_set(fb, textons, k)
     print(labels)
