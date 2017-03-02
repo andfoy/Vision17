@@ -17,7 +17,7 @@ with open(CLASS_FILE, 'r') as fp:
     lines = fp.readlines()
 
 lines = [x.rstrip().split('\t') for x in lines if len(x.rstrip()) > 1]
-CLASSES = dict(zip(lines))
+CLASSES = dict(lines)
 
 
 def subsample_images(n=4):
@@ -44,7 +44,7 @@ def subsample_images(n=4):
     return files
 
 
-def compute_texton_set(files, fb, k):
+def compute_texton_set(files, fb, k, debug=False):
     """
     Compute texton dictionary.
 
@@ -55,7 +55,7 @@ def compute_texton_set(files, fb, k):
 
     Parameters
     ----------
-    files: dict
+    files: list
         List of the filenames of the images sampled for each category.
     fb: array_like
         Multidimensional matrix that contains the set of filters to be applied.
@@ -77,6 +77,8 @@ def compute_texton_set(files, fb, k):
     stack = np.hstack(stack)
 
     filter_responses = lib_textons.fb_run(fb, stack)
+    if debug:
+        np.savez('filter_responses', resp=filter_responses)
     textons = lib_textons.compute_textons(filter_responses, k)
     return textons
 
@@ -131,7 +133,7 @@ def main():
     print("Subsampling images...\n")
     files = subsample_images(n)
     print("Computing textons...\n")
-    textons = compute_texton_set(files, fb, k)
+    textons = compute_texton_set(files, fb, k, True)
     np.savez('textons.npz', textons=textons)
 
 
