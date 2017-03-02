@@ -16,7 +16,7 @@ TRAIN_PATH = 'data/train'
 with open(CLASS_FILE, 'r') as fp:
     lines = fp.readlines()
 
-lines = [x.rstrip().split('\t') for x in lines]
+lines = [x.rstrip().split('\t') for x in lines if len(x.rstrip()) > 1]
 CLASSES = dict(zip(lines))
 
 
