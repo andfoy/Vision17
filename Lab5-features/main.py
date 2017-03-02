@@ -120,14 +120,34 @@ def compute_texton_histogram(file, fb, textons, k):
     return hist
 
 
+def load_data_set(fb, textons, k):
+    labels = np.zeros((len(CLASSES), 30 * len(CLASSES)))
+    inputs = None
+    i = 0
+    for cat in CLASSES:
+        label = int(cat.split('T')[1])
+        regex = osp.join(TRAIN_PATH, cat + '*.jpg')
+        imgs = glob.glob(regex)
+        for img in imgs:
+            hist = compute_texton_histogram(img, fb, textons, k)
+            hist = hist.reshape(len(hist), 1)
+            if inputs is None:
+                inputs = hist
+            else:
+                inputs = np.hstack((inputs, hist))
+            labels[:, i] = label - 1
+            i += 1
+    return inputs, labels
+
+
 def main():
-    num_orient = 12
+    num_orient = 20
     start_sigma = 0.1
-    num_scales = 4
+    num_scales = 7
     scaling = np.sqrt(2)
     elong = 2
-    k = 48
-    n = 15
+    k = 256
+    n = 10
 
     print("Creating filter bank...\n")
     fb = lib_textons.fb_create(num_orient, start_sigma, num_scales,
