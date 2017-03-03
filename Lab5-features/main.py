@@ -307,7 +307,7 @@ def main():
     pred = model.predict(test.T)
     norm = np.linalg.norm
     acc = norm(pred - test_labels) / norm(pred + test_labels)
-    print("KNN Accuracy: " + acc)
+    print("KNN Accuracy: %g%" % (acc * 100))
 
     print("Training Random Forest...")
     forest = classify_forest(inputs.T, labels)
@@ -316,7 +316,7 @@ def main():
 
     pred2 = forest.predict(test.T)
     acc2 = norm(pred2 - test_labels) / norm(pred2 + test_labels)
-    print("Random forest Accuracy: " + acc2)
+    print("Random forest Accuracy: %g%" % (acc2 * 100))
 
 
 if __name__ == '__main__':

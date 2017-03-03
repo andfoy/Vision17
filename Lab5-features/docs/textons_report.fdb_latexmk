@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex textons_report"] 1488516468 "textons_report.aux" "textons_report.bbl" "textons_report" 1488516469
+["bibtex textons_report"] 1488519203 "textons_report.aux" "textons_report.bbl" "textons_report" 1488519204
   "./ieee.bst" 1411459028 19623 f9cd22458ca68af2567100f1aed905e8 ""
   "egbib.bib" 1488512439 2032 09a2ed7c3fa5afcff42b41de44fe59ee ""
-  "textons_report.aux" 1488516469 1396 780200de989f3e72443c0ab28bf27085 ""
+  "textons_report.aux" 1488519204 1597 c7c4b6260c7671764fc7a8b55d7489c3 ""
   "textons_report.bcf" 0 -1 0 ""
   (generated)
   "textons_report.bbl"
   "textons_report.blg"
-["pdflatex"] 1488516468 "textons_report.tex" "textons_report.pdf" "textons_report" 1488516469
+["pdflatex"] 1488519203 "textons_report.tex" "textons_report.pdf" "textons_report" 1488519204
   "/dev/null" 1488505212 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/etc/texmf/web2c/texmf.cnf" 1487479574 1101 af7716885e081ab43982cab7b4672c1a ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -175,11 +175,11 @@
   "cvpr_eso.sty" 1411459028 3878 6aa7c08ff2621006e0603349e40a30a8 ""
   "eso-pic.sty" 1411459028 9460 d2935ae95b5cd343fcf5887ff530288d ""
   "textons_report.aex" 0 -1 0 ""
-  "textons_report.aux" 1488516469 1396 780200de989f3e72443c0ab28bf27085 ""
-  "textons_report.bbl" 1488516468 797 12bf1a57f14d5834c29b9534da05def0 "bibtex textons_report"
-  "textons_report.tex" 1488516463 28239 349019f82aede9548c9cc3fc784a3399 ""
+  "textons_report.aux" 1488519204 1597 c7c4b6260c7671764fc7a8b55d7489c3 ""
+  "textons_report.bbl" 1488519203 797 12bf1a57f14d5834c29b9534da05def0 "bibtex textons_report"
+  "textons_report.tex" 1488519200 31259 545af86cbc384e17371edf4c7f494ae4 ""
   "textons_report.w18" 0 -1 0 ""
   (generated)
+  "textons_report.pdf"
   "textons_report.aux"
   "textons_report.log"
-  "textons_report.pdf"
