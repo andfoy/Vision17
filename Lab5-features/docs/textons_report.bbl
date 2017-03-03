@@ -1,0 +1,20 @@
+\begin{thebibliography}{1}\itemsep=-1pt
+
+\bibitem{Bachem:2016:AKS:3016100.3016103}
+O.~Bachem, M.~Lucic, S.~H. Hassani, and A.~Krause.
+\newblock Approximate k-means++ in sublinear time.
+\newblock In {\em Proceedings of the Thirtieth AAAI Conference on Artificial
+  Intelligence}, AAAI'16, pages 1459--1467. AAAI Press, 2016.
+
+\bibitem{lazebnik2005sparse}
+S.~Lazebnik, C.~Schmid, and J.~Ponce.
+\newblock A sparse texture representation using local affine regions.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  27(8):1265--1278, 2005.
+
+\bibitem{Malik2001}
+J.~Malik, S.~Belongie, T.~Leung, and J.~Shi.
+\newblock Contour and texture analysis for image segmentation.
+\newblock {\em International Journal of Computer Vision}, 43(1):7--27, 2001.
+
+\end{thebibliography}

@@ -5,6 +5,7 @@ import glob
 import numpy as np
 import progressbar
 import os.path as osp
+from sklearn import ensemble
 from sklearn import neighbors
 from textons import lib_textons
 import matplotlib.pyplot as plt
@@ -173,6 +174,27 @@ def load_data_set(fb, textons, k):
 
 
 def process_test_set(fb, textons, k):
+    """
+    Load image test set and represent it by using texton histograms.
+
+    Parameters
+    ----------
+    fb: array_like
+        Multidimensional matrix that contains the set of filters to be applied.
+    textons: array_like
+        Multidimensional matrix that contains the centroids assigned to each
+        group of textons.
+    k: int
+        Number of texton categories.
+
+    Returns
+    -------
+    inputs: array_like
+        Matrix that contains each image represented by its texton histogram
+        (Stored columnwise)
+    labels: array_like
+        Binary groundtruth that contains each image category.
+    """
     test = None
     labels = []
     for cat in CLASSES:
@@ -192,11 +214,49 @@ def process_test_set(fb, textons, k):
 
 
 def classify_knn(inputs, labels, N=15):
+    """
+    Train a K-Nearest Neighbors classifier.
+
+    Parameters
+    ----------
+    inputs: array_like
+        Matrix that contains each image represented by its texton histogram
+        (Stored columnwise)
+    labels: array_like
+        Binary groundtruth that contains each image category.
+
+    Returns
+    -------
+    KNN: sklearn.neighbors.KNeighborsClassifier
+        Trained KNN model.
+    """
     KNN = neighbors.KNeighborsClassifier(n_neighbors=5,
                                          metric=chi2_kernel,
                                          n_jobs=-1)
     KNN.fit(inputs, labels)
     return KNN
+
+
+def classify_forest(inputs, labels):
+    """
+    Train a Random forest classifier.
+
+    Parameters
+    ----------
+    inputs: array_like
+        Matrix that contains each image represented by its texton histogram
+        (Stored columnwise)
+    labels: array_like
+        Binary groundtruth that contains each image category.
+
+    Returns
+    -------
+    forest: sklearn.ensemble.RandomForestClassifier
+        Trained random forest classifier.
+    """
+    forest = ensemble.RandomForestClassifier(n_jobs=-1)
+    forest.fit(inputs, labels)
+    return forest
 
 
 def main():
@@ -214,7 +274,6 @@ def main():
         print("Creating filter bank...\n")
         fb = lib_textons.fb_create(num_orient, start_sigma, num_scales,
                                    scaling, elong)
-        # np.savez('filters.npz', fb=fb)
         print("Subsampling images...\n")
         files = subsample_images(n)
         print("Computing textons...\n")
@@ -228,18 +287,23 @@ def main():
         k = file_load['k']
 
     if not process_dataset:
+        print("Loading train set....")
         inputs, labels = load_data_set(fb, textons, k)
-        print(labels)
+        test, test_labels = process_test_set(fb, textons, k)
+        np.savez('dataset.npz', inputs=inputs, labels=labels,
+                 test=test, test_labels=test_labels)
     else:
         file_load = np.load('dataset.npz')
         inputs = file_load['inputs']
         labels = file_load['labels']
+        test = file_load['test']
+        test_labels = file_load['test_labels']
 
+    print("Training KNN Model....")
     model = classify_knn(inputs.T, labels)
     with open('KNN_model.pkl', 'wb') as fp:
         pickle.dump(model, fp)
 
-    test, test_labels = process_test_set(fb, textons, k)
     pred = model.predict(test)
     print(pred)
 
