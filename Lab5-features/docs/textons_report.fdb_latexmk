@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex textons_report"] 1488512543 "textons_report.aux" "textons_report.bbl" "textons_report" 1488512684
+["bibtex textons_report"] 1488516468 "textons_report.aux" "textons_report.bbl" "textons_report" 1488516469
   "./ieee.bst" 1411459028 19623 f9cd22458ca68af2567100f1aed905e8 ""
   "egbib.bib" 1488512439 2032 09a2ed7c3fa5afcff42b41de44fe59ee ""
-  "textons_report.aux" 1488512684 1194 55c67b6d3590d0e49828067e9ac22e2e ""
+  "textons_report.aux" 1488516469 1396 780200de989f3e72443c0ab28bf27085 ""
   "textons_report.bcf" 0 -1 0 ""
   (generated)
   "textons_report.bbl"
   "textons_report.blg"
-["pdflatex"] 1488512684 "textons_report.tex" "textons_report.pdf" "textons_report" 1488512684
+["pdflatex"] 1488516468 "textons_report.tex" "textons_report.pdf" "textons_report" 1488516469
   "/dev/null" 1488505212 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/etc/texmf/web2c/texmf.cnf" 1487479574 1101 af7716885e081ab43982cab7b4672c1a ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -51,6 +51,9 @@
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/wasy/wasy6.tfm" 1418683037 892 ce84734a3ce970a47ce7803be6d89b0f ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/wasy/wasy7.tfm" 1418683037 888 5f102ebf31506247d60c56d7d473e774 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/wasy/wasy8.tfm" 1418683037 884 df491db60492d6d4b55157a114e1a6bd ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb" 1248133631 30251 6afa5cb1d0204815a708a080681d4674 ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1248133631 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb" 1248133631 36281 c355509802a035cadc5f15869451dcee ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1248133631 32762 224316ccc9ad3ca0423a14971cfa7fc1 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
@@ -172,11 +175,11 @@
   "cvpr_eso.sty" 1411459028 3878 6aa7c08ff2621006e0603349e40a30a8 ""
   "eso-pic.sty" 1411459028 9460 d2935ae95b5cd343fcf5887ff530288d ""
   "textons_report.aex" 0 -1 0 ""
-  "textons_report.aux" 1488512684 1194 55c67b6d3590d0e49828067e9ac22e2e ""
-  "textons_report.bbl" 1488512545 797 12bf1a57f14d5834c29b9534da05def0 "bibtex textons_report"
-  "textons_report.tex" 1488512682 24571 514a09b90be5dd675b7037994086d4e9 ""
+  "textons_report.aux" 1488516469 1396 780200de989f3e72443c0ab28bf27085 ""
+  "textons_report.bbl" 1488516468 797 12bf1a57f14d5834c29b9534da05def0 "bibtex textons_report"
+  "textons_report.tex" 1488516463 28239 349019f82aede9548c9cc3fc784a3399 ""
   "textons_report.w18" 0 -1 0 ""
   (generated)
-  "textons_report.pdf"
-  "textons_report.log"
   "textons_report.aux"
+  "textons_report.log"
+  "textons_report.pdf"

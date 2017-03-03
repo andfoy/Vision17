@@ -304,8 +304,19 @@ def main():
     with open('KNN_model.pkl', 'wb') as fp:
         pickle.dump(model, fp)
 
-    pred = model.predict(test)
-    print(pred)
+    pred = model.predict(test.T)
+    norm = np.linalg.norm
+    acc = norm(pred - test_labels) / norm(pred + test_labels)
+    print("KNN Accuracy: " + acc)
+
+    print("Training Random Forest...")
+    forest = classify_forest(inputs.T, labels)
+    with open('forest_model.pkl', 'wb') as fp:
+        pickle.dump(forest, fp)
+
+    pred2 = forest.predict(test.T)
+    acc2 = norm(pred2 - test_labels) / norm(pred2 + test_labels)
+    print("Random forest Accuracy: " + acc2)
 
 
 if __name__ == '__main__':
