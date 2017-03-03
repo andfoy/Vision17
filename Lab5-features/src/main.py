@@ -90,7 +90,7 @@ def compute_texton_set(files, fb, k, debug=False):
     print("Convolving image set with filter bank...\n")
     filter_responses = lib_textons.fb_run(fb, stack)
     if debug:
-        np.savez('filter_responses', resp=filter_responses)
+        np.savez('model/filter_responses', resp=filter_responses)
     print('Running K-Means...\n')
     textons = lib_textons.compute_textons(filter_responses, k)
     return textons
@@ -278,10 +278,10 @@ def main():
         files = subsample_images(n)
         print("Computing textons...\n")
         textons = compute_texton_set(files, fb, k, True)
-        np.savez('params.npz', textons=textons, fb=fb, k=k)
+        np.savez('model/params.npz', textons=textons, fb=fb, k=k)
     else:
         print("Loading previously saved params...")
-        file_load = np.load('params.npz')
+        file_load = np.load('model/params.npz')
         textons = file_load['textons']
         fb = file_load['fb']
         k = file_load['k']
@@ -290,10 +290,10 @@ def main():
         print("Loading train set....")
         inputs, labels = load_data_set(fb, textons, k)
         test, test_labels = process_test_set(fb, textons, k)
-        np.savez('dataset.npz', inputs=inputs, labels=labels,
+        np.savez('model/dataset.npz', inputs=inputs, labels=labels,
                  test=test, test_labels=test_labels)
     else:
-        file_load = np.load('dataset.npz')
+        file_load = np.load('model/dataset.npz')
         inputs = file_load['inputs']
         labels = file_load['labels']
         test = file_load['test']

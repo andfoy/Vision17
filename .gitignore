@@ -94,4 +94,4 @@ ENV/
 .ropeproject
 
 *.zip
-Lab5-features/data/*
+Lab5-features/src/data/*
