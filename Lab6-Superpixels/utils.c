@@ -3206,7 +3206,7 @@ static PyObject *__pyx_pf_5utils_6hierarchical(CYTHON_UNUSED PyObject *__pyx_sel
  *         Cluster class assignment for each input vector.
  *     """
  *     model = AgglomerativeClustering(n_clusters=k).fit(x.T)             # <<<<<<<<<<<<<<
- *     return model.predict(x.T).T, size
+ *     return model.fit_predict(x.T).T, size
  * 
  */
   __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_AgglomerativeClustering); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 103, __pyx_L1_error)
@@ -3278,12 +3278,12 @@ static PyObject *__pyx_pf_5utils_6hierarchical(CYTHON_UNUSED PyObject *__pyx_sel
   /* "utils.pyx":104
  *     """
  *     model = AgglomerativeClustering(n_clusters=k).fit(x.T)
- *     return model.predict(x.T).T, size             # <<<<<<<<<<<<<<
+ *     return model.fit_predict(x.T).T, size             # <<<<<<<<<<<<<<
  * 
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_model, __pyx_n_s_predict); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_model, __pyx_n_s_fit_predict); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_x), __pyx_n_s_T); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);

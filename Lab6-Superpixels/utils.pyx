@@ -101,7 +101,7 @@ def hierarchical(np.ndarray[DTYPE_t, ndim=2] x, int k, tuple size):
         Cluster class assignment for each input vector.
     """
     model = AgglomerativeClustering(n_clusters=k).fit(x.T)
-    return model.predict(x.T).T, size
+    return model.fit_predict(x.T).T, size
 
 
 @cython.boundscheck(False)
