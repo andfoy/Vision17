@@ -39,7 +39,7 @@ def find_contours(func):
         if method == 'watershed':
             contours = (seg == -1)
         else:
-            contours = cv2.Canny(seg, np.min(seg), np.max(seg)) / 255
+            contours = cv2.Canny(np.uint8(seg), np.min(seg), np.max(seg)) / 255
         return seg, contours
     return threshold_image
 
