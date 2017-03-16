@@ -83,19 +83,23 @@ def evaluate_images(path):
     images = sorted(glob.glob(osp.join(path, '*.jpg')))
     masks = sorted(glob.glob(osp.join(path, '*.npz')))
     for im_path, mask_path in zip(images, masks):
+        print("Processing: %s" % (im_path))
         img = mpimg.imread(im_path)
         h, w = img.shape[:2]
         ground_truth = np.load(mask_path)['ground_truth']
         for level in ground_truth:
             num_seg = len(np.unique(level['segmentation']))
+            print("Number of segmentations: %d" % (num_seg))
             for method in CLUSTERING_METHODS:
+                print("Evaluating: %s" % (method))
                 spaces = COLOR_SPACES.keys()
                 if method != 'watershed':
-                    spaces += [x + '+xy' for x in COLOR_SPACES.keys()]
+                    spaces += [x + '+xy' for x in list(COLOR_SPACES.keys())]
                 elif method == 'hierarchical':
                     img = cv2.resize(img, (w // 2, h // 2),
                                      interpolation=cv2.INTER_AREA)
                 for space in spaces:
+                    print("Color Space: %s" % (space))
                     seg, cnt = segment_by_clustering(img, space,
                                                      method, num_seg)
                     score = 1 - abs_diff(cnt, level['boundaries'])
