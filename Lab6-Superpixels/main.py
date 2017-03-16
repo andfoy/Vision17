@@ -10,8 +10,14 @@ import os.path as osp
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
-plt.ion()
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('font', size=14.0)
+plt.rc('legend', fontsize=16.0)
+plt.rc('font', weight='normal')
+# plt.ion()
 
+OUTPUT_PATH = 'results'
 PLUS_SEP = '+'
 
 COLOR_SPACES = {'rgb': lambda i: i,
@@ -35,11 +41,14 @@ def find_contours(func):
     @functools.wraps(func)
     def threshold_image(*args, **kwargs):
         seg = func(*args, **kwargs)
+        h, w = args[0].shape[:2]
         method = args[2]
         if method == 'watershed':
             contours = (seg == -1)
         else:
             contours = cv2.Canny(np.uint8(seg), np.min(seg), np.max(seg)) / 255
+        if method == 'hierarchical':
+            contours = cv2.resize(contours, (w, h))
         return seg, contours
     return threshold_image
 
@@ -75,6 +84,21 @@ def segment_by_clustering(rgb_image, feature_space,
     return seg
 
 
+def save_images(seg, cnt, name, method, space, num_seg):
+    fig = plt.figure()
+    fig.add_subplot(121)
+    plt.imshow(seg)
+    title = method.title()
+    plt.title('{0} segmentation based on {1} regions ({2}))'.format(
+        title, num_seg, space))
+    fig.add_subplot(122)
+    plt.title('{0} border descriptors based on {1} regions ({2}))'.format(
+        title, num_seg, space))
+    plt.savefig(osp.join(OUTPUT_PATH, '{0}_{1}_{2}_{3}.pdf'.format(
+        name, method, space, num_seg)), bbox_inches='tight')
+    plt.close()
+
+
 def abs_diff(x, y):
     return np.linalg.norm(x - y) / np.linalg.norm(x + y)
 
@@ -83,6 +107,7 @@ def evaluate_images(path):
     images = sorted(glob.glob(osp.join(path, '*.jpg')))
     masks = sorted(glob.glob(osp.join(path, '*.npz')))
     for im_path, mask_path in zip(images, masks):
+        im_name = osp.splitext(osp.basename(im_path))[0]
         print("Processing: %s" % (im_path))
         img = mpimg.imread(im_path)
         h, w = img.shape[:2]
@@ -104,7 +129,8 @@ def evaluate_images(path):
                                                      method, num_seg)
                     score = 1 - abs_diff(cnt, level['boundaries'])
                     print("%s: %s, %s, %d: %g" %
-                          (im_path, method, space, num_seg, score * 100))
+                          (im_name, method, space, num_seg, score * 100))
+                    save_images(seg, cnt, im_name, method, space, num_seg)
 
 
 parser = argparse.ArgumentParser(description='Evaluate different clustering '

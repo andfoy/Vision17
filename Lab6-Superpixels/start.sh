@@ -2,6 +2,7 @@
 
 DATA="http://157.253.63.7/Lab5Images.tar.gz"
 OUT_PATH="data"
+RESULTS_PATH="results"
 FILE="Lab5Images.tar.gz"
 
 printf "Checking if dataset has been already downloaded...\n"
@@ -14,6 +15,8 @@ if [ ! -d $OUT_PATH ]; then
     rm $FILE
     cd ..
 fi
+
+mkdir $RESULTS_PATH 2>/dev/null
 
 python process.py
 python setup.py build_ext -i
