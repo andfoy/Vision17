@@ -123,7 +123,7 @@ def evaluate_images(path):
                 spaces = list(COLOR_SPACES.keys())
                 if method != 'watershed':
                     spaces += [x + '+xy' for x in COLOR_SPACES.keys()]
-                elif method == 'hierarchical':
+                if method == 'hierarchical':
                     img = cv2.resize(img, (w // 2, h // 2),
                                      interpolation=cv2.INTER_AREA)
                 for space in spaces:
