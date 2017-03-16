@@ -47,6 +47,7 @@ def find_contours(func):
             contours = (seg == -1)
         else:
             contours = cv2.Canny(np.uint8(seg), np.min(seg), np.max(seg)) / 255
+            print(method)
             if method == 'hierarchical':
                 contours = cv2.resize(contours, (w, h))
                 seg = cv2.resize(seg, (w, h))
