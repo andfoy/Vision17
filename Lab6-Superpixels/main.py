@@ -12,7 +12,7 @@ import matplotlib.image as mpimg
 
 plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
-plt.rc('font', size=14.0)
+plt.rc('font', size=12.0)
 plt.rc('legend', fontsize=16.0)
 plt.rc('font', weight='normal')
 # plt.ion()
@@ -85,15 +85,17 @@ def segment_by_clustering(rgb_image, feature_space,
 
 
 def save_images(seg, cnt, name, method, space, num_seg):
-    fig = plt.figure()
-    fig.add_subplot(121)
+    plt.figure()
+    # fig.add_subplot(121)
     plt.imshow(seg)
     title = method.title()
     plt.title('{0} segmentation based on {1} regions ({2}))'.format(
-        title, num_seg, space))
-    fig.add_subplot(122)
-    plt.title('{0} border descriptors based on {1} regions ({2}))'.format(
-        title, num_seg, space))
+        title, num_seg, space), fontsize=13)
+    # fig.add_subplot(122)
+    # plt.imshow(cnt)
+    # plt.title('{0} border descriptors based on {1} regions ({2}))'.format(
+    # title, num_seg, space))
+    # fig.tight_layout()
     plt.savefig(osp.join(OUTPUT_PATH, '{0}_{1}_{2}_{3}.pdf'.format(
         name, method, space, num_seg)), bbox_inches='tight')
     plt.close()
@@ -106,6 +108,7 @@ def abs_diff(x, y):
 def evaluate_images(path):
     images = sorted(glob.glob(osp.join(path, '*.jpg')))
     masks = sorted(glob.glob(osp.join(path, '*.npz')))
+    out_file = open('results.csv', 'w')
     for im_path, mask_path in zip(images, masks):
         im_name = osp.splitext(osp.basename(im_path))[0]
         print("Processing: %s" % (im_path))
@@ -127,10 +130,13 @@ def evaluate_images(path):
                     print("Color Space: %s" % (space))
                     seg, cnt = segment_by_clustering(img, space,
                                                      method, num_seg)
-                    score = 1 - abs_diff(cnt, level['boundaries'])
-                    print("%s: %s, %s, %d: %g" %
+                    score = 1 - abs_diff(cnt, np.float64(level['boundaries']))
+                    print("%s, %s, %s, %d, %g" %
                           (im_name, method, space, num_seg, score * 100))
+                    out_file.write("%s, %s, %s, %d, %g\n" %
+                                   (im_name, method, space, num_seg, score))
                     save_images(seg, cnt, im_name, method, space, num_seg)
+    out_file.close()
 
 
 parser = argparse.ArgumentParser(description='Evaluate different clustering '
