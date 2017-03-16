@@ -103,7 +103,7 @@ def evaluate_images(path):
                     seg, cnt = segment_by_clustering(img, space,
                                                      method, num_seg)
                     score = 1 - abs_diff(cnt, level['boundaries'])
-                    print("%s: %s, %s, %d: %g %" %
+                    print("%s: %s, %s, %d: %g" %
                           (im_path, method, space, num_seg, score * 100))
 
 
