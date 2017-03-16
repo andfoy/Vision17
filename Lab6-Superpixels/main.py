@@ -3,6 +3,7 @@
 import cv2
 import glob
 import utils
+import argparse
 import functools
 import numpy as np
 import os.path as osp
@@ -100,3 +101,15 @@ def evaluate_images(path):
                     score = 1 - abs_diff(cnt, level['boundaries'])
                     print("%s: %s, %s, %d: %g %" %
                           (im_path, method, space, level, score * 100))
+
+
+parser = argparse.ArgumentParser(description='Evaluate different clustering '
+                                 'methods on image segmentation tasks.')
+
+parser.add_argument('path', metavar='path',
+                    help='Path that contains input data and mask files')
+
+if __name__ == '__main__':
+    args = parser.parse_args()
+    path = args.path
+    evaluate_images(path)
