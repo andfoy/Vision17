@@ -40,9 +40,15 @@ def find_contours(func):
 
     @functools.wraps(func)
     def threshold_image(*args, **kwargs):
-        seg = func(*args, **kwargs)
-        h, w = args[0].shape[:2]
+        img = args[0]
+        h, w = img.shape[:2]
         method = args[2]
+        args = list(args)
+        if method == 'hierarchical':
+            img = cv2.resize(img, (w // 2, h // 2),
+                             interpolation=cv2.INTER_AREA)
+            args[0] = img
+        seg = func(*args, **kwargs)
         if method == 'watershed':
             contours = (seg == -1)
         else:
@@ -124,9 +130,9 @@ def evaluate_images(path):
                 spaces = list(COLOR_SPACES.keys())
                 if method != 'watershed':
                     spaces += [x + '+xy' for x in COLOR_SPACES.keys()]
-                if method == 'hierarchical':
-                    img = cv2.resize(img, (w // 2, h // 2),
-                                     interpolation=cv2.INTER_AREA)
+                # if method == 'hierarchical':
+                    # img = cv2.resize(img, (w // 2, h // 2),
+                    #                  interpolation=cv2.INTER_AREA)
                 for space in spaces:
                     print("Color Space: %s" % (space))
                     seg, cnt = segment_by_clustering(img, space,
