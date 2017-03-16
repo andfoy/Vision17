@@ -1,11 +1,13 @@
 # !/usr/bin/env python
 
 import cv2
+import glob
 import utils
+import functools
 import numpy as np
+import os.path as osp
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-import matplotlib.animation as animate
 
 plt.ion()
 
@@ -19,12 +21,29 @@ GRAY_CONV = {'rgb': lambda i: cv2.cvtColor(i, cv2.COLOR_RGB2GRAY),
              'hsv': lambda i: np.rollaxis(i[..., :3], axis=-1)[-1],
              'lab': lambda i: np.rollaxis(i[..., :3], axis=-1)[0]}
 
-FEATURE_FUNCS = {'k-means': utils.k_means,
-                 'gmm': utils.gmm,
-                 'hierarchical': utils.hierarchical,
-                 'watershed': utils.watershed}
+CLUSTERING_METHODS = {'k-means': utils.k_means,
+                      'gmm': utils.gmm,
+                      'hierarchical': utils.hierarchical,
+                      'watershed': utils.watershed}
 
 
+def find_contours(func):
+    if not func:
+        return functools.partial(find_contours)
+
+    @functools.wraps(func)
+    def threshold_image(*args, **kwargs):
+        seg = func(*args, **kwargs)
+        method = args[2]
+        if method == 'watershed':
+            contours = (seg == -1)
+        else:
+            contours = cv2.Canny(seg, np.min(seg), np.max(seg)) / 255
+        return seg, contours
+    return threshold_image
+
+
+@find_contours
 def segment_by_clustering(rgb_image, feature_space,
                           clustering_method, number_of_clusters):
     xy = False
@@ -32,7 +51,6 @@ def segment_by_clustering(rgb_image, feature_space,
         xy = True
         feature_space, _ = feature_space.split(PLUS_SEP)
 
-    # rgb_image = rgb_image / np.max(rgb_image)
     img_conv = COLOR_SPACES[feature_space](rgb_image)
 
     if clustering_method != 'watershed':
@@ -52,5 +70,33 @@ def segment_by_clustering(rgb_image, feature_space,
         data = np.sqrt(dx**2 + dy**2)
         params = (img_conv, data, number_of_clusters)
 
-    seg = FEATURE_FUNCS[clustering_method](*params)
+    seg = CLUSTERING_METHODS[clustering_method](*params)
     return seg
+
+
+def abs_diff(x, y):
+    return np.linalg.norm(x - y) / np.linalg.norm(x + y)
+
+
+def evaluate_images(path):
+    images = sorted(glob.glob(osp.join(path, '*.jpg')))
+    masks = sorted(glob.glob(osp.join(path, '*.npz')))
+    for im_path, mask_path in zip(images, masks):
+        img = mpimg.imread(im_path)
+        h, w = img.shape[:2]
+        ground_truth = np.load(mask_path)['ground_truth']
+        for level in ground_truth:
+            num_seg = len(np.unique(level['segmentation']))
+            for method in CLUSTERING_METHODS:
+                spaces = COLOR_SPACES.keys()
+                if method != 'watershed':
+                    spaces += [x + '+xy' for x in COLOR_SPACES.keys()]
+                elif method == 'hierarchical':
+                    img = cv2.resize(img, (w // 2, h // 2),
+                                     interpolation=cv2.INTER_AREA)
+                for space in spaces:
+                    seg, cnt = segment_by_clustering(img, space,
+                                                     method, num_seg)
+                    score = 1 - abs_diff(cnt, level['boundaries'])
+                    print("%s: %s, %s, %d: %g %" %
+                          (im_path, method, space, level, score * 100))
