@@ -1,4 +1,4 @@
-# !/usr/bin/env python
+#! /usr/bin/env python
 
 import cv2
 import glob
@@ -92,9 +92,9 @@ def evaluate_images(path):
             print("Number of segmentations: %d" % (num_seg))
             for method in CLUSTERING_METHODS:
                 print("Evaluating: %s" % (method))
-                spaces = COLOR_SPACES.keys()
+                spaces = list(COLOR_SPACES.keys())
                 if method != 'watershed':
-                    spaces += [x + '+xy' for x in list(COLOR_SPACES.keys())]
+                    spaces += [x + '+xy' for x in COLOR_SPACES.keys()]
                 elif method == 'hierarchical':
                     img = cv2.resize(img, (w // 2, h // 2),
                                      interpolation=cv2.INTER_AREA)
