@@ -47,8 +47,9 @@ def find_contours(func):
             contours = (seg == -1)
         else:
             contours = cv2.Canny(np.uint8(seg), np.min(seg), np.max(seg)) / 255
-        if method == 'hierarchical':
-            contours = cv2.resize(contours, (w, h))
+            if method == 'hierarchical':
+                contours = cv2.resize(contours, (w, h))
+                seg = cv2.resize(seg, (w, h))
         return seg, contours
     return threshold_image
 
