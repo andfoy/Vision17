@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex superpixels"] 1489722423 "superpixels.aux" "superpixels.bbl" "superpixels" 1489722424
+["bibtex superpixels"] 1489726805 "superpixels.aux" "superpixels.bbl" "superpixels" 1489726806
   "./ieee.bst" 1411459028 19623 f9cd22458ca68af2567100f1aed905e8 ""
   "egbib.bib" 1489712390 2858 7497b8e0f84e9e42ed4ab952e00f43c7 ""
-  "superpixels.aux" 1489722423 1642 1315b922cb077755273e66ad5c659ee7 ""
+  "superpixels.aux" 1489726805 1666 0b220d9b5547d6ddf25c2b42a6bdfac8 ""
   "superpixels.bcf" 0 -1 0 ""
   (generated)
-  "superpixels.bbl"
   "superpixels.blg"
-["pdflatex"] 1489722423 "superpixels.tex" "superpixels.pdf" "superpixels" 1489722424
+  "superpixels.bbl"
+["pdflatex"] 1489726805 "superpixels.tex" "superpixels.pdf" "superpixels" 1489726806
   "/dev/null" 1489703843 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/etc/texmf/web2c/texmf.cnf" 1487479574 1101 af7716885e081ab43982cab7b4672c1a ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -178,12 +178,12 @@
   "cvpr_eso.sty" 1411459028 3878 6aa7c08ff2621006e0603349e40a30a8 ""
   "eso-pic.sty" 1411459028 9460 d2935ae95b5cd343fcf5887ff530288d ""
   "superpixels.aex" 0 -1 0 ""
-  "superpixels.aux" 1489722423 1642 1315b922cb077755273e66ad5c659ee7 ""
-  "superpixels.bbl" 1489722423 946 ce48d928c58f5bbafa6fa39f343849de "bibtex superpixels"
-  "superpixels.tex" 1489722420 28087 53741daf191b8fc791377afd8a9efd3d ""
+  "superpixels.aux" 1489726805 1666 0b220d9b5547d6ddf25c2b42a6bdfac8 ""
+  "superpixels.bbl" 1489726805 946 ce48d928c58f5bbafa6fa39f343849de "bibtex superpixels"
+  "superpixels.tex" 1489726787 31391 e75982d94e73f9585217110ec5a03e1b ""
   "superpixels.w18" 0 -1 0 ""
   "widetext.sty" 1489718101 2470 c4e2e9568ebc3de679b694000035f0db ""
   (generated)
+  "superpixels.aux"
   "superpixels.log"
   "superpixels.pdf"
-  "superpixels.aux"
