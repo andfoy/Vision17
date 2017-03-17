@@ -1,0 +1,27 @@
+\begin{thebibliography}{1}\itemsep=-1pt
+
+\bibitem{Bachem:2016:AKS:3016100.3016103}
+O.~Bachem, M.~Lucic, S.~H. Hassani, and A.~Krause.
+\newblock Approximate k-means++ in sublinear time.
+\newblock In {\em Proceedings of the Thirtieth AAAI Conference on Artificial
+  Intelligence}, AAAI'16, pages 1459--1467. AAAI Press, 2016.
+
+\bibitem{Beucher1994}
+S.~Beucher.
+\newblock {\em Watershed, Hierarchical Segmentation and Waterfall Algorithm},
+  pages 69--76.
+\newblock Springer Netherlands, Dordrecht, 1994.
+
+\bibitem{1000236}
+D.~Comaniciu and P.~Meer.
+\newblock Mean shift: a robust approach toward feature space analysis.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  24(5):603--619, May 2002.
+
+\bibitem{868688}
+J.~Shi and J.~Malik.
+\newblock Normalized cuts and image segmentation.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  22(8):888--905, Aug 2000.
+
+\end{thebibliography}

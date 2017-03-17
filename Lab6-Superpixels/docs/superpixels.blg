@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2016/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: superpixels.aux
+The style file: ieee.bst
+Database file #1: egbib.bib
+Warning--can't use both author and editor fields in Beucher1994
+You've used 4 entries,
+            2120 wiz_defined-function locations,
+            533 strings with 4484 characters,
+and the built_in function-call counts, 1614 in all, are:
+= -- 165
+> -- 56
+< -- 2
++ -- 22
+- -- 18
+* -- 115
+:= -- 250
+add.period$ -- 13
+call.type$ -- 4
+change.case$ -- 20
+chr.to.int$ -- 0
+cite$ -- 5
+duplicate$ -- 67
+empty$ -- 134
+format.name$ -- 18
+if$ -- 356
+int.to.chr$ -- 0
+int.to.str$ -- 4
+missing$ -- 5
+newline$ -- 23
+num.names$ -- 8
+pop$ -- 20
+preamble$ -- 1
+purify$ -- 17
+quote$ -- 0
+skip$ -- 54
+stack$ -- 0
+substring$ -- 126
+swap$ -- 24
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 14
+warning$ -- 1
+while$ -- 16
+width$ -- 5
+write$ -- 49
+(There was 1 warning)
