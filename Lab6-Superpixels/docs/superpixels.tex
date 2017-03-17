@@ -110,7 +110,7 @@ Universidad de los Andes\\
 
 %%%%%%%%% ABSTRACT
 \begin{abstract}
-Uns
+Unsupervised clustering methods allow not just only to cluster general information, they also can be used to produce a region segmentation of an input image, this approach allowed researchers to propose different procedures and pipelines to segment an image, from grouping pixels into superpixels, to evaluate its results on tasks of segmentation against evaluation methodologies, databases and benchmarks, such as the Berkeley Segmentation Dataset and Benchmark (BSDS500). The present report pretends to evaluate these methods against the latter tasks over a proposed cuantitative evaluation framework.
 \end{abstract}
 
 %Segmentation represents one of the core Computer Vision tasks in scientfic and academic research since the 1970s, this problem is defined as the grouping of pixels on a image according to several semantic categories of interest. Until recently, this problem was approached by using pixel-level mathematical formulations based on classical image processing and DSP, without any association with other Computer Vision problems nor any AI-related task, such as NLP. However, after the rise of
@@ -197,386 +197,93 @@ To evaluate unsupervised methods applied to image segmentation, it was necessary
 Acc &= 1 - \frac{||y - \hat{y}||}{||y + \hat{y}||} \label{eq:acc}
 \end{alignat}
 
-This evaluation method presents several shortcomings related to the comparison estimate between  
-
- However, the color information alone is not enough to get a reasonable segmentation image because this method tends to group distant regions that present a similar color value on any space, this result may be relevant for other applications such as image compression but in the context of image segmentation this may degrade the performance of the method, to account for this limitations, it is possible to include the spatial coordinates to each input vector, however, this causes the appeareance of spherical localized regions, which implies that the final result of the segmentation is close to a Voronoi pattern.   
+This evaluation method presents several shortcomings related to the comparison estimate between the ground truth contour map and the boundaries obtained via unsupervised segmentation, it may possible that the boundaries differ by a margin of one to four pixels, depending on the process of thresholding employed. This means that a segmentation result that is identical to the ground truth but presents a margin may have a large absolute difference, and by consequence, a low score. Another shortcoming of the evaluation criteria is related to the bounds of the result boundaries and the real borders, both must be on the same scale, to preserve the limit bounds of the mean absolute difference term and allow the accuracy to be calculated as a percentage.  
+\\
+\\
+ With respect to K-Means (Figure~\ref{Fig:kmeans1}), it is possible to conclude that without spatial information, this is prone to group distant regions that present a similar color value on any space, this result may be relevant for other applications such as image compression but in the context of image segmentation this may degrade the performance of the method, which means that relying only on color information alone is not enough to ger a reasonable segmentation result. To account for this limitations, it is possible to include the spati nal coordinates to each input vector, however, this causes the appeareance of spherical localized regions, which implies that the final result of the segmentation is close to a Voronoi pattern, as it is shown on Figure~\ref{Fig:kmeans2}. Similar results were obtained when applying this method on other colorspaces with spatial information, convex clusters tend to form around the mean points, however, when color information is used alone, small details related to the boundaries and other interior regions go largely unnoticed. However, the importance of using different colorspaces radicates on the element composition of the image, if the image depends on color details, then it is possible to represent it through the LAB channels, whereas if the image depends on shades of the same color, then the HSV representation is more suitable. Due to the introduction of possible random regions and noise by effects of the convex region boundaries, the overall accuracy of the K-Means method was about 10\% (Subject to spatial information)
+ \\
+ \\
+ During the evaluation process, the colormap did not impact on the accuracy results more than the introduction of spatial features to the models, for instance, the GMM model sensitivity to form skewed   and short distributions caused the interweaving of different segmentation regions on the image (Figure~\ref{Fig:gmm1}), result that introduced noise at the moment to threshold the segmentation and caused a low performance of the method (4.15\% Overall). However, with the introduction of spatial features, as can be seen on Figure~\ref{Fig:gmm2}, the interweaving noise was reduced, however, the performance score only increased to 5.2\%, which implies that noise persists.
+ \\
+ \\
+ With respect to other factors that may affect the overall performance of each method, it was possible to conclude that downsampling an image to a lower dimension increases the loss of information, which degrades the quality of the segmentation, and by direct consequence, the boundary detection is noisy when the result is upsampled to the original size. For instance, this was a limitation found while evaluating the Hierarchic segmentation method, due to the image resize, the quality of the segmentations was poor and the process took a significant time (\~ 5min per color representation), which doesn't improve the process, although more resources are used. The hierarchic segmentation proved to be inefficient due to the expensive cost of the Ward's linkage calculation done over all the values of the image, which cost $\mathcal{O}((mn)^2)$ per level merged. Also the degradation of the image signal by downsampling impacts the final result, due to the noise introduction to the image by effects of interpolation. This method obtained an Overall score of 4\%
+ \\
+ \\
+ Finally, the limitations associated to Watershed transformation of an image are related to the number of regions detected by using the h-minima approach, which caused to important regions to disappear when the total number of regions desired is too low, that implies that the process of finding h-regional minima favours to select those minima found on contours well defined, which are found in small regions, however, if the total number of regions increases, the watershed procedure produces well defined contours and regions that are proximate to the ground truth, also this method is less expensive to calculate than the clustering family of segmentation procedures, however, the dependence on the choice of markers represent one of the major shortcomings of this method. As it can be shown on Figure~\ref{Fig:water1}, the total number of regions allows to propose well defined regions and contours, however, decreasing the total number of desired regions removes the principal regions to discriminate, thus degrading the performance of the method (Figure~\ref{Fig:water2}), which in turn implies a total performance of 2\% Overall.  
+ \\
+ \\
+After applying this methodology to the image set, it is possible to appreciate that the method that presents the best accuracy corresponds to K-Means, by the reasons previously exposed.
 
 \section{Conclusions}
- 
+To segment an image by only using Unsupervised Methods represents a challenge due to the low control over the convergence and results of the procedure, which allows other factors such as the richness and completeness of the input data representation (Colorspace and spatial information) to influence the final result more than the model parameters. Overall, the family of unsupervised methods are versatile to form expressive groups and superpixels from ground data, however at the moment to being compared with human segmentations, there is a large gap, due to the heuristic character of the processes. However, it is possible to evaluate the fitness of these models to solve the segmentation problem under an well-defined evaluation methodology, which allows to propose cuantitative conclusions from the data. 
 
-%-------------------------------------------------------------------------
-%\subsection{Language}
-%
-%All manuscripts must be in English.
-%
-%\subsection{Dual submission}
-%
-%Please refer to the author guidelines on the CVPR 2017 web page for a
-%discussion of the policy on dual submissions.
-%
-%\subsection{Paper length}
-%Papers, excluding the references section,
-%must be no longer than eight pages in length. The references section
-%will not be included in the page count, and there is no limit on the
-%length of the references section. For example, a paper of eight pages
-%with two pages of references would have a total length of 10 pages.
-%{\bf There will be no extra page charges for
-%  CVPR 2017.}
-%
-%Overlength papers will simply not be reviewed.  This includes papers
-%where the margins and formatting are deemed to have been significantly
-%altered from those laid down by this style guide.  Note that this
-%\LaTeX\ guide already sets figure captions and references in a smaller font.
-%The reason such papers will not be reviewed is that there is no provision for
-%supervised revisions of manuscripts.  The reviewing process cannot determine
-%the suitability of the paper for presentation in eight pages if it is
-%reviewed in eleven.  
-%
-%%-------------------------------------------------------------------------
-%\subsection{The ruler}
-%The \LaTeX\ style defines a printed ruler which should be present in the
-%version submitted for review.  The ruler is provided in order that
-%reviewers may comment on particular lines in the paper without
-%circumlocution.  If you are preparing a document using a non-\LaTeX\
-%document preparation system, please arrange for an equivalent ruler to
-%appear on the final output pages.  The presence or absence of the ruler
-%should not change the appearance of any other content on the page.  The
-%camera ready copy should not contain a ruler. (\LaTeX\ users may uncomment
-%the \verb'\cvprfinalcopy' command in the document preamble.)  Reviewers:
-%note that the ruler measurements do not align well with lines in the paper
-%--- this turns out to be very difficult to do well when the paper contains
-%many figures and equations, and, when done, looks ugly.  Just use fractional
-%references (e.g.\ this line is $095.5$), although in most cases one would
-%expect that the approximate location will be adequate.
-%
-%\subsection{Mathematics}
-%
-%Please number all of your sections and displayed equations.  It is
-%important for readers to be able to refer to any particular equation.  Just
-%because you didn't refer to it in the text doesn't mean some future reader
-%might not need to refer to it.  It is cumbersome to have to use
-%circumlocutions like ``the equation second from the top of page 3 column
-%1''.  (Note that the ruler will not be present in the final copy, so is not
-%an alternative to equation numbers).  All authors will benefit from reading
-%Mermin's description of how to write mathematics:
-%\url{http://www.pamitc.org/documents/mermin.pdf}.
-%
-%
-%\subsection{Blind review}
-%
-%Many authors misunderstand the concept of anonymizing for blind
-%review.  Blind review does not mean that one must remove
-%citations to one's own work---in fact it is often impossible to
-%review a paper unless the previous citations are known and
-%available.
-%
-%Blind review means that you do not use the words ``my'' or ``our''
-%when citing previous work.  That is all.  (But see below for
-%techreports.)
-%
-%Saying ``this builds on the work of Lucy Smith [1]'' does not say
-%that you are Lucy Smith; it says that you are building on her
-%work.  If you are Smith and Jones, do not say ``as we show in
-%[7]'', say ``as Smith and Jones show in [7]'' and at the end of the
-%paper, include reference 7 as you would any other cited work.
-%
-%An example of a bad paper just asking to be rejected:
-%\begin{quote}
-%\begin{center}
-%    An analysis of the frobnicatable foo filter.
-%\end{center}
-%
-%   In this paper we present a performance analysis of our
-%   previous paper [1], and show it to be inferior to all
-%   previously known methods.  Why the previous paper was
-%   accepted without this analysis is beyond me.
-%
-%   [1] Removed for blind review
-%\end{quote}
-%
-%
-%An example of an acceptable paper:
-%
-%\begin{quote}
-%\begin{center}
-%     An analysis of the frobnicatable foo filter.
-%\end{center}
-%
-%   In this paper we present a performance analysis of the
-%   paper of Smith \etal [1], and show it to be inferior to
-%   all previously known methods.  Why the previous paper
-%   was accepted without this analysis is beyond me.
-%
-%   [1] Smith, L and Jones, C. ``The frobnicatable foo
-%   filter, a fundamental contribution to human knowledge''.
-%   Nature 381(12), 1-213.
-%\end{quote}
-%
-%If you are making a submission to another conference at the same time,
-%which covers similar or overlapping material, you may need to refer to that
-%submission in order to explain the differences, just as you would if you
-%had previously published related work.  In such cases, include the
-%anonymized parallel submission~\cite{Authors14} as additional material and
-%cite it as
-%\begin{quote}
-%[1] Authors. ``The frobnicatable foo filter'', F\&G 2014 Submission ID 324,
-%Supplied as additional material {\tt fg324.pdf}.
-%\end{quote}
-%
-%Finally, you may feel you need to tell the reader that more details can be
-%found elsewhere, and refer them to a technical report.  For conference
-%submissions, the paper must stand on its own, and not {\em require} the
-%reviewer to go to a techreport for further details.  Thus, you may say in
-%the body of the paper ``further details may be found
-%in~\cite{Authors14b}''.  Then submit the techreport as additional material.
-%Again, you may not assume the reviewers will read this material. 
-%
-%Sometimes your paper is about a problem which you tested using a tool which
-%is widely known to be restricted to a single institution.  For example,
-%let's say it's 1969, you have solved a key problem on the Apollo lander,
-%and you believe that the CVPR70 audience would like to hear about your
-%solution.  The work is a development of your celebrated 1968 paper entitled
-%``Zero-g frobnication: How being the only people in the world with access to
-%the Apollo lander source code makes us a wow at parties'', by Zeus \etal.
-%
-%You can handle this paper like any other.  Don't write ``We show how to
-%improve our previous work [Anonymous, 1968].  This time we tested the
-%algorithm on a lunar lander [name of lander removed for blind review]''.
-%That would be silly, and would immediately identify the authors. Instead
-%write the following:
-%\begin{quotation}
-%\noindent
-%   We describe a system for zero-g frobnication.  This
-%   system is new because it handles the following cases:
-%   A, B.  Previous systems [Zeus et al. 1968] didn't
-%   handle case B properly.  Ours handles it by including
-%   a foo term in the bar integral.
-%
-%   ...
-%
-%   The proposed system was integrated with the Apollo
-%   lunar lander, and went all the way to the moon, don't
-%   you know.  It displayed the following behaviours
-%   which show how well we solved cases A and B: ...
-%\end{quotation}
-%As you can see, the above text follows standard scientific convention,
-%reads better than the first version, and does not explicitly name you as
-%the authors.  A reviewer might think it likely that the new paper was
-%written by Zeus \etal, but cannot make any decision based on that guess.
-%He or she would have to be sure that no other authors could have been
-%contracted to solve problem B.
-%
-%FAQ: Are acknowledgements OK?  No.  Leave them for the final copy.
-%
-%
-%\begin{figure}[t]
-%\begin{center}
-%\fbox{\rule{0pt}{2in} \rule{0.9\linewidth}{0pt}}
-%   %\includegraphics[width=0.8\linewidth]{egfigure.eps}
-%\end{center}
-%   \caption{Example of caption.  It is set in Roman so that mathematics
-%   (always set in Roman: $B \sin A = A \sin B$) may be included without an
-%   ugly clash.}
-%\label{fig:long}
-%\label{fig:onecol}
-%\end{figure}
-%
-%\subsection{Miscellaneous}
-%
-%\noindent
-%Compare the following:\\
-%\begin{tabular}{ll}
-% \verb'$conf_a$' &  $conf_a$ \\
-% \verb'$\mathit{conf}_a$' & $\mathit{conf}_a$
-%\end{tabular}\\
-%See The \TeX book, p165.
-%
-%The space after \eg, meaning ``for example'', should not be a
-%sentence-ending space. So \eg is correct, {\em e.g.} is not.  The provided
-%\verb'\eg' macro takes care of this.
-%
-%When citing a multi-author paper, you may save space by using ``et alia'',
-%shortened to ``\etal'' (not ``{\em et.\ al.}'' as ``{\em et}'' is a complete word.)
-%However, use it only when there are three or more authors.  Thus, the
-%following is correct: ``
-%   Frobnication has been trendy lately.
-%   It was introduced by Alpher~\cite{Alpher02}, and subsequently developed by
-%   Alpher and Fotheringham-Smythe~\cite{Alpher03}, and Alpher \etal~\cite{Alpher04}.''
-%
-%This is incorrect: ``... subsequently developed by Alpher \etal~\cite{Alpher03} ...''
-%because reference~\cite{Alpher03} has just two authors.  If you use the
-%\verb'\etal' macro provided, then you need not worry about double periods
-%when used at the end of a sentence as in Alpher \etal.
-%
-%For this citation style, keep multiple citations in numerical (not
-%chronological) order, so prefer \cite{Alpher03,Alpher02,Authors14} to
-%\cite{Alpher02,Alpher03,Authors14}.
-%
-%
-%\begin{figure*}
-%\begin{center}
-%\fbox{\rule{0pt}{2in} \rule{.9\linewidth}{0pt}}
-%\end{center}
-%   \caption{Example of a short caption, which should be centered.}
-%\label{fig:short}
-%\end{figure*}
-%
-%%------------------------------------------------------------------------
-%\section{Formatting your paper}
-%
-%All text must be in a two-column format. The total allowable width of the
-%text area is $6\frac78$ inches (17.5 cm) wide by $8\frac78$ inches (22.54
-%cm) high. Columns are to be $3\frac14$ inches (8.25 cm) wide, with a
-%$\frac{5}{16}$ inch (0.8 cm) space between them. The main title (on the
-%first page) should begin 1.0 inch (2.54 cm) from the top edge of the
-%page. The second and following pages should begin 1.0 inch (2.54 cm) from
-%the top edge. On all pages, the bottom margin should be 1-1/8 inches (2.86
-%cm) from the bottom edge of the page for $8.5 \times 11$-inch paper; for A4
-%paper, approximately 1-5/8 inches (4.13 cm) from the bottom edge of the
-%page.
-%
-%%-------------------------------------------------------------------------
-%\subsection{Margins and page numbering}
-%
-%All printed material, including text, illustrations, and charts, must be kept
-%within a print area 6-7/8 inches (17.5 cm) wide by 8-7/8 inches (22.54 cm)
-%high.
-%Page numbers should be in footer with page numbers, centered and .75
-%inches from the bottom of the page and make it start at the correct page
-%number rather than the 4321 in the example.  To do this fine the line (around
-%line 23)
-%\begin{verbatim}
-%%\ifcvprfinal\pagestyle{empty}\fi
-%\setcounter{page}{4321}
-%\end{verbatim}
-%where the number 4321 is your assigned starting page.
-%
-%Make sure the first page is numbered by commenting out the first page being
-%empty on line 46
-%\begin{verbatim}
-%%\thispagestyle{empty}
-%\end{verbatim}
-%
-%
-%%-------------------------------------------------------------------------
-%\subsection{Type-style and fonts}
-%
-%Wherever Times is specified, Times Roman may also be used. If neither is
-%available on your word processor, please use the font closest in
-%appearance to Times to which you have access.
-%
-%MAIN TITLE. Center the title 1-3/8 inches (3.49 cm) from the top edge of
-%the first page. The title should be in Times 14-point, boldface type.
-%Capitalize the first letter of nouns, pronouns, verbs, adjectives, and
-%adverbs; do not capitalize articles, coordinate conjunctions, or
-%prepositions (unless the title begins with such a word). Leave two blank
-%lines after the title.
-%
-%AUTHOR NAME(s) and AFFILIATION(s) are to be centered beneath the title
-%and printed in Times 12-point, non-boldface type. This information is to
-%be followed by two blank lines.
-%
-%The ABSTRACT and MAIN TEXT are to be in a two-column format.
-%
-%MAIN TEXT. Type main text in 10-point Times, single-spaced. Do NOT use
-%double-spacing. All paragraphs should be indented 1 pica (approx. 1/6
-%inch or 0.422 cm). Make sure your text is fully justified---that is,
-%flush left and flush right. Please do not place any additional blank
-%lines between paragraphs.
-%
-%Figure and table captions should be 9-point Roman type as in
-%Figures~\ref{fig:onecol} and~\ref{fig:short}.  Short captions should be centred.
-%
-%\noindent Callouts should be 9-point Helvetica, non-boldface type.
-%Initially capitalize only the first word of section titles and first-,
-%second-, and third-order headings.
-%
-%FIRST-ORDER HEADINGS. (For example, {\large \bf 1. Introduction})
-%should be Times 12-point boldface, initially capitalized, flush left,
-%with one blank line before, and one blank line after.
-%
-%SECOND-ORDER HEADINGS. (For example, { \bf 1.1. Database elements})
-%should be Times 11-point boldface, initially capitalized, flush left,
-%with one blank line before, and one after. If you require a third-order
-%heading (we discourage it), use 10-point Times, boldface, initially
-%capitalized, flush left, preceded by one blank line, followed by a period
-%and your text on the same line.
-%
-%%-------------------------------------------------------------------------
-%\subsection{Footnotes}
-%
-%Please use footnotes\footnote {This is what a footnote looks like.  It
-%often distracts the reader from the main flow of the argument.} sparingly.
-%Indeed, try to avoid footnotes altogether and include necessary peripheral
-%observations in
-%the text (within parentheses, if you prefer, as in this sentence).  If you
-%wish to use a footnote, place it at the bottom of the column on the page on
-%which it is referenced. Use Times 8-point type, single-spaced.
-%
-%
-%%-------------------------------------------------------------------------
-%\subsection{References}
-%
-%List and number all bibliographical references in 9-point Times,
-%single-spaced, at the end of your paper. When referenced in the text,
-%enclose the citation number in square brackets, for
-%example~\cite{Authors14}.  Where appropriate, include the name(s) of
-%editors of referenced books.
-%
-%\begin{table}
-%\begin{center}
-%\begin{tabular}{|l|c|}
-%\hline
-%Method & Frobnability \\
-%\hline\hline
-%Theirs & Frumpy \\
-%Yours & Frobbly \\
-%Ours & Makes one's heart Frob\\
-%\hline
-%\end{tabular}
-%\end{center}
-%\caption{Results.   Ours is better.}
-%\end{table}
-%
-%%-------------------------------------------------------------------------
-%\subsection{Illustrations, graphs, and photographs}
-%
-%All graphics should be centered.  Please ensure that any point you wish to
-%make is resolvable in a printed copy of the paper.  Resize fonts in figures
-%to match the font in the body text, and choose line widths which render
-%effectively in print.  Many readers (and reviewers), even of an electronic
-%copy, will choose to print your paper in order to read it.  You cannot
-%insist that they do otherwise, and therefore must not assume that they can
-%zoom in to see tiny details on a graphic.
-%
-%When placing figures in \LaTeX, it's almost always best to use
-%\verb+\includegraphics+, and to specify the  figure width as a multiple of
-%the line width as in the example below
-%{\small\begin{verbatim}
-%   \usepackage[dvips]{graphicx} ...
-%   \includegraphics[width=0.8\linewidth]
-%                   {myfile.eps}
-%\end{verbatim}
-%}
-%
-%
-%%-------------------------------------------------------------------------
-%\subsection{Color}
-%
-%Please refer to the author guidelines on the CVPR 2017 web page for a discussion
-%of the use of color in your document.
-%
-%%------------------------------------------------------------------------
-%\section{Final copy}
-%
-%You must include your signed IEEE copyright release form when you submit
-%your finished paper. We MUST have this form before your paper can be
-%published in the proceedings.
 
 
 {\small
 \bibliographystyle{ieee}
 \bibliography{egbib}
 }
+
+
+\newpage
+\section{Some Results}
+\begin{figure}[H]
+	\centering
+	\epsfig{file=./Assets/24063_k-means_rgb_51.pdf,width=1.0\linewidth,clip=}
+	\caption{Example of K-Means segmentation result subject to 51 regions (No spatial)}
+	\label{Fig:kmeans1}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\epsfig{file=./Assets/24063_k-means_rgb+xy_51.pdf,width=1.0\linewidth,clip=}
+	\caption{Example of K-Means segmentation result subject to 51 regions (Spatial), this figure presents a large number of convex and spherical regions}
+	\label{Fig:kmeans2}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\epsfig{file=./Assets/24063_gmm_rgb_51.pdf,width=1.0\linewidth,clip=}
+	\caption{Example of GMM segmentation result subject to 51 regions (No spatial)}
+	\label{Fig:gmm1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\epsfig{file=./Assets/24063_gmm_rgb+xy_51.pdf,width=1.0\linewidth,clip=}
+	\caption{Example of GMM segmentation result subject to 51 regions (Spatial information added), the noise was reduced}
+	\label{Fig:gmm2}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\epsfig{file=./Assets/24063_hierarchical_hsv_51.pdf,width=1.0\linewidth,clip=}
+	\caption{Example of Hierarchic segmentation result subject to 51 regions (No spatial information added), notice the smooth noise throughout all the regions by interpolation effects}
+	\label{Fig:hier1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\epsfig{file=./Assets/24063_hierarchical_hsv+xy_40.pdf,width=1.0\linewidth,clip=}
+	\caption{Example of Hierarchic segmentation result subject to 40 regions (Spatial information added), notice the smooth noise throughout all the regions by interpolation effects}
+	\label{Fig:hier2}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\epsfig{file=./Assets/24063_watershed_rgb_51.pdf,width=1.0\linewidth,clip=}
+	\caption{Example of H-Minima Watershed segmentation result subject to 51 regions, notice the well defined contours and regions}
+	\label{Fig:water1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\epsfig{file=./Assets/24063_watershed_hsv_16.pdf,width=1.0\linewidth,clip=}
+	\caption{Example of H-Minima Watershed segmentation result subject to 16 regions, notice the disappearance of the main ROI}
+	\label{Fig:water2}
+\end{figure}
+
+
 
 \end{document}
