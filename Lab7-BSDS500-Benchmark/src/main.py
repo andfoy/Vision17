@@ -154,10 +154,11 @@ def eval_validation():
     except OSError:
         pass
     val_path = osp.join('BSR', 'data', 'images', 'val')
+    print(val_path)
     K = [i * 50 for i in range(30, 5000, 100)]
     # spaces = list(COLOR_SPACES.keys())
     # spaces += [space + 'xy' for space in spaces]
-    files = sorted(glob.glob(osp.join(val_path, '*.jpg')))
+    files = sorted(glob.glob(val_path + '*.jpg'))
     for model in ['gmm', 'k-means']:
         bar = progressbar.ProgressBar(redirect_stdout=True)
         model_results = []
@@ -174,7 +175,7 @@ def eval_validation():
                 img_results.append(seg)
             model_results.append(img_results)
         model_results = np.array(model_results)
-        np.save(osp.join(OUTPUT_PATH, 'val', model, '.npy'), model_results)
+        np.save(osp.join(OUTPUT_PATH, 'val', model + '.npy'), model_results)
 
 
 parser = argparse.ArgumentParser(description='Evaluate different clustering '
