@@ -160,15 +160,15 @@ def eval_validation():
     # spaces += [space + 'xy' for space in spaces]
     files = sorted(glob.glob(osp.join(val_path, '*.jpg')))
     for model in ['gmm', 'k-means']:
-        bar = progressbar.ProgressBar(redirect_stdout=True)
         model_results = []
         print("Model: {0}".format(model))
         for file in files:
             img_results = []
+            bar = progressbar.ProgressBar(redirect_stdout=True)
             print("Processing: {0}".format(file))
             img = mpimg.imread(file)
             space = 'lab+xy'
-            for k in K:
+            for k in bar(K):
                 print("K = {0}".format(k))
                 seg, _ = segment_by_clustering(img, space,
                                                model, k)
