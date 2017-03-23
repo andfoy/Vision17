@@ -155,7 +155,7 @@ def eval_validation():
         pass
     val_path = osp.join('BSR', 'BSDS500', 'data', 'images', 'val')
     print(val_path)
-    K = [i * 50 for i in range(30, 5000, 100)]
+    # K = [i * 50 for i in range(30, 5000, 500)]
     # spaces = list(COLOR_SPACES.keys())
     # spaces += [space + 'xy' for space in spaces]
     files = sorted(glob.glob(osp.join(val_path, '*.jpg')))
@@ -168,7 +168,7 @@ def eval_validation():
             print("Processing: {0}".format(file))
             img = mpimg.imread(file)
             space = 'lab+xy'
-            for k in K:
+            for k in range(30, 5000, 500):
                 print("K = {0}".format(k))
                 seg, _ = segment_by_clustering(img, space,
                                                model, k)
