@@ -95,3 +95,4 @@ ENV/
 
 *.zip
 Lab5-features/src/data/*
+Lab7-BSDS500-Benchmark/src/BSR
