@@ -158,7 +158,7 @@ def eval_validation():
     K = [i * 50 for i in range(30, 5000, 100)]
     # spaces = list(COLOR_SPACES.keys())
     # spaces += [space + 'xy' for space in spaces]
-    files = sorted(glob.glob(val_path + '*.jpg'))
+    files = sorted(glob.glob(osp.join(val_path, '*.jpg')))
     for model in ['gmm', 'k-means']:
         bar = progressbar.ProgressBar(redirect_stdout=True)
         model_results = []
