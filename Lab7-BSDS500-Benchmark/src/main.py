@@ -163,7 +163,7 @@ def eval_validation():
         bar = progressbar.ProgressBar(redirect_stdout=True)
         model_results = []
         print("Model: {0}".format(model))
-        for file in bar(files):
+        for file in files:
             img_results = []
             print("Processing: {0}".format(file))
             img = mpimg.imread(file)
