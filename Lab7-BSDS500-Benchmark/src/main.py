@@ -1,11 +1,13 @@
 #! /usr/bin/env python
 
+import os
 import cv2
 import glob
 import utils
 import argparse
 import functools
 import numpy as np
+import progressbar
 import os.path as osp
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
@@ -146,6 +148,35 @@ def evaluate_images(path):
     out_file.close()
 
 
+def eval_validation():
+    try:
+        os.mkdir(osp.join(OUTPUT_PATH, 'val'))
+    except OSError:
+        pass
+    val_path = osp.join('BSR', 'data', 'images', 'val')
+    K = [i * 50 for i in range(30, 5000, 100)]
+    # spaces = list(COLOR_SPACES.keys())
+    # spaces += [space + 'xy' for space in spaces]
+    files = sorted(glob.glob(osp.join(val_path, '*.jpg')))
+    for model in ['gmm', 'k-means']:
+        bar = progressbar.ProgressBar(redirect_stdout=True)
+        model_results = []
+        print("Model: {0}".format(model))
+        for file in bar(files):
+            img_results = []
+            print("Processing: {0}".format(file))
+            img = mpimg.imread(file)
+            space = 'lab+xy'
+            for k in K:
+                print("K = {0}".format(k))
+                seg, _ = segment_by_clustering(img, space,
+                                               model, k)
+                img_results.append(seg)
+            model_results.append(img_results)
+        model_results = np.array(model_results)
+        np.save(osp.join(OUTPUT_PATH, 'val', model, '.npy'), model_results)
+
+
 parser = argparse.ArgumentParser(description='Evaluate different clustering '
                                  'methods on image segmentation tasks.')
 
@@ -153,6 +184,7 @@ parser.add_argument('path', metavar='path',
                     help='Path that contains input data and mask files')
 
 if __name__ == '__main__':
-    args = parser.parse_args()
-    path = args.path
-    evaluate_images(path)
+    eval_validation()
+    # args = parser.parse_args()
+    # path = args.path
+    # evaluate_images(path)

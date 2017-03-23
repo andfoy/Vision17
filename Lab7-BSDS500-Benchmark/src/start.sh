@@ -2,6 +2,7 @@
 
 DATA="http://157.253.63.7/BSDS500FastBench.tar.gz"
 OUT_PATH="BSR"
+RESULTS="results"
 FILE="BSDS500FastBench.tar.gz"
 
 printf "Checking if dataset has been already downloaded...\n"
@@ -13,6 +14,11 @@ if [ ! -d $OUT_PATH ]; then
     tar -xvzf $FILE
     rm $FILE
     # cd ..
+    python process.py
 fi
 
-python process.py
+if [ ! -d $RESULTS ]; then
+    mkdir $RESULTS 2>/dev/null
+fi
+
+python setup.py build_ext -i
