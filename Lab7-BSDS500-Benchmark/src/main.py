@@ -153,7 +153,7 @@ def eval_validation():
         os.mkdir(osp.join(OUTPUT_PATH, 'val'))
     except OSError:
         pass
-    val_path = osp.join('BSR', 'data', 'images', 'val')
+    val_path = osp.join('BSR', 'BSDS500', 'data', 'images', 'val')
     print(val_path)
     K = [i * 50 for i in range(30, 5000, 100)]
     # spaces = list(COLOR_SPACES.keys())
