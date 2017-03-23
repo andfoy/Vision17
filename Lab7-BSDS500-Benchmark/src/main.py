@@ -164,11 +164,11 @@ def eval_validation():
         print("Model: {0}".format(model))
         for file in files:
             img_results = []
-            bar = progressbar.ProgressBar(redirect_stdout=True)
+            # bar = progressbar.ProgressBar(redirect_stdout=True)
             print("Processing: {0}".format(file))
             img = mpimg.imread(file)
             space = 'lab+xy'
-            for k in bar(K):
+            for k in K:
                 print("K = {0}".format(k))
                 seg, _ = segment_by_clustering(img, space,
                                                model, k)
