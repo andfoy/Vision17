@@ -168,7 +168,7 @@ def eval_validation():
             print("Processing: {0}".format(file))
             img = mpimg.imread(file)
             space = 'lab+xy'
-            for k in range(30, 5000, 500):
+            for k in range(10, 50, 10):
                 print("K = {0}".format(k))
                 seg, _ = segment_by_clustering(img, space,
                                                model, k)
