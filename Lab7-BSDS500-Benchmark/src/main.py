@@ -168,14 +168,17 @@ def eval_validation():
             print("Processing: {0}".format(file))
             img = mpimg.imread(file)
             space = 'lab+xy'
-            for k in range(10, 50, 10):
+            # K = range(10, 50, 10)
+            K = [10, 500]
+            for k in K:
                 print("K = {0}".format(k))
                 seg, _ = segment_by_clustering(img, space,
                                                model, k)
                 img_results.append(seg)
             model_results.append(img_results)
         model_results = np.array(model_results)
-        np.save(osp.join(OUTPUT_PATH, 'val', model + '.npy'), model_results)
+        np.savez(osp.join(OUTPUT_PATH, 'val', model + '.npz'),
+                 segs=model_results)
 
 
 parser = argparse.ArgumentParser(description='Evaluate different clustering '
