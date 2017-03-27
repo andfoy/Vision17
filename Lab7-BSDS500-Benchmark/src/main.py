@@ -7,8 +7,8 @@ import utils
 import argparse
 import functools
 import numpy as np
-import progressbar
 import os.path as osp
+import scipy.io as sio
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
@@ -159,9 +159,13 @@ def eval_validation():
     # spaces = list(COLOR_SPACES.keys())
     # spaces += [space + 'xy' for space in spaces]
     files = sorted(glob.glob(osp.join(val_path, '*.jpg')))
-    for model in ['gmm', 'k-means']:
-        model_results = []
+    for model in ['watershed']:
+        # model_results = []
         print("Model: {0}".format(model))
+        try:
+            os.mkdir(osp.join(OUTPUT_PATH, 'val', model))
+        except OSError:
+            pass
         for file in files:
             img_results = []
             # bar = progressbar.ProgressBar(redirect_stdout=True)
@@ -169,16 +173,22 @@ def eval_validation():
             img = mpimg.imread(file)
             space = 'lab+xy'
             # K = range(10, 50, 10)
-            K = [10, 500]
+            K = [200, 500, 1000, 2000]
             for k in K:
                 print("K = {0}".format(k))
-                seg, _ = segment_by_clustering(img, space,
-                                               model, k)
-                img_results.append(seg)
-            model_results.append(img_results)
-        model_results = np.array(model_results)
-        np.savez(osp.join(OUTPUT_PATH, 'val', model + '.npz'),
-                 segs=model_results)
+                try:
+                    seg, _ = segment_by_clustering(img, space,
+                                                   model, k)
+                    img_results.append(seg)
+                except Exception:
+                    pass
+            filename, _ = osp.splitext(osp.basename(file))
+            sio.savemat('{0}.mat'.format(filename), {'segs': img_results})
+
+            # model_results.append(img_results)
+        # model_results = np.array(model_results)
+        # np.savez(osp.join(OUTPUT_PATH, 'val', model + '.npz'),
+        # segs=model_results)
 
 
 parser = argparse.ArgumentParser(description='Evaluate different clustering '

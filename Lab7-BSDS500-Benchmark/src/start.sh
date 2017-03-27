@@ -14,7 +14,7 @@ if [ ! -d $OUT_PATH ]; then
     tar -xvzf $FILE
     rm $FILE
     # cd ..
-    python process.py
+    # python process.py
 fi
 
 if [ ! -d $RESULTS ]; then
