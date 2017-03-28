@@ -183,12 +183,47 @@ def eval_validation():
                 except Exception:
                     pass
             filename, _ = osp.splitext(osp.basename(file))
-            sio.savemat('{0}.mat'.format(filename), {'segs': img_results})
+            path = osp.join(osp.dirname(file), '{0}.mat'.format(filename))
+            sio.savemat(path, {'segs': img_results})
 
-            # model_results.append(img_results)
-        # model_results = np.array(model_results)
-        # np.savez(osp.join(OUTPUT_PATH, 'val', model + '.npz'),
-        # segs=model_results)
+
+def eval_images(img_set):
+    try:
+        os.mkdir(osp.join(OUTPUT_PATH, img_set))
+    except OSError:
+        pass
+    val_path = osp.join('BSR', 'BSDS500', 'data', 'images', img_set)
+    print(val_path)
+    # K = [i * 50 for i in range(30, 5000, 500)]
+    # spaces = list(COLOR_SPACES.keys())
+    # spaces += [space + 'xy' for space in spaces]
+    files = sorted(glob.glob(osp.join(val_path, '*.jpg')))
+    for model in ['k-means']:
+        # model_results = []
+        print("Model: {0}".format(model))
+        try:
+            os.mkdir(osp.join(OUTPUT_PATH, img_set, model))
+        except OSError:
+            pass
+        for file in files:
+            img_results = []
+            # bar = progressbar.ProgressBar(redirect_stdout=True)
+            print("Processing: {0}".format(file))
+            img = mpimg.imread(file)
+            space = 'lab+xy'
+            # K = range(10, 50, 10)
+            K = [5, 10, 20, 100, 200]
+            for k in K:
+                print("K = {0}".format(k))
+                try:
+                    seg, _ = segment_by_clustering(img, space,
+                                                   model, k)
+                    img_results.append(seg)
+                except Exception:
+                    pass
+            filename, _ = osp.splitext(osp.basename(file))
+            path = osp.join(osp.dirname(file), '{0}.mat'.format(filename))
+            sio.savemat(path, {'segs': img_results})
 
 
 parser = argparse.ArgumentParser(description='Evaluate different clustering '
@@ -198,7 +233,8 @@ parser.add_argument('path', metavar='path',
                     help='Path that contains input data and mask files')
 
 if __name__ == '__main__':
-    eval_validation()
+    # eval_validation()
+    eval_images('train')
     # args = parser.parse_args()
     # path = args.path
     # evaluate_images(path)
