@@ -201,8 +201,9 @@ def eval_images(img_set):
     for model in ['k-means']:
         # model_results = []
         print("Model: {0}".format(model))
+        out_path = osp.join(OUTPUT_PATH, img_set, model)
         try:
-            os.mkdir(osp.join(OUTPUT_PATH, img_set, model))
+            os.mkdir(out_path)
         except OSError:
             pass
         for file in files:
@@ -222,7 +223,7 @@ def eval_images(img_set):
                 except Exception:
                     pass
             filename, _ = osp.splitext(osp.basename(file))
-            path = osp.join(osp.dirname(file), '{0}.mat'.format(filename))
+            path = osp.join(out_path, '{0}.mat'.format(filename))
             sio.savemat(path, {'segs': img_results})
 
 
