@@ -213,7 +213,7 @@ def eval_images(img_set):
             img = mpimg.imread(file)
             space = 'lab+xy'
             # K = range(10, 50, 10)
-            K = [5, 10, 20, 100, 200]
+            K = [5, 10, 20, 50, 100]
             for k in K:
                 print("K = {0}".format(k))
                 try:
