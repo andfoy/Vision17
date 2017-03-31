@@ -1,0 +1,15 @@
+\begin{thebibliography}{1}\itemsep=-1pt
+
+\bibitem{amfm_pami2011}
+P.~Arbelaez, M.~Maire, C.~Fowlkes, and J.~Malik.
+\newblock Contour detection and hierarchical image segmentation.
+\newblock {\em IEEE Trans. Pattern Anal. Mach. Intell.}, 33(5):898--916, May
+  2011.
+
+\bibitem{Bachem:2016:AKS:3016100.3016103}
+O.~Bachem, M.~Lucic, S.~H. Hassani, and A.~Krause.
+\newblock Approximate k-means++ in sublinear time.
+\newblock In {\em Proceedings of the Thirtieth AAAI Conference on Artificial
+  Intelligence}, AAAI'16, pages 1459--1467. AAAI Press, 2016.
+
+\end{thebibliography}
