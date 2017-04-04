@@ -45,3 +45,6 @@ if [ ! -d $IMAGENET_PATH ]; then
     rm $IMAGENET_FILE
     cd ../..
 fi
+
+printf "Installing vlfeat..."
+/usr/local/matlab/bin/matlab -nodisplay -nojvm -nosplash -nodesktop -r "run('$VLFEAT_PATH/toolbox/vl_setup');exit(0);"
