@@ -255,7 +255,7 @@ confus = zeros(length(classes)) ;
 confus = vl_binsum(confus, ones(size(idx)), idx) ;
 
 % Plots
-figure(1) ; clf;
+figure('visible','off') ; clf;
 subplot(1,2,1) ;
 imagesc(scores(:,[selTrain selTest])) ; title('Scores') ;
 set(gca, 'ytick', 1:length(classes), 'yticklabel', classes) ;

@@ -47,4 +47,4 @@ if [ ! -d $IMAGENET_PATH ]; then
 fi
 
 printf "Installing vlfeat..."
-/usr/local/matlab/bin/matlab -nodisplay -nojvm -nosplash -nodesktop -r "run('$VLFEAT_PATH/toolbox/vl_setup');exit(0);"
+/usr/local/matlab/bin/matlab -nodisplay -nojvm -nosplash -nodesktop -r "run('$VLFEAT_PATH/toolbox/vl_setup');run('phow_caltech101()');exit(0);"
