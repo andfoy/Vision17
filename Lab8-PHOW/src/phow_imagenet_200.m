@@ -1,4 +1,4 @@
-function phow_caltech101()
+function phow_imagenet_200()
 % PHOW_CALTECH101 Image classification in the Caltech-101 dataset
 %   This program demonstrates how to use VLFeat to construct an image
 %   classifier on the Caltech-101 data. The classifier uses PHOW
@@ -170,7 +170,7 @@ model.classify = @classify ;
 if ~exist(conf.vocabPath) || conf.clobber
 
   % Get some PHOW descriptors to train the dictionary
-  selTrainFeats = vl_colsubset(selTrain, 30) ;
+  selTrainFeats = vl_colsubset(1:length(selTrain), 30) ;
   descrs = {} ;
   %for ii = 1:length(selTrainFeats)
   parfor ii = 1:length(selTrainFeats)
