@@ -51,6 +51,8 @@ function phow_caltech101()
 % This file is part of the VLFeat library and is made available under
 % the terms of the BSD license (see the COPYING file).
 
+run('vlfeat-0.9.20/toolbox/vl_setup');
+
 conf.calDir = 'data/imagenet' ;
 conf.dataDir = 'data/' ;
 conf.autoDownloadData = true ;
@@ -99,8 +101,8 @@ vl_twister('state',conf.randSeed) ;
 % --------------------------------------------------------------------
 
 if ~exist(conf.calDir, 'dir') || ...
-   (~exist(fullfile(conf.calDir, 'acorn'),'dir') && ...
-    ~exist(fullfile(conf.calDir, 'imageNet200', 'acorn')))
+   (~exist(fullfile(conf.calDir, 'train', 'acorn'),'dir') && ...
+    ~exist(fullfile(conf.calDir, 'imageNet200', 'train', 'acorn')))
   if ~conf.autoDownloadData
     error(...
       ['Imagenet data not found. ' ...
@@ -112,29 +114,44 @@ if ~exist(conf.calDir, 'dir') || ...
   untar(calUrl, conf.calDir) ;
 end
 
-if ~exist(fullfile(conf.calDir, 'acorn'),'dir')
+if ~exist(fullfile(conf.calDir, 'train', 'acorn'),'dir')
   conf.calDir = fullfile(conf.calDir, 'imageNet200') ;
 end
 
 % --------------------------------------------------------------------
 %                                                           Setup data
 % --------------------------------------------------------------------
-classes = dir(conf.calDir) ;
+traindir = fullfile(conf.calDir, 'train');
+testdir = fullfile(conf.calDir, 'test');
+classes = dir(traindir) ;
 classes = classes([classes.isdir]) ;
 classes = {classes(3:conf.numClasses+2).name} ;
 
-images = {} ;
-imageClass = {} ;
+selTrain = {} ;
+trainLabels = {} ;
 for ci = 1:length(classes)
-  ims = dir(fullfile(conf.calDir, classes{ci}, '*.jpg'))' ;
-  ims = vl_colsubset(ims, conf.numTrain + conf.numTest) ;
+  ims = dir(fullfile(traindir, classes{ci}, '*.JPEG'))' ;
+  ims = vl_colsubset(ims, conf.numTrain);
   ims = cellfun(@(x)fullfile(classes{ci},x),{ims.name},'UniformOutput',false) ;
-  images = {images{:}, ims{:}} ;
-  imageClass{end+1} = ci * ones(1,length(ims)) ;
+  selTrain = {selTrain{:}, ims{:}} ;
+  trainLabels{end+1} = ci * ones(1,length(ims)) ;
 end
-selTrain = find(mod(0:length(images)-1, conf.numTrain+conf.numTest) < conf.numTrain) ;
-selTest = setdiff(1:length(images), selTrain) ;
-imageClass = cat(2, imageClass{:}) ;
+% selTrain = find(mod(0:length(images)-1, conf.numTrain) < conf.numTrain) ;
+% selTest = setdiff(1:length(images), selTrain) ;
+trainLabels = cat(2, trainLabels{:});
+
+selTest = {};
+testLabels = {};
+for ci = 1:length(classes)
+  ims = dir(fullfile(testdir, classes{ci}, '*.JPEG'))' ;
+  ims = vl_colsubset(ims, conf.numTest);
+  ims = cellfun(@(x)fullfile(classes{ci},x),{ims.name},'UniformOutput',false) ;
+  selTest = {selTest{:}, ims{:}} ;
+  testLabels{end+1} = ci * ones(1,length(ims)) ;
+end
+
+testLabels = cat(2, testLabels{:});
+
 
 model.classes = classes ;
 model.phowOpts = conf.phowOpts ;
@@ -157,7 +174,7 @@ if ~exist(conf.vocabPath) || conf.clobber
   descrs = {} ;
   %for ii = 1:length(selTrainFeats)
   parfor ii = 1:length(selTrainFeats)
-    im = imread(fullfile(conf.calDir, images{selTrainFeats(ii)})) ;
+    im = imread(fullfile(traindir, selTrain{selTrainFeats(ii)})) ;
     im = standarizeImage(im) ;
     [drop, descrs{ii}] = vl_phow(im, model.phowOpts{:}) ;
   end
@@ -183,16 +200,26 @@ end
 % --------------------------------------------------------------------
 
 if ~exist(conf.histPath) || conf.clobber
-  hists = {} ;
-  parfor ii = 1:length(images)
-  % for ii = 1:length(images)
-    fprintf('Processing %s (%.2f %%)\n', images{ii}, 100 * ii / length(images)) ;
-    im = imread(fullfile(conf.calDir, images{ii})) ;
-    hists{ii} = getImageDescriptor(model, im);
+  train_hists = {} ;
+  parfor ii = 1:length(selTrain)
+  % for ii = 1:length(selTrain)
+    fprintf('Processing %s (%.2f %%)\n', selTrain{ii}, 100 * ii / length(selTrain)) ;
+    im = imread(fullfile(traindir, selTrain{ii})) ;
+    train_hists{ii} = getImageDescriptor(model, im);
   end
 
-  hists = cat(2, hists{:}) ;
-  save(conf.histPath, 'hists') ;
+  train_hists = cat(2, train_hists{:});
+
+  test_hists = {} ;
+  parfor ii = 1:length(selTest)
+  % for ii = 1:length(selTest)
+    fprintf('Processing %s (%.2f %%)\n', selTest{ii}, 100 * ii / length(selTest)) ;
+    im = imread(fullfile(testdir, selTest{ii})) ;
+    test_hists{ii} = getImageDescriptor(model, im);
+  end
+
+  test_hists = cat(2, test_hists{:}) ;
+  save(conf.histPath, 'train_hists', 'test_hists') ;
 else
   load(conf.histPath) ;
 end
@@ -201,7 +228,8 @@ end
 %                                                  Compute feature map
 % --------------------------------------------------------------------
 
-psix = vl_homkermap(hists, 1, 'kchi2', 'gamma', .5) ;
+psix_train = vl_homkermap(train_hists, 1, 'kchi2', 'gamma', .5) ;
+psix_test = vl_homkermap(test_hists, 1, 'kchi2', 'gamma', .5) ;
 
 % --------------------------------------------------------------------
 %                                                            Train SVM
@@ -215,8 +243,8 @@ if ~exist(conf.modelPath) || conf.clobber
       parfor ci = 1:length(classes)
         perm = randperm(length(selTrain)) ;
         fprintf('Training model for class %s\n', classes{ci}) ;
-        y = 2 * (imageClass(selTrain) == ci) - 1 ;
-        [w(:,ci) b(ci) info] = vl_svmtrain(psix(:, selTrain(perm)), y(perm), lambda, ...
+        y = 2 * (trainClasses == ci) - 1 ;
+        [w(:,ci) b(ci) info] = vl_svmtrain(psix_train(:, perm), y(perm), lambda, ...
           'Solver', conf.svm.solver, ...
           'MaxNumIterations', 50/lambda, ...
           'BiasMultiplier', conf.svm.biasMultiplier, ...
@@ -246,25 +274,26 @@ end
 % --------------------------------------------------------------------
 
 % Estimate the class of the test images
-scores = model.w' * psix + model.b' * ones(1,size(psix,2)) ;
+scores = model.w' * psix_test + model.b' * ones(1,size(psix_test,2)) ;
 [drop, imageEstClass] = max(scores, [], 1) ;
-
+acc = mean(testLabels(:) == imageEstClass(:)) * 100
+fprintf('Accuracy: %g', acc);
 % Compute the confusion matrix
 idx = sub2ind([length(classes), length(classes)], ...
-              imageClass(selTest), imageEstClass(selTest)) ;
+              testLabels, imageEstClass) ;
 confus = zeros(length(classes)) ;
 confus = vl_binsum(confus, ones(size(idx)), idx) ;
 
 % Plots
-figure('visible','off') ; clf;
-subplot(1,2,1) ;
-imagesc(scores(:,[selTrain selTest])) ; title('Scores') ;
-set(gca, 'ytick', 1:length(classes), 'yticklabel', classes) ;
-subplot(1,2,2) ;
-imagesc(confus) ;
-title(sprintf('Confusion matrix (%.2f %% accuracy)', ...
-              100 * mean(diag(confus)/conf.numTest) )) ;
-print('-depsc2', [conf.resultPath '.ps']) ;
+% figure('visible','off') ; clf;
+% subplot(1,2,1) ;
+% imagesc(scores(:,[selTrain selTest])) ; title('Scores') ;
+% set(gca, 'ytick', 1:length(classes), 'yticklabel', classes) ;
+% subplot(1,2,2) ;
+% imagesc(confus) ;
+% title(sprintf('Confusion matrix (%.2f %% accuracy)', ...
+%               100 * mean(diag(confus)/conf.numTest) )) ;
+% print('-depsc2', [conf.resultPath '.ps']) ;
 save([conf.resultPath '.mat'], 'confus', 'conf') ;
 
 % -------------------------------------------------------------------------
