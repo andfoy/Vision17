@@ -56,8 +56,8 @@ run('vlfeat-0.9.20/toolbox/vl_setup');
 conf.calDir = 'data/imagenet' ;
 conf.dataDir = 'data/' ;
 conf.autoDownloadData = true ;
-conf.numTrain = 15 ;
-conf.numTest = 15 ;
+conf.numTrain = 50 ;
+conf.numTest = 100 ;
 conf.numClasses = 200 ;
 conf.numWords = 600 ;
 conf.numSpatialX = [2 4] ;
@@ -243,7 +243,7 @@ if ~exist(conf.modelPath) || conf.clobber
       parfor ci = 1:length(classes)
         perm = randperm(length(selTrain)) ;
         fprintf('Training model for class %s\n', classes{ci}) ;
-        y = 2 * (trainClasses == ci) - 1 ;
+        y = 2 * (trainLabels == ci) - 1 ;
         [w(:,ci) b(ci) info] = vl_svmtrain(psix_train(:, perm), y(perm), lambda, ...
           'Solver', conf.svm.solver, ...
           'MaxNumIterations', 50/lambda, ...
