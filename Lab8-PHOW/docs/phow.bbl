@@ -1,0 +1,39 @@
+\begin{thebibliography}{1}\itemsep=-1pt
+
+\bibitem{bay2006surf}
+H.~Bay, T.~Tuytelaars, and L.~Van~Gool.
+\newblock Surf: Speeded up robust features.
+\newblock {\em Computer vision--ECCV 2006}, pages 404--417, 2006.
+
+\bibitem{imagenet_cvpr09}
+J.~Deng, W.~Dong, R.~Socher, L.-J. Li, K.~Li, and L.~Fei-Fei.
+\newblock {ImageNet: A Large-Scale Hierarchical Image Database}.
+\newblock In {\em CVPR09}, 2009.
+
+\bibitem{fei2007learning}
+L.~Fei-Fei, R.~Fergus, and P.~Perona.
+\newblock Learning generative visual models from few training examples: An
+  incremental bayesian approach tested on 101 object categories.
+\newblock {\em Computer vision and Image understanding}, 106(1):59--70, 2007.
+
+\bibitem{Lazebnik:2006:BBF:1153171.1153549}
+S.~Lazebnik, C.~Schmid, and J.~Ponce.
+\newblock Beyond bags of features: Spatial pyramid matching for recognizing
+  natural scene categories.
+\newblock In {\em Proceedings of the 2006 IEEE Computer Society Conference on
+  Computer Vision and Pattern Recognition - Volume 2}, CVPR '06, pages
+  2169--2178, Washington, DC, USA, 2006. IEEE Computer Society.
+
+\bibitem{Lowe:1999:ORL:850924.851523}
+D.~G. Lowe.
+\newblock Object recognition from local scale-invariant features.
+\newblock In {\em Proceedings of the International Conference on Computer
+  Vision-Volume 2 - Volume 2}, ICCV '99, pages 1150--, Washington, DC, USA,
+  1999. IEEE Computer Society.
+
+\bibitem{vedaldi08vlfeat}
+A.~Vedaldi and B.~Fulkerson.
+\newblock {VLFeat}: An open and portable library of computer vision algorithms.
+\newblock \url{http://www.vlfeat.org/}, 2008.
+
+\end{thebibliography}
