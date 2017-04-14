@@ -29,6 +29,6 @@ if [ ! -d $DATA_PATH ]; then
     unzip $LABELS_FILE
     rm $LABELS_FILE
     cd ..
-    # python process_labels.py
+    python process_labels.py
 fi
 
