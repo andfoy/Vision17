@@ -27,6 +27,7 @@ if [ ! -d $DATA_PATH ]; then
     printf "nDownloading labels...\n"
     wget -c $LABELS_URL
     unzip $LABELS_FILE
+    rm $LABELS_FILE
     cd ..
     # python process_labels.py
 fi
