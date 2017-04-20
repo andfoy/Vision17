@@ -68,7 +68,7 @@ def get_dataset_bounding_boxes(bbx, path, dim):
             # print(img_bbx.shape)
             for i in range(0, img_bbx.shape[0]):
                 x, y, w, h = img_bbx[i, :]
-                print(img.shape, (x, y, w, h))
+                # print(img.shape, (x, y, w, h))
                 img_cropped = img[y:y + h, x: x + w]
                 try:
                     res = cv2.resize(img_cropped, tuple(np.int64(dim)),
@@ -90,12 +90,13 @@ def main():
     bbx = np.load(osp.join(LABELS_ROOT, LABELS_FILE))[LABELS_VAR]
     bbx = bbx.item()
     mean_dim = get_mean_size_bounding_box(bbx)
-    dim = np.ceil(64 * mean_dim / mean_dim[1])
+    dim = np.ceil(128 * mean_dim / mean_dim[1])
     print(dim)
     print("\nCalculating HOG over positive examples")
     dataset_bbx, mean_template = get_dataset_bounding_boxes(bbx,
                                                             TRAIN_IMAGES_PATH,
                                                             dim)
+    np.save('hog_mean.npz', mean_template=mean_template)
 
 
 if __name__ == '__main__':
