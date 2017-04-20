@@ -80,6 +80,7 @@ def main():
     bbx = bbx.item()
     mean_dim = get_mean_size_bounding_box(bbx)
     dim = np.ceil(64 * mean_dim / mean_dim[1])
+    print("\nCalculating HOG over positive examples")
     dataset_bbx, mean_template = get_dataset_bounding_boxes(bbx,
                                                             TRAIN_IMAGES_PATH,
                                                             dim)
