@@ -96,7 +96,7 @@ def main():
     dataset_bbx, mean_template = get_dataset_bounding_boxes(bbx,
                                                             TRAIN_IMAGES_PATH,
                                                             dim)
-    np.save('hog_mean.npz', mean_template=mean_template)
+    np.save('hog_mean.npy', mean_template)
 
 
 if __name__ == '__main__':
