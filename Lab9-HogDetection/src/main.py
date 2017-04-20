@@ -4,6 +4,7 @@ import os
 import sys
 import cv2
 import numpy as np
+import progressbar
 import os.path as osp
 import matplotlib.pyplot as plt
 from scipy.misc import imresize
@@ -55,7 +56,8 @@ def get_dataset_bounding_boxes(bbx, path, dim):
     print(hog_dim)
     mean_template = np.zeros(hog_dim)
     for dirpath, dirs, files in os.walk(path):
-        for file in files:
+        bar = progressbar.ProgressBar(redirect_stdout=True)
+        for file in bar(files):
             basename, _ = osp.splitext(file)
             img_path = osp.join(dirpath, file)
             print(img_path)
