@@ -67,6 +67,7 @@ def get_dataset_bounding_boxes(bbx, path, dim):
             for i in range(0, img_bbx.shape[0]):
                 x, y, w, h = img_bbx[i, :]
                 img_cropped = img[y:y + h, x: x + w]
+                print(img_cropped.shape)
                 res = cv2.resize(img_cropped, tuple(np.int64(dim)),
                                  interpolation=cv2.INTER_CUBIC)
                 res = np.transpose(res, [1, 0, 2])
