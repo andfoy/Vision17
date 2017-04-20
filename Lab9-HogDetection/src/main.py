@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 import os.path as osp
 import matplotlib.pyplot as plt
+from scipy.misc import imresize
 import matplotlib.image as mpimg
 from cyvlfeat.hog import hog, hog_render
 
@@ -66,8 +67,9 @@ def get_dataset_bounding_boxes(bbx, path, dim):
             for i in range(0, img_bbx.shape[0]):
                 x, y, w, h = img_bbx[i, :]
                 img_cropped = img[y:y + h, x: x + w]
-                res = cv2.resize(img_cropped, tuple(np.int64(dim)),
-                                 interpolation=cv2.INTER_CUBIC)
+                # res = cv2.resize(img_cropped, tuple(np.int64(dim)),
+                # interpolation=cv2.INTER_CUBIC)
+                res = imresize(img_cropped, tuple(np.int64(dim)))
                 print(res.shape)
                 hog_feat = hog(res, HOG_SIZE_CELL)
                 print(hog_feat.shape)
