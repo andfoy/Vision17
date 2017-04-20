@@ -15,9 +15,11 @@ LABELS_VAR = 'bounding_boxes'
 
 TRAIN_IMAGES_PATH = 'data/TrainImages'
 
+HOG_SIZE_CELL = 8
+
 
 def get_max_size_bounding_box(bbx):
-    max_bbx, img_max = (0, 0), None
+    max_bbx, img_max = np.array([0, 0]), None
     for key in bbx:
         print(key)
         bbx_img = bbx[key]
@@ -30,20 +32,54 @@ def get_max_size_bounding_box(bbx):
     return max_bbx, img_max
 
 
-def get_dataset_bounding_boxes(bbx, path):
+def get_mean_size_bounding_box(bbx):
+    mean_bbx, count = np.array([0, 0]), 0
+    for key in bbx:
+        print(key)
+        bbx_img = bbx[key]
+        if len(bbx_img.shape) == 1:
+            bbx_img = bbx_img.reshape(1, 4)
+        bbx_img_sum = np.sum(bbx_img[:, 2:], axis=0)
+        mean_bbx += bbx_img_sum
+        count += bbx_img.shape[0]
+    mean_bbx = mean_bbx / count
+    return np.ceil(mean_bbx)
+
+
+def get_dataset_bounding_boxes(bbx, path, dim):
     pos = []
+    count = 0
+    dim_xy = dim / HOG_SIZE_CELL
+    mean_template = np.zeros((int(dim_xy[0]), int(dim_xy[1]), 31))
     for dirpath, dirs, files in os.walk(path):
         for file in files:
             basename, _ = osp.splitext(file)
             img_path = osp.join(dirpath, file)
+            print(img_path)
             img_bbx = bbx[basename]
+            if len(img_bbx.shape) == 1:
+                img_bbx = img_bbx.reshape(1, len(img_bbx))
+            img = mpimg.imread(img_path)
+            for i in range(0, img_bbx.shape[0]):
+                x, y, w, h = img_bbx[i, :]
+                img_cropped = img[y:y + h, x: x + w]
+                res = cv2.resize(img_cropped, tuple(np.int64(dim)),
+                                 interpolation=cv2.INTER_CUBIC)
+                hog_feat = hog(res, HOG_SIZE_CELL)
+                mean_template += hog_feat
+                pos.append(hog_feat)
+                count += 1
+    return pos, mean_template / count
 
 
 def main():
     bbx = np.load(osp.join(LABELS_ROOT, LABELS_FILE))[LABELS_VAR]
     bbx = bbx.item()
-    max_dim = get_max_size_bounding_box(bbx)
-    dataset_bbx = get_dataset_bounding_boxes(TRAIN_IMAGES_PATH)
+    mean_dim = get_mean_size_bounding_box(bbx)
+    dim = np.ceil(64 * mean_dim / mean_dim[1])
+    dataset_bbx, mean_template = get_dataset_bounding_boxes(bbx,
+                                                            TRAIN_IMAGES_PATH,
+                                                            dim)
 
 
 if __name__ == '__main__':
