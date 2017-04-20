@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 import progressbar
 import os.path as osp
+from misc import hog_features
 import matplotlib.pyplot as plt
 from scipy.misc import imresize
 import matplotlib.image as mpimg
@@ -78,7 +79,8 @@ def get_dataset_bounding_boxes(bbx, path, dim):
                 res = np.transpose(res, [1, 0, 2])
                 # res = imresize(img_cropped, tuple(np.int64(dim)))
                 # print(res.shape)
-                hog_feat = hog(res, HOG_SIZE_CELL)
+                # hog_feat = hog(res, HOG_SIZE_CELL)
+                hog_feat = hog_features(res)
                 # print(hog_feat.shape)
                 mean_template += hog_feat
                 pos.append(hog_feat)
