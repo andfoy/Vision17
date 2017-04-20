@@ -50,7 +50,9 @@ def get_dataset_bounding_boxes(bbx, path, dim):
     pos = []
     count = 0
     dim_xy = dim / HOG_SIZE_CELL
-    mean_template = np.zeros((int(dim_xy[0]), int(dim_xy[1]), 31))
+    hog_dim = (int(dim_xy[0]), int(dim_xy[1]), 31)
+    print(hog_dim)
+    mean_template = np.zeros(hog_dim)
     for dirpath, dirs, files in os.walk(path):
         for file in files:
             basename, _ = osp.splitext(file)
