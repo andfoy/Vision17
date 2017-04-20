@@ -63,16 +63,16 @@ def get_dataset_bounding_boxes(bbx, path, dim):
             if len(img_bbx.shape) == 1:
                 img_bbx = img_bbx.reshape(1, len(img_bbx))
             img = mpimg.imread(img_path)
-            print(img_bbx.shape)
+            # print(img_bbx.shape)
             for i in range(0, img_bbx.shape[0]):
                 x, y, w, h = img_bbx[i, :]
                 img_cropped = img[y:y + h, x: x + w]
                 # res = cv2.resize(img_cropped, tuple(np.int64(dim)),
                 # interpolation=cv2.INTER_CUBIC)
                 res = imresize(img_cropped, tuple(np.int64(dim)))
-                print(res.shape)
+                # print(res.shape)
                 hog_feat = hog(res, HOG_SIZE_CELL)
-                print(hog_feat.shape)
+                # print(hog_feat.shape)
                 mean_template += hog_feat
                 pos.append(hog_feat)
                 count += 1
