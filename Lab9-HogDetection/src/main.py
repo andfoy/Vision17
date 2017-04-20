@@ -68,6 +68,7 @@ def get_dataset_bounding_boxes(bbx, path, dim):
                 res = cv2.resize(img_cropped, tuple(np.int64(dim)),
                                  interpolation=cv2.INTER_CUBIC)
                 hog_feat = hog(res, HOG_SIZE_CELL)
+                print(hog_feat.shape)
                 mean_template += hog_feat
                 pos.append(hog_feat)
                 count += 1
