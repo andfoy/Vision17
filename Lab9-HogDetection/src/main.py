@@ -62,6 +62,7 @@ def get_dataset_bounding_boxes(bbx, path, dim):
             if len(img_bbx.shape) == 1:
                 img_bbx = img_bbx.reshape(1, len(img_bbx))
             img = mpimg.imread(img_path)
+            print(img_bbx.shape)
             for i in range(0, img_bbx.shape[0]):
                 x, y, w, h = img_bbx[i, :]
                 img_cropped = img[y:y + h, x: x + w]
