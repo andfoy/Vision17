@@ -68,6 +68,7 @@ def get_dataset_bounding_boxes(bbx, path, dim):
                 img_cropped = img[y:y + h, x: x + w]
                 res = cv2.resize(img_cropped, tuple(np.int64(dim)),
                                  interpolation=cv2.INTER_CUBIC)
+                print(res.shape)
                 hog_feat = hog(res, HOG_SIZE_CELL)
                 print(hog_feat.shape)
                 mean_template += hog_feat
@@ -81,6 +82,7 @@ def main():
     bbx = bbx.item()
     mean_dim = get_mean_size_bounding_box(bbx)
     dim = np.ceil(64 * mean_dim / mean_dim[1])
+    print(dim)
     print("\nCalculating HOG over positive examples")
     dataset_bbx, mean_template = get_dataset_bounding_boxes(bbx,
                                                             TRAIN_IMAGES_PATH,
