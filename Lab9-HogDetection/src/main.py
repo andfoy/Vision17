@@ -93,13 +93,13 @@ def get_mean_cropped_image_dim(path):
     mean_shape = np.zeros((1, 2))
     num_crops = 0
     for dirpath, dirs, files in os.walk(path):
-        # bar = progressbar.ProgressBar(redirect_stdout=True)
-        for file in files:
+        bar = progressbar.ProgressBar(redirect_stdout=True)
+        for file in bar(files):
             img_path = osp.join(dirpath, file)
             img = mpimg.imread(img_path)
             print(img_path)
             print(img.shape)
-            mean_shape += np.array(img.shape)
+            mean_shape += np.array(img.shape[0:2])
             num_crops += 1
     return mean_shape / num_crops
 
