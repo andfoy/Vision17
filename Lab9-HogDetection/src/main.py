@@ -132,9 +132,9 @@ def get_mean_hog(path, dim):
 def collect_negatives(path, model):
     neg = []
     model_height, model_width, _ = model.shape
-    bar = progressbar.ProgressBar(redirect_stdout=True)
-    for dirpath, dirs, files in bar(os.walk(path)):
-        for file in files:
+    for dirpath, dirs, files in os.walk(path):
+        bar = progressbar.ProgressBar(redirect_stdout=True)
+        for file in bar(files):
             img_path = osp.join(dirpath, file)
             print(img_path)
 
