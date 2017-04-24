@@ -47,7 +47,7 @@ def hog_features(img):
 
 def collect_uniform_integers(a, b, N):
     step = np.floor((b - a) / (N - 1))
-    return np.arange(a, b) * step + a
+    return np.arange(0, N) * step + a
 
 
 def ind2sub(array_shape, ind):
