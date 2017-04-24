@@ -43,3 +43,14 @@ def hog_features(img):
     # Average gradients
     gradients /= cell_count
     return gradients
+
+
+def collect_uniform_integers(a, b, N):
+    step = np.floor((b - a) / (N - 1))
+    return np.arange(a, b) * step + a
+
+
+def ind2sub(array_shape, ind):
+    rows = (ind.astype('int') / array_shape[1])
+    cols = (ind.astype('int') % array_shape[1])
+    return (rows, cols)

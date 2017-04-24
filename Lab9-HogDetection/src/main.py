@@ -6,11 +6,12 @@ import cv2
 import numpy as np
 import progressbar
 import os.path as osp
-from misc import hog_features
 import matplotlib.pyplot as plt
 from scipy.misc import imresize
 import matplotlib.image as mpimg
 from cyvlfeat.hog import hog, hog_render
+from misc import (hog_features, collect_uniform_integers,
+                  ind2sub)
 
 LABELS_ROOT = 'data/wider_face_split'
 LABELS_FILE = 'face_train.npz'
@@ -20,6 +21,7 @@ TRAIN_IMAGES_PATH = 'data/TrainImages'
 CROPPED_IMAGES_PATH = 'data/TrainCrops'
 
 HOG_SIZE_CELL = 8
+HARD_NEG_ITER = 5
 
 
 def get_max_size_bounding_box(bbx):
@@ -111,7 +113,6 @@ def get_mean_hog(path, dim):
     count = 0
     dim_xy = dim / HOG_SIZE_CELL
     hog_dim = (int(dim_xy[:, 0]), int(dim_xy[:, 1]), 31)
-    # print(hog_dim)
     mean_template = np.zeros(hog_dim)
     bar = progressbar.ProgressBar(redirect_stdout=True)
     for dirpath, dirs, files in bar(os.walk(path)):
@@ -128,15 +129,38 @@ def get_mean_hog(path, dim):
     return pos, mean_template / count
 
 
+def collect_negatives(path, model):
+    neg = []
+    model_height, model_width, _ = model.shape
+    for dirpath, dirs, files in os.walk(path):
+        for file in files:
+            img_path = osp.join(dirpath, file)
+            img = mpimg.imread(img_path)
+
+            hog_feat = hog_features(img)
+            width = hog_feat.shape[1] - model_width + 1
+            height = hog_feat.shape[0] - model_height + 1
+
+            idx = collect_uniform_integers(0, width * height, 10)
+            for i in idx:
+                hx, hy = ind2sub((height, width), i)
+                sx = hx + np.arange(0, model_width)
+                sy = hy + np.arange(0, model_height)
+                neg.append(hog_feat[sx, sy, :])
+    return neg
+
+
 def main():
     bbx = np.load(osp.join(LABELS_ROOT, LABELS_FILE))[LABELS_VAR]
     bbx = bbx.item()
     _, mean_dim, _ = get_cropped_image_dims(CROPPED_IMAGES_PATH)
     mean_dim = np.ceil(mean_dim)
     print("\nCalculating HOG over positive examples")
-    print(mean_dim)
+    # print(mean_dim)
     pos, mean_hog = get_mean_hog(CROPPED_IMAGES_PATH, mean_dim)
     np.save('hog_mean.npy', mean_hog)
+    print("Collecting negative examples...")
+    neg = collect_negatives(TRAIN_IMAGES_PATH)
 
     # print(min_dim, mean_dim, max_dim)
     """
