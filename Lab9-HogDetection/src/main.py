@@ -134,6 +134,7 @@ def main():
     _, mean_dim, _ = get_cropped_image_dims(CROPPED_IMAGES_PATH)
     mean_dim = np.ceil(mean_dim)
     print("\nCalculating HOG over positive examples")
+    print(mean_dim)
     pos, mean_hog = get_mean_hog(CROPPED_IMAGES_PATH, mean_dim)
     np.save('hog_mean.npy', mean_hog)
 
