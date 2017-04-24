@@ -110,7 +110,7 @@ def get_mean_hog(path, dim):
     pos = []
     count = 0
     dim_xy = dim / HOG_SIZE_CELL
-    hog_dim = (int(dim_xy[0]), int(dim_xy[1]), 31)
+    hog_dim = (int(dim_xy[:, 0]), int(dim_xy[:, 1]), 31)
     # print(hog_dim)
     mean_template = np.zeros(hog_dim)
     bar = progressbar.ProgressBar(redirect_stdout=True)
