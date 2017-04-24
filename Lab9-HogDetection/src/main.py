@@ -132,11 +132,13 @@ def get_mean_hog(path, dim):
 def collect_negatives(path, model):
     neg = []
     model_height, model_width, _ = model.shape
-    for dirpath, dirs, files in os.walk(path):
+    bar = progressbar.ProgressBar(redirect_stdout=True)
+    for dirpath, dirs, files in bar(os.walk(path)):
         for file in files:
             img_path = osp.join(dirpath, file)
-            img = mpimg.imread(img_path)
+            print(img_path)
 
+            img = mpimg.imread(img_path)
             hog_feat = hog_features(img)
             width = hog_feat.shape[1] - model_width + 1
             height = hog_feat.shape[0] - model_height + 1
@@ -160,7 +162,7 @@ def main():
     pos, mean_hog = get_mean_hog(CROPPED_IMAGES_PATH, mean_dim)
     np.save('hog_mean.npy', mean_hog)
     print("Collecting negative examples...")
-    neg = collect_negatives(TRAIN_IMAGES_PATH)
+    neg = collect_negatives(TRAIN_IMAGES_PATH, mean_hog)
 
     # print(min_dim, mean_dim, max_dim)
     """
