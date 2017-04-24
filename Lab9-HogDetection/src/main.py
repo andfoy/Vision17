@@ -132,8 +132,8 @@ def get_mean_hog(path, dim):
 def collect_negatives(path, model):
     neg = []
     model_height, model_width, _ = model.shape
-    bar = progressbar.ProgressBar(redirect_stdout=True)
-    for dirpath, dirs, files in bar(os.walk(path)):
+    # bar = progressbar.ProgressBar(redirect_stdout=True)
+    for dirpath, dirs, files in os.walk(path):
         for file in files:
             img_path = osp.join(dirpath, file)
             print(img_path)
@@ -146,6 +146,7 @@ def collect_negatives(path, model):
             idx = collect_uniform_integers(0, width * height, 10)
             for i in idx:
                 hx, hy = ind2sub((height, width), i)
+                print(hx, hy)
                 # sx = hx + np.arange(0, model_width)
                 # sy = hy + np.arange(0, model_height)
                 # neg.append(hog_feat[np.int64(sy), np.int64(sx), :])
