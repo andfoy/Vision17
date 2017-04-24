@@ -144,9 +144,10 @@ def collect_negatives(path, model):
             height = hog_feat.shape[0] - model_height + 1
 
             idx = collect_uniform_integers(0, width * height, 10)
+            print(idx.shape)
             for i in idx:
                 hx, hy = ind2sub((height, width), i)
-                print(hx, hy)
+                # print(hx, hy)
                 # sx = hx + np.arange(0, model_width)
                 # sy = hy + np.arange(0, model_height)
                 # neg.append(hog_feat[np.int64(sy), np.int64(sx), :])
