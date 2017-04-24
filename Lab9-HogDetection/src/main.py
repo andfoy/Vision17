@@ -17,6 +17,7 @@ LABELS_FILE = 'face_train.npz'
 LABELS_VAR = 'bounding_boxes'
 
 TRAIN_IMAGES_PATH = 'data/TrainImages'
+CROPPED_IMAGES_PATH = 'data/TrainCrops'
 
 HOG_SIZE_CELL = 8
 
@@ -88,9 +89,24 @@ def get_dataset_bounding_boxes(bbx, path, dim):
     return pos, mean_template / count
 
 
+def get_mean_cropped_image_dim(path):
+    mean_shape = np.zeros((1, 2))
+    num_crops = 0
+    for dirpath, dirs, files in os.walk(path):
+        for file in files:
+            img_path = os.join(dirpath, files)
+            img = mpimg.imread(img_path)
+            mean_shape += np.array(img.shape)
+            num_crops += 1
+    return mean_shape / num_crops
+
+
 def main():
     bbx = np.load(osp.join(LABELS_ROOT, LABELS_FILE))[LABELS_VAR]
     bbx = bbx.item()
+    mean_dim = get_mean_cropped_image_dim(CROPPED_IMAGES_PATH)
+    print(mean_dim)
+    """
     mean_dim = get_mean_size_bounding_box(bbx)
     dim = np.ceil(128 * mean_dim / mean_dim[1])
     print(dim)
@@ -99,6 +115,7 @@ def main():
                                                             TRAIN_IMAGES_PATH,
                                                             dim)
     np.save('hog_mean.npy', mean_template)
+    """
 
 
 if __name__ == '__main__':
