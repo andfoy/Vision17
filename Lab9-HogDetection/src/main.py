@@ -99,8 +99,6 @@ def get_cropped_image_dims(path):
         for file in files:
             img_path = osp.join(dirpath, file)
             img = mpimg.imread(img_path)
-            # print(img_path)
-            # print(img.shape)
             mean_shape += np.array(img.shape[0:2])
             max_shape = max(max_shape, img.shape[0:2])
             min_shape = min(min_shape, img.shape[0:2])
@@ -108,11 +106,38 @@ def get_cropped_image_dims(path):
     return min_shape, mean_shape / num_crops, max_shape
 
 
+def get_mean_hog(path, dim):
+    pos = []
+    count = 0
+    dim_xy = dim / HOG_SIZE_CELL
+    hog_dim = (int(dim_xy[0]), int(dim_xy[1]), 31)
+    # print(hog_dim)
+    mean_template = np.zeros(hog_dim)
+    bar = progressbar.ProgressBar(redirect_stdout=True)
+    for dirpath, dirs, files in bar(os.walk(path)):
+        for file in files:
+            img_path = osp.join(dirpath, file)
+            img = mpimg.imread(img_path)
+            res = cv2.resize(img, tuple(np.int64(dim)),
+                             interpolation=cv2.INTER_CUBIC)
+            res = np.transpose(res, [1, 0, 2])
+            hog_feat = hog_features(res)
+            mean_template += hog_feat
+            pos.append(hog_feat)
+            count += 1
+    return pos, mean_template / count
+
+
 def main():
     bbx = np.load(osp.join(LABELS_ROOT, LABELS_FILE))[LABELS_VAR]
     bbx = bbx.item()
-    min_dim, mean_dim, max_dim = get_cropped_image_dims(CROPPED_IMAGES_PATH)
-    print(min_dim, mean_dim, max_dim)
+    _, mean_dim, _ = get_cropped_image_dims(CROPPED_IMAGES_PATH)
+    mean_dim = np.ceil(mean_dim)
+    print("\nCalculating HOG over positive examples")
+    pos, mean_hog = get_mean_hog(CROPPED_IMAGES_PATH, mean_dim)
+    np.save('hog_mean.npy', mean_hog)
+
+    # print(min_dim, mean_dim, max_dim)
     """
     mean_dim = get_mean_size_bounding_box(bbx)
     dim = np.ceil(128 * mean_dim / mean_dim[1])
