@@ -89,8 +89,10 @@ def get_dataset_bounding_boxes(bbx, path, dim):
     return pos, mean_template / count
 
 
-def get_mean_cropped_image_dim(path):
+def get_cropped_image_dims(path):
     mean_shape = np.zeros((1, 2))
+    max_shape = (0, 0)
+    min_shape = (np.inf, np.inf)
     num_crops = 0
     bar = progressbar.ProgressBar(redirect_stdout=True)
     for dirpath, dirs, files in bar(os.walk(path)):
@@ -100,15 +102,17 @@ def get_mean_cropped_image_dim(path):
             # print(img_path)
             # print(img.shape)
             mean_shape += np.array(img.shape[0:2])
+            max_shape = max(max_shape, img.shape[0:2])
+            min_shape = min(min_shape, img.shape[0:2])
             num_crops += 1
-    return mean_shape / num_crops
+    return min_shape, mean_shape / num_crops, max_shape
 
 
 def main():
     bbx = np.load(osp.join(LABELS_ROOT, LABELS_FILE))[LABELS_VAR]
     bbx = bbx.item()
-    mean_dim = get_mean_cropped_image_dim(CROPPED_IMAGES_PATH)
-    print(mean_dim)
+    min_dim, mean_dim, max_dim = get_cropped_image_dims(CROPPED_IMAGES_PATH)
+    print(min_dim, mean_dim, max_dim)
     """
     mean_dim = get_mean_size_bounding_box(bbx)
     dim = np.ceil(128 * mean_dim / mean_dim[1])
