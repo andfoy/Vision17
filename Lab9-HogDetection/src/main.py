@@ -118,7 +118,8 @@ def get_mean_hog(path, dim):
         for file in files:
             img_path = osp.join(dirpath, file)
             img = mpimg.imread(img_path)
-            res = cv2.resize(img, tuple(np.int64(dim)), interpolation=cv2.INTER_CUBIC)
+            res = cv2.resize(img, tuple(np.int64(dim[0])),
+                             interpolation=cv2.INTER_CUBIC)
             res = np.transpose(res, [1, 0, 2])
             hog_feat = hog_features(res)
             mean_template += hog_feat
