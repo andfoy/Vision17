@@ -38,7 +38,7 @@ for e=1:numel(event_list)
     imPath = fullfile('data', 'TrainImages', event)
     for f=1:numel(eventFiles)
         evFiles = eventFiles(f)
-        name = [imPath, evFiles{1}, '.jpg'];
+        name = [imPath{1}, evFiles{1}, '.jpg'];
         try
           img = imread(name);
         catch
