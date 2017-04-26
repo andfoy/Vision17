@@ -6,13 +6,15 @@ import cv2
 import numpy as np
 import progressbar
 import os.path as osp
+from sklearn import svm
 import matplotlib.pyplot as plt
-from scipy.misc import imresize
 import matplotlib.image as mpimg
+from scipy.misc import imresize, imsave
 from cyvlfeat.hog import hog, hog_render
 from misc import (hog_features, collect_uniform_integers,
                   ind2sub)
 
+NEGATIVE_PATH = 'data/negatives'
 LABELS_ROOT = 'data/wider_face_split'
 LABELS_FILE = 'face_train.npz'
 LABELS_VAR = 'bounding_boxes'
@@ -21,74 +23,11 @@ TRAIN_IMAGES_PATH = 'data/TrainImages'
 CROPPED_IMAGES_PATH = 'data/TrainCrops'
 
 HOG_SIZE_CELL = 8
-HARD_NEG_ITER = 5
+HARD_NEG_ITER = 7
 
-
-def get_max_size_bounding_box(bbx):
-    max_bbx, img_max = np.array([0, 0]), None
-    for key in bbx:
-        print(key)
-        bbx_img = bbx[key]
-        if len(bbx_img.shape) == 1:
-            max_img_bbx = bbx_img[2:]
-        else:
-            max_img_bbx = np.amax(bbx_img[:, 2:], axis=0)
-        if np.any(max_img_bbx > max_bbx):
-            max_bbx, img_max = max_img_bbx, key
-    return max_bbx, img_max
-
-
-def get_mean_size_bounding_box(bbx):
-    mean_bbx, count = np.array([0, 0]), 0
-    for key in bbx:
-        print(key)
-        bbx_img = bbx[key]
-        if len(bbx_img.shape) == 1:
-            bbx_img = bbx_img.reshape(1, 4)
-        bbx_img_sum = np.sum(bbx_img[:, 2:], axis=0)
-        mean_bbx += bbx_img_sum
-        count += bbx_img.shape[0]
-    mean_bbx = mean_bbx / count
-    return np.ceil(mean_bbx)
-
-
-def get_dataset_bounding_boxes(bbx, path, dim):
-    pos = []
-    count = 0
-    dim_xy = dim / HOG_SIZE_CELL
-    hog_dim = (int(dim_xy[0]), int(dim_xy[1]), 31)
-    print(hog_dim)
-    mean_template = np.zeros(hog_dim)
-    for dirpath, dirs, files in os.walk(path):
-        bar = progressbar.ProgressBar(redirect_stdout=True)
-        for file in bar(files):
-            basename, _ = osp.splitext(file)
-            img_path = osp.join(dirpath, file)
-            print(img_path)
-            img_bbx = bbx[basename]
-            if len(img_bbx.shape) == 1:
-                img_bbx = img_bbx.reshape(1, len(img_bbx))
-            img = mpimg.imread(img_path)
-            # print(img_bbx.shape)
-            for i in range(0, img_bbx.shape[0]):
-                x, y, w, h = img_bbx[i, :]
-                # print(img.shape, (x, y, w, h))
-                img_cropped = img[y:y + h, x: x + w]
-                try:
-                    res = cv2.resize(img_cropped, tuple(np.int64(dim)),
-                                     interpolation=cv2.INTER_CUBIC)
-                except Exception:
-                    continue
-                res = np.transpose(res, [1, 0, 2])
-                # res = imresize(img_cropped, tuple(np.int64(dim)))
-                # print(res.shape)
-                # hog_feat = hog(res, HOG_SIZE_CELL)
-                hog_feat = hog_features(res)
-                # print(hog_feat.shape)
-                mean_template += hog_feat
-                pos.append(hog_feat)
-                count += 1
-    return pos, mean_template / count
+MIN_SCALE = -1
+MAX_SCALE = 3
+NUM_OCTAVE_DIV = 3
 
 
 def get_cropped_image_dims(path):
@@ -129,6 +68,28 @@ def get_mean_hog(path, dim):
     return pos, mean_template / count
 
 
+def extract_negatives(path, shape=(400, 300)):
+    filename = 'negative{0}.jpg'
+    neg_seq = 0
+    patch_h, patch_w = shape
+    for dirpath, dirs, files in os.walk(path):
+        bar = progressbar.ProgressBar(redirect_stdout=True)
+        for file in bar(files):
+            img_path = osp.join(dirpath, file)
+            print(img_path)
+
+            img = mpimg.imread(img_path)
+            max_width = img.shape[1] - patch_h
+            max_height = img.shape[0] - patch_w
+            for i in range(0, 5):
+                y = np.random.randint(0, max_height)
+                x = np.random.randint(0, max_width)
+                patch = img[y:y + patch_h, x:x + patch_w]
+                file_path = osp.join(NEGATIVE_PATH, filename.format(neg_seq))
+                neg_seq += 1
+                imsave(file_path, patch)
+
+
 def collect_negatives(path, model):
     neg = []
     model_height, model_width, _ = model.shape
@@ -158,17 +119,91 @@ def collect_negatives(path, model):
     return neg
 
 
+def detect(img, model, hog_cell_size, scales):
+    model_height, model_width, _ = model.shape
+    hog_f = []
+    detections = []
+    scores = []
+    for s in scales:
+        img_rescaled = cv2.resize(img, None, fx=1.0 / s, fy=1.0 / s,
+                                  interpolation=cv2.INTER_CUBIC)
+        if min(*img_rescaled.shape[0:2]) < 128:
+            break
+
+        hog_f.append(hog_features(img_rescaled))
+        score = cv2.filter2D(hog_f[-1], -1, model)
+        score = np.sum(score, axis=-1)
+        hy, hx = ind2sub(score.shape, np.arange(0, np.prod(score.shape)))
+        x = (hx - 1) * HOG_SIZE_CELL * s
+        y = (hy - 1) * HOG_SIZE_CELL * s
+        detections.append(np.vstack((x - 0.5, y - 0.5,
+                                     x + HOG_SIZE_CELL *
+                                     model_width * s - 0.5,
+                                     y + HOG_SIZE_CELL *
+                                     model_height * s - 0.5)))
+        scores.append(score.ravel())
+    detections = np.vstack(detections).T
+    scores = np.hstack(scores)
+    sorted_idx = np.argsort(scores)[:1000]
+    scores = scores[sorted_idx]
+    detections = detections[:, sorted_idx]
+    return detections, scores, hog_f
+
+
+def eval_model(test_path, test_bbx, model):
+    neg = []
+    scales = 2**(np.linspace(MIN_SCALE,
+                             MAX_SCALE,
+                             NUM_OCTAVE_DIV * (MAX_SCALE - MIN_SCALE + 1)))
+    for dirpath, dirs, files in os.walk(test_path):
+        for file in files:
+            img_path = os.join(dirpath, file)
+            img = mpimg.imread(img_path)
+            detections, scores, hog_f = detect(img, model, HOG_SIZE_CELL,
+                                               scales)
+
+def hard_negative_mining(pos, neg):
+    for i in range(HARD_NEG_ITER):
+        num_pos = len(pos)
+        num_neg = len(neg)
+        pos_labels = np.ones(num_pos)
+        neg_labels = np.zeros(num_neg)
+        C = 1.0
+        # lambda_ = 0.5
+        lambda_ = 1.0 / (C * (num_pos + num_neg))
+        # lambda_ = 1.0 / (C * (numPos + numNeg))
+
+        pos_shape = pos.shape
+        neg_shape = neg.shape
+        unrolled_pos = np.reshape(np.prod(pos_shape[0:3]),
+                                  pos_shape[-1])
+        unrolled_neg = np.reshape(np.prod(neg_shape[0:3]),
+                                  neg_shape[-1])
+        inputs = np.hstack((unrolled_pos, unrolled_neg))
+        labels = np.hstack(pos_labels, neg_labels)
+        model = svm.LinearSVC(C=lambda_)
+        model.fit(inputs, labels)
+
+
 def main():
-    bbx = np.load(osp.join(LABELS_ROOT, LABELS_FILE))[LABELS_VAR]
-    bbx = bbx.item()
-    _, mean_dim, _ = get_cropped_image_dims(CROPPED_IMAGES_PATH)
-    mean_dim = np.ceil(mean_dim)
-    print("\nCalculating HOG over positive examples")
+    try:
+        os.mkdir(NEGATIVE_PATH)
+    except Exception:
+        pass
+    extract_negatives(TRAIN_IMAGES_PATH)
+    # bbx = np.load(osp.join(LABELS_ROOT, LABELS_FILE))[LABELS_VAR]
+    # bbx = bbx.item()
+    # _, mean_dim, _ = get_cropped_image_dims(CROPPED_IMAGES_PATH)
+    # mean_dim = np.ceil(mean_dim)
+    # print("\nCalculating HOG over positive examples")
     # print(mean_dim)
-    pos, mean_hog = get_mean_hog(CROPPED_IMAGES_PATH, mean_dim)
-    np.save('hog_mean.npy', mean_hog)
-    print("Collecting negative examples...")
-    neg = collect_negatives(TRAIN_IMAGES_PATH, mean_hog)
+    # pos, mean_hog = get_mean_hog(CROPPED_IMAGES_PATH, mean_dim)
+    # pos = np.stack(pos, axis=-1)
+    # np.save('hog_mean.npy', mean_hog)
+    # print("Collecting negative examples...")
+    # neg = collect_negatives(TRAIN_IMAGES_PATH, mean_hog)
+    # neg = np.stack(neg, axis=-1)
+    # model = hard_negative_mining(pos, neg)
 
     # print(min_dim, mean_dim, max_dim)
     """

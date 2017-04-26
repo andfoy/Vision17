@@ -2,6 +2,73 @@ import cv2
 import numpy as np
 
 
+# def get_max_size_bounding_box(bbx):
+#     max_bbx, img_max = np.array([0, 0]), None
+#     for key in bbx:
+#         print(key)
+#         bbx_img = bbx[key]
+#         if len(bbx_img.shape) == 1:
+#             max_img_bbx = bbx_img[2:]
+#         else:
+#             max_img_bbx = np.amax(bbx_img[:, 2:], axis=0)
+#         if np.any(max_img_bbx > max_bbx):
+#             max_bbx, img_max = max_img_bbx, key
+#     return max_bbx, img_max
+
+
+# def get_mean_size_bounding_box(bbx):
+#     mean_bbx, count = np.array([0, 0]), 0
+#     for key in bbx:
+#         print(key)
+#         bbx_img = bbx[key]
+#         if len(bbx_img.shape) == 1:
+#             bbx_img = bbx_img.reshape(1, 4)
+#         bbx_img_sum = np.sum(bbx_img[:, 2:], axis=0)
+#         mean_bbx += bbx_img_sum
+#         count += bbx_img.shape[0]
+#     mean_bbx = mean_bbx / count
+#     return np.ceil(mean_bbx)
+
+
+# def get_dataset_bounding_boxes(bbx, path, dim):
+#     pos = []
+#     count = 0
+#     dim_xy = dim / HOG_SIZE_CELL
+#     hog_dim = (int(dim_xy[0]), int(dim_xy[1]), 31)
+#     print(hog_dim)
+#     mean_template = np.zeros(hog_dim)
+#     for dirpath, dirs, files in os.walk(path):
+#         bar = progressbar.ProgressBar(redirect_stdout=True)
+#         for file in bar(files):
+#             basename, _ = osp.splitext(file)
+#             img_path = osp.join(dirpath, file)
+#             print(img_path)
+#             img_bbx = bbx[basename]
+#             if len(img_bbx.shape) == 1:
+#                 img_bbx = img_bbx.reshape(1, len(img_bbx))
+#             img = mpimg.imread(img_path)
+#             # print(img_bbx.shape)
+#             for i in range(0, img_bbx.shape[0]):
+#                 x, y, w, h = img_bbx[i, :]
+#                 # print(img.shape, (x, y, w, h))
+#                 img_cropped = img[y:y + h, x: x + w]
+#                 try:
+#                     res = cv2.resize(img_cropped, tuple(np.int64(dim)),
+#                                      interpolation=cv2.INTER_CUBIC)
+#                 except Exception:
+#                     continue
+#                 res = np.transpose(res, [1, 0, 2])
+#                 # res = imresize(img_cropped, tuple(np.int64(dim)))
+#                 # print(res.shape)
+#                 # hog_feat = hog(res, HOG_SIZE_CELL)
+#                 hog_feat = hog_features(res)
+#                 # print(hog_feat.shape)
+#                 mean_template += hog_feat
+#                 pos.append(hog_feat)
+#                 count += 1
+#     return pos, mean_template / count
+
+
 def hog_features(img):
     cell_size = (8, 8)  # h x w in pixels
     block_size = (2, 2)  # h x w in cells
@@ -51,6 +118,6 @@ def collect_uniform_integers(a, b, N):
 
 
 def ind2sub(array_shape, ind):
-    rows = (ind.astype('int') / array_shape[1])
-    cols = (ind.astype('int') % array_shape[1])
+    rows = np.floor(ind.astype('int') / array_shape[1])
+    cols = np.floor(ind.astype('int') % array_shape[1])
     return (rows, cols)
