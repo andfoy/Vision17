@@ -82,8 +82,11 @@ def extract_negatives(path, shape=(400, 300)):
             max_width = img.shape[1] - patch_h
             max_height = img.shape[0] - patch_w
             for i in range(0, 5):
-                y = np.random.randint(0, max_height)
-                x = np.random.randint(0, max_width)
+                try:
+                    y = np.random.randint(0, max_height)
+                    x = np.random.randint(0, max_width)
+                except Exception:
+                    break
                 patch = img[y:y + patch_h, x:x + patch_w]
                 file_path = osp.join(NEGATIVE_PATH, filename.format(neg_seq))
                 neg_seq += 1
