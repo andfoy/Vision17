@@ -53,7 +53,8 @@ for e=1:numel(event_list)
             trainBoxes(:, numImg) = imgCrops(b, :)';
             trainBoxPatches{numImg} = im2single(imgCropped);
             trainBoxImages{numImg} = name;
-            trainBoxLabels(i) = 1;
+            trainBoxLabels(numImg) = 1;
+            numImg = numImg + 1;
         end
     end
 end
