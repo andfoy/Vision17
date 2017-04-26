@@ -50,7 +50,7 @@ for e=1:numel(event_list)
                              imgCrops(b, 1):imgCrops(b, 1)+imgCrops(b, 3));
             imgCropped = imresize(imgCropped, [136 6]);
             imgCrops(b, 3:end) = imgCrops(b, 1:2) + imgCrops(b, 3:end);
-            trainBoxes(b, numImg) = imgCrops(b, :)';
+            trainBoxes(:, numImg) = imgCrops(b, :)';
             trainBoxPatches{numImg} = im2single(imgCropped);
             trainBoxImages{numImg} = name;
             trainBoxLabels(numImg) = 1;
