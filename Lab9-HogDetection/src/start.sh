@@ -36,26 +36,28 @@ fi
 
 VLFEAT_URL="http://www.vlfeat.org/download/vlfeat-0.9.20-bin.tar.gz"
 VLFEAT_FILE="vlfeat-0.9.20-bin.tar.gz"
-VLFEAT_PATH="vlfeat-0.9.20"
+VLFEAT_ORIGINAL_PATH="vlfeat-0.9.20"
+VLFEAT_PATH="vlfeat"
 printf "Checking if vlfeat has been already downloaded...\n"
 if [ ! -d $VLFEAT_PATH ]; then
     printf "\nDownloading vlfeat...\n"
     wget -c $VLFEAT_URL
     tar -xvzf $VLFEAT_FILE
     rm $VLFEAT_FILE
-    mv $VLFEAT_PATH "vlfeat"
+    mv $VLFEAT_ORIGINAL_PATH $VLFEAT_PATH
 fi
 
 MATCONVNET_URL="http://www.vlfeat.org/matconvnet/download/matconvnet-1.0-beta24.tar.gz"
 MATCONVNET_FILE="matconvnet-1.0-beta24.tar.gz"
-MATCONVNET_PATH="matconvnet-1.0-beta24"
+MATCONVNET_ORIGINAL_PATH="matconvnet-1.0-beta24"
+MATCONVNET_PATH="matconvnet"
 printf "Checking if MATCONVNET has been already downloaded...\n"
 if [ ! -d $MATCONVNET_PATH ]; then
     printf "\nDownloading MATCONVNET...\n"
     wget -c $MATCONVNET_URL
     tar -xvzf $MATCONVNET_FILE
     rm $MATCONVNET_FILE
-    mv $MATCONVNET_PATH "matconvnet"
+    mv $MATCONVNET_ORIGINAL_PATH $MATCONVNET_PATH
 fi
 
 nohup /usr/local/matlab/bin/matlab -nodisplay -nojvm -nosplash -nodesktop -r "run('main');exit(0);" > out.log 2> err.log &
