@@ -37,7 +37,8 @@ for e=1:numel(event_list)
     eventbbx = face_bbx_list{e};
     imPath = fullfile('data', 'TrainImages', event)
     for f=1:numel(eventFiles)
-        name = [imPath eventFiles(f) '.jpg'];
+        evFiles = eventFiles(f)
+        name = [imPath, evFiles{1}, '.jpg'];
         try
           img = imread(name);
         catch
