@@ -49,10 +49,10 @@ for e=1:numel(event_list)
             try
                 imgCropped = img(imgCrops(b, 2):imgCrops(b, 2)+imgCrops(b, 4), ...
                                  imgCrops(b, 1):imgCrops(b, 1)+imgCrops(b, 3));
+                imgCropped = imresize(imgCropped, [136 6]);
             catch
               continue;
             end
-            imgCropped = imresize(imgCropped, [136 6]);
             imgCrops(b, 3:end) = imgCrops(b, 1:2) + imgCrops(b, 3:end);
             trainBoxes(:, numImg) = imgCrops(b, :)';
             trainBoxPatches{numImg} = im2single(imgCropped);
@@ -161,24 +161,25 @@ for t=1:numHardNegativeMiningIterations
   neg = neg(:,:,:,keep) ;
 end
 
+save('model.mat', w);
 
 % -------------------------------------------------------------------------
 % Step 5.3: Evaluate the model on the test data
 % -------------------------------------------------------------------------
 
-im = imread('data/myTestImage.jpeg') ;
-im = im2single(im) ;
+% im = imread('data/myTestImage.jpeg') ;
+% im = im2single(im) ;
 
-% Compute detections
-[detections, scores] = detect(im, w, hogCellSize, scales) ;
-keep = boxsuppress(detections, scores, 0.25) ;
-detections = detections(:, keep(1:10)) ;
-scores = scores(keep(1:10)) ;
+% % Compute detections
+% [detections, scores] = detect(im, w, hogCellSize, scales) ;
+% keep = boxsuppress(detections, scores, 0.25) ;
+% detections = detections(:, keep(1:10)) ;
+% scores = scores(keep(1:10)) ;
 
-% Plot top detection
-figure(3) ; clf ;
-imagesc(im) ; axis equal ;
-hold on ;
-vl_plotbox(detections, 'g', 'linewidth', 2, ...
-  'label', arrayfun(@(x)sprintf('%.2f',x),scores,'uniformoutput',0)) ;
-title('Multiple detections') ;
+% % Plot top detection
+% figure(3) ; clf ;
+% imagesc(im) ; axis equal ;
+% hold on ;
+% vl_plotbox(detections, 'g', 'linewidth', 2, ...
+%   'label', arrayfun(@(x)sprintf('%.2f',x),scores,'uniformoutput',0)) ;
+% title('Multiple detections') ;
