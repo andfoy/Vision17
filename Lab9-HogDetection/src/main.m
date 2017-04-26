@@ -99,19 +99,19 @@ modelHeight = size(trainBoxHog,1) ;
 % Step 5.2: Visualize the training images
 % -------------------------------------------------------------------------
 
-figure(1) ; clf ;
+% figure(1) ; clf ;
 
-subplot(1,2,1) ;
-imagesc(vl_imarraysc(trainBoxPatches)) ;
-axis off ;
-title('Training images (positive samples)') ;
-axis equal ;
+% subplot(1,2,1) ;
+% imagesc(vl_imarraysc(trainBoxPatches)) ;
+% axis off ;
+% title('Training images (positive samples)') ;
+% axis equal ;
 
-subplot(1,2,2) ;
-imagesc(mean(trainBoxPatches,4)) ;
-box off ;
-title('Average') ;
-axis equal ;
+% subplot(1,2,2) ;
+% imagesc(mean(trainBoxPatches,4)) ;
+% box off ;
+% title('Average') ;
+% axis equal ;
 
 % -------------------------------------------------------------------------
 % Step 5.3: Train with hard negative mining
@@ -145,7 +145,7 @@ for t=1:numHardNegativeMiningIterations
   % title('SVM HOG model') ;
   
   % Evaluate on training data and mine hard negatives
-  figure(3) ;  
+  % figure(3) ;  
   [matches, moreNeg] = ...
     evaluateModel(...
     vl_colsubset(trainImages', schedule(t), 'beginning'), ...
