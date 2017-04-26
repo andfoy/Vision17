@@ -61,3 +61,4 @@ if [ ! -d $MATCONVNET_PATH ]; then
 fi
 
 nohup /usr/local/matlab/bin/matlab -nodisplay -nojvm -nosplash -nodesktop -r "run('main');exit(0);" > out.log 2> err.log &
+printf $!
