@@ -83,7 +83,7 @@ trainBoxPatches = cat(4, trainBoxPatches{:}) ;
 % Compute HOG features of examples (see Step 1.2)
 trainBoxHog = {} ;
 for i = 1:size(trainBoxPatches,4)
-  trainBoxHog{i} = vl_hog(trainBoxPatches(:,:,:,i), hogCellSize) ;
+  trainBoxHog{i} = vl_hog(single(trainBoxPatches(:,:,:,i)), hogCellSize) ;
 end
 trainBoxHog = cat(4, trainBoxHog{:}) ;
 modelWidth = size(trainBoxHog,2) ;
