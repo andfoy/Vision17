@@ -46,8 +46,12 @@ for e=1:numel(event_list)
         end
         imgCrops = eventbbx{f};
         for b=1:size(imgCrops, 1)
-            imgCropped = img(imgCrops(b, 2):imgCrops(b, 2)+imgCrops(b, 4), ...
-                             imgCrops(b, 1):imgCrops(b, 1)+imgCrops(b, 3));
+            try
+                imgCropped = img(imgCrops(b, 2):imgCrops(b, 2)+imgCrops(b, 4), ...
+                                 imgCrops(b, 1):imgCrops(b, 1)+imgCrops(b, 3));
+            catch
+              continue;
+            end
             imgCropped = imresize(imgCropped, [136 6]);
             imgCrops(b, 3:end) = imgCrops(b, 1:2) + imgCrops(b, 3:end);
             trainBoxes(:, numImg) = imgCrops(b, :)';
