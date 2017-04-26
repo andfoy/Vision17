@@ -32,13 +32,13 @@ for s = scales
   end
     
   % plot score map
-  vl_tightsubplot(numel(scales),find(s==scales)) ;
-  imagesc(scores) ; axis off square ;
-  h(end+1) = gca;
-  minScore = min([minScore;scores(:)]) ;
-  maxScore = max([maxScore;scores(:)]) ;
+  % vl_tightsubplot(numel(scales),find(s==scales)) ;
+  % imagesc(scores) ; axis off square ;
+  % h(end+1) = gca;
+  % minScore = min([minScore;scores(:)]) ;
+  % maxScore = max([maxScore;scores(:)]) ;
 end
 
-set(h, 'clim', [minScore, maxScore]) ;
+% set(h, 'clim', [minScore, maxScore]) ;
 
 

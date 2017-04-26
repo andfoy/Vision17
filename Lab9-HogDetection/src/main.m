@@ -138,11 +138,11 @@ for t=1:numHardNegativeMiningIterations
   w = single(reshape(w, modelHeight, modelWidth, [])) ;
 
   % Plot model
-  figure(2) ; clf ;
-  imagesc(vl_hog('render', w)) ;
-  colormap gray ;
-  axis equal ;
-  title('SVM HOG model') ;
+  % figure(2) ; clf ;
+  % imagesc(vl_hog('render', w)) ;
+  % colormap gray ;
+  % axis equal ;
+  % title('SVM HOG model') ;
   
   % Evaluate on training data and mine hard negatives
   figure(3) ;  
