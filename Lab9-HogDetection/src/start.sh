@@ -32,3 +32,30 @@ if [ ! -d $DATA_PATH ]; then
     python process_labels.py
 fi
 
+
+
+VLFEAT_URL="http://www.vlfeat.org/download/vlfeat-0.9.20-bin.tar.gz"
+VLFEAT_FILE="vlfeat-0.9.20-bin.tar.gz"
+VLFEAT_PATH="vlfeat-0.9.20"
+printf "Checking if vlfeat has been already downloaded...\n"
+if [ ! -d $VLFEAT_PATH ]; then
+    printf "\nDownloading vlfeat...\n"
+    wget -c $VLFEAT_URL
+    tar -xvzf $VLFEAT_FILE
+    rm $VLFEAT_FILE
+    mv $VLFEAT_PATH "vlfeat"
+fi
+
+MATCONVNET_URL="http://www.vlfeat.org/matconvnet/download/matconvnet-1.0-beta24.tar.gz"
+MATCONVNET_FILE="matconvnet-1.0-beta24.tar.gz"
+MATCONVNET_PATH="matconvnet-1.0-beta24"
+printf "Checking if MATCONVNET has been already downloaded...\n"
+if [ ! -d $MATCONVNET_PATH ]; then
+    printf "\nDownloading MATCONVNET...\n"
+    wget -c $MATCONVNET_URL
+    tar -xvzf $MATCONVNET_FILE
+    rm $MATCONVNET_FILE
+    mv $MATCONVNET_PATH "matconvnet"
+fi
+
+
