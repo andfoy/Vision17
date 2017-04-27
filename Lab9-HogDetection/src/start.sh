@@ -69,8 +69,12 @@ if [ ! -d $MATCONVNET_PATH ]; then
     mv $MATCONVNET_ORIGINAL_PATH $MATCONVNET_PATH
 fi
 
-if [! -f $MODEL_FILE]; then
-    export LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libstdc++.so.6"
+export LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libstdc++.so.6"
+
+if [ ! -f $MODEL_FILE ]; then
     nohup /usr/local/matlab/bin/matlab -nodisplay -nojvm -nosplash -nodesktop -r "run('main');exit(0);" > out.log 2> err.log &
+    printf $!
+else
+    nohup /usr/local/matlab/bin/matlab -nodisplay -nojvm -nosplash -nodesktop -r "run('test');exit(0);" > out.log 2> err.log &
     printf $!
 fi
