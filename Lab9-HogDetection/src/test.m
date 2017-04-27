@@ -36,10 +36,11 @@ for e=1:numel(event_list)
         catch
             % Pass
         end
-        results = [detections scores(:)];
+        results = [detections abs(scores(:)-128)];
         txtFileName = fullfile(imPath{1}, [img_names(f).name, '.txt']);
         fh = fopen(txtFileName, 'w');
-        fprintf(fh, '%s\n', img_names(f).name);
+        [pathstr, img_name, ext] = fileparts(img_names(f).name)
+        fprintf(fh, '%s\n', img_name);
         fprintf(fh, '%d\n', numel(scores));
         fprintf(fh, '%d %d %d %d %g\n', results);
         fclose(fh);
