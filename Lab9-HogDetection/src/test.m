@@ -18,7 +18,7 @@ for e=1:numel(event_list)
     event = event_list(e);
     imPath = fullfile('data', 'WIDER_val', 'images', event);
     files = fullfile(imPath{1}, '*.jpg');
-    img_names = dir(files{1});
+    img_names = dir(files);
     files = fullfile(imPath{1}, {img_names.name});
     for f = 1:numel(files)
         fprintf('Processing: %s\n', img_names{f}.name);
