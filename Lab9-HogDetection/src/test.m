@@ -21,7 +21,7 @@ for e=1:numel(event_list)
     img_names = dir(files);
     files = fullfile(imPath{1}, {img_names.name});
     for f = 1:numel(files)
-        fprintf('Processing: %s\n', img_names{f}.name);
+        fprintf('Processing: %s\n', img_names(f).name);
         img = imread(files{f});
         img = im2single(img);
         [detections, scores] = detect(img, w, hogCellSize, scales);
@@ -30,7 +30,7 @@ for e=1:numel(event_list)
         detections(:, 3:end) = detections(:, 3:end) - detections(:, 1:2);
         scores = scores(keep(1:10));
         results = [detections scores(:)];
-        txtFileName = fullfile(imPath{1}, [img_names{f}.name, '.txt']);
+        txtFileName = fullfile(imPath{1}, [img_names(f).name, '.txt']);
         fh = fopen(txtFileName{1}, 'w');
         fprintf(fh, '%s\n', img_names{f}.name);
         fprintf(fh, '%d\n', numel(scores));
