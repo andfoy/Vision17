@@ -27,6 +27,7 @@ for e=1:numel(event_list)
         [detections, scores] = detect(img, w, hogCellSize, scales);
         keep = boxsuppress(detections, scores, 0.25);
         detections = detections(:, keep(1:10));
+        disp(detections);
         detections(:, 3:end) = detections(:, 3:end) - detections(:, 1:2);
         scores = scores(keep(1:10));
         results = [detections scores(:)];
