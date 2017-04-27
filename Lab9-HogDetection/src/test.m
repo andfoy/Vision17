@@ -32,8 +32,8 @@ for e=1:numel(event_list)
         scores = scores(keep(1:10));
         results = [detections scores(:)];
         txtFileName = fullfile(imPath{1}, [img_names(f).name, '.txt']);
-        fh = fopen(txtFileName{1}, 'w');
-        fprintf(fh, '%s\n', img_names{f}.name);
+        fh = fopen(txtFileName, 'w');
+        fprintf(fh, '%s\n', img_names(f).name);
         fprintf(fh, '%d\n', numel(scores));
         fprintf(fh, '%d %d %d %d %g\n', results);
         fclose(fh);
