@@ -161,7 +161,7 @@ for t=1:numHardNegativeMiningIterations
   neg = neg(:,:,:,keep) ;
 end
 
-save('model.mat', w);
+save('model.mat', 'w');
 
 % -------------------------------------------------------------------------
 % Step 5.3: Evaluate the model on the test data

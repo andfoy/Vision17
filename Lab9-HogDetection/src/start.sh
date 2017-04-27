@@ -5,7 +5,11 @@ LABELS_URL="http://mmlab.ie.cuhk.edu.hk/projects/WIDERFace/support/bbx_annotatio
 LABELS_FILE="wider_face_split.zip"
 DATASET_ROOT="lab9Detection"
 DATASET_FILE="lab9Detection.tar"
+VAL_URL="http://157.253.63.7/ValImagesLab9.zip"
+VAL_FILE="ValImagesLab9.zip"
 DATA_PATH="data"
+
+MODEL_FILE="model.mat"
 
 printf "Checking if dataset has been already downloaded...\n"
 if [ ! -d $DATA_PATH ]; then
@@ -28,10 +32,15 @@ if [ ! -d $DATA_PATH ]; then
     wget -c $LABELS_URL
     unzip $LABELS_FILE
     rm $LABELS_FILE
+
+    printf "Downloading validation dataset...\n"
+    wget -c $VAL_URL
+    unzip $VAL_FILE
+    rm $VAL_FILE
+
     cd ..
     python process_labels.py
 fi
-
 
 
 VLFEAT_URL="http://www.vlfeat.org/download/vlfeat-0.9.20-bin.tar.gz"
@@ -60,5 +69,7 @@ if [ ! -d $MATCONVNET_PATH ]; then
     mv $MATCONVNET_ORIGINAL_PATH $MATCONVNET_PATH
 fi
 
-nohup /usr/local/matlab/bin/matlab -nodisplay -nojvm -nosplash -nodesktop -r "run('main');exit(0);" > out.log 2> err.log &
-printf $!
+if [! -f $MODEL_FILE]; then
+    nohup /usr/local/matlab/bin/matlab -nodisplay -nojvm -nosplash -nodesktop -r "run('main');exit(0);" > out.log 2> err.log &
+    printf $!
+fi
