@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex hog"] 1493351068 "hog.aux" "hog.bbl" "hog" 1493353902
+["bibtex hog"] 1493357486 "hog.aux" "hog.bbl" "hog" 1493357695
   "./ieee.bst" 1411459028 19623 f9cd22458ca68af2567100f1aed905e8 ""
   "egbib.bib" 1493345431 2531 166fd05da9a9a575d2f0ccc21a3a1053 ""
-  "hog.aux" 1493353901 2223 59006c4829c8bd89a07e46d90d37489e ""
+  "hog.aux" 1493357695 2363 a1c5fb836835f5285ca39a033293e091 ""
   "hog.bcf" 0 -1 0 ""
   (generated)
-  "hog.blg"
   "hog.bbl"
-["pdflatex"] 1493353900 "hog.tex" "hog.pdf" "hog" 1493353902
+  "hog.blg"
+["pdflatex"] 1493357694 "hog.tex" "hog.pdf" "hog" 1493357695
   "/dev/null" 1493324532 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/etc/texmf/web2c/texmf.cnf" 1487479574 1101 af7716885e081ab43982cab7b4672c1a ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -58,7 +58,6 @@
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/wasy/wasy7.tfm" 1418683037 888 5f102ebf31506247d60c56d7d473e774 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/wasy/wasy8.tfm" 1418683037 884 df491db60492d6d4b55157a114e1a6bd ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/wasy/wasy9.tfm" 1418683037 888 d09253e1e856fd4206f0883e3efdb56d ""
-  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1248133631 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb" 1136849748 45758 19968a0990191524e34e1994d4a31cb6 ""
@@ -177,16 +176,18 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1486976596 31340 0f53f8665296bf8fe6c697f9505e31d8 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1487479758 2044936 0edf5ca64352b50b145b46ea2ee03d92 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1487479897 3869832 bd3290e661c59888e35a90957617aecf ""
+  "Assets/HOG.pdf" 1493355490 32866 1b1d74d2bbcdf785b25c7f00c9b3b798 ""
+  "Assets/PR.pdf" 1493354636 18116 deecd34a01fbca00cb3b63d41c7e6f17 ""
   "cvpr.sty" 1473006676 8185 dd8231e8a92c383d16b745afe2ab996b ""
   "cvpr_eso.sty" 1411459028 3878 6aa7c08ff2621006e0603349e40a30a8 ""
   "eso-pic.sty" 1411459028 9460 d2935ae95b5cd343fcf5887ff530288d ""
   "hog.aex" 0 -1 0 ""
-  "hog.aux" 1493353901 2223 59006c4829c8bd89a07e46d90d37489e ""
-  "hog.bbl" 1493351068 1587 6dce3b66c56f958d9d4a65a21c30e49a "bibtex hog"
-  "hog.tex" 1493352182 12378 8ca27a98e40313f943e489112bcbda8f ""
+  "hog.aux" 1493357695 2363 a1c5fb836835f5285ca39a033293e091 ""
+  "hog.bbl" 1493357486 1587 6dce3b66c56f958d9d4a65a21c30e49a "bibtex hog"
+  "hog.tex" 1493357692 14656 6d4055db181394f9985aef5db1ba1468 ""
   "hog.w18" 0 -1 0 ""
   "widetext.sty" 1489718101 2470 c4e2e9568ebc3de679b694000035f0db ""
   (generated)
   "hog.aux"
-  "hog.log"
   "hog.pdf"
+  "hog.log"

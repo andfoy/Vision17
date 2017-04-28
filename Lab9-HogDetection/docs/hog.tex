@@ -160,13 +160,34 @@ All the implementation was based upon Andrea's Vedaldi vlfeat and matconvnet lib
 \section{Results}
 \begin{figure}[H]
 		\centering
-		\epsfig{file=./results/PR.pdf,width=1.0\linewidth,clip=}
+		\epsfig{file=./Assets/PR.pdf,width=1.0\linewidth,clip=}
 		\caption{Precision-Recall curve results of the HOG proposed model}
 		\label{Fig:PR}
 \end{figure}
 
 
-As it can be shown on Figure~\ref{Fig:PR}, the proposed HOG detection model only outputs random bounding boxes, and it is no more different from a random 
+\section{Results}
+\begin{figure}[H]
+	\centering
+	\epsfig{file=./Assets/HOG.pdf,width=1.0\linewidth,clip=}
+	\caption{Mean HOG-SVM template result after evaluating the dataset using Hard-Negative Mining}
+	\label{Fig:hog}
+\end{figure}
+
+
+As it can be shown on Figure~\ref{Fig:PR}, the proposed HOG detection model only outputs random boundingboxes, and it is no more different from a random coordinate sampler over all the 3302 validation set images. This implies that the multiscale HOG approach taken to solve the detection problem is not adapting well to the geometric, photometric and occlusion features present on the image, this phenomena can be confirmed after visualizing the model HOG templated that was generalized after evalutaing a linear SVM based classification model using hard-negative mining. 
+\\
+\\
+As it can be observed on Figure~\ref{Fig:hog}, the mean hog model does not adapt nor represents the average expect face detector HOG template, which should contain defined image oriented features, such as round eyes and well defined image boundaries. Instead the model generalizes and adapts to distinguish a single vertical region, which is related to the limited detection contours computed as part of the HOG model, the width of all the detections was never larger than 4px, which confirms and allows to explain the low accuracy of the proposed approach.
+\\
+\\
+As it was discussed previously, all the different occlusions, blur and geometric transformations present on the Wider dataset allow to propose several different HOG representations, which can not be generalized onto a single HOG template that can be used as a filter over all faces present on an image. With respect to the INRIA pedestrian dataset, there are images that present several faces with different anomalies such as image cluttering and occlusion, To solve this limitations, it should be possible to propose a model based on Exemplar SVMs, which should not only be able to detect faces present on an image, but it also should be able to recognize an specific individual and estimate its face pose.
+
+\section{Conclusions}
+HOG features are simple and very expressive local image features that allows to describe an object viewpoint in terms of its oriented gradients, which in turn, are very similar to SIFT features. Throughout the present results it was possible to confirm and demostrate the overall limitations of using a simple multiscale HOG detector, which is prone to errors due to its dependency on constant geometrical features such as scale, viewpoint rotation, image cluttering or blurring, which causes HOG descriptors to be variant with respect to these variables. 
+\\
+\\
+To account and improve the accuracy of a HOG-based object detector, it is possible to add more information related to the composition of each object, such as DPMs. Which allow to break with several of the limitations noted previously. However, even with a part-based detection model, the HOG feature representation will still present several drawbacks and limitations in terms of the representation power due to the information loss caused by this transformation.
 
 {\small
 \bibliographystyle{ieee}
