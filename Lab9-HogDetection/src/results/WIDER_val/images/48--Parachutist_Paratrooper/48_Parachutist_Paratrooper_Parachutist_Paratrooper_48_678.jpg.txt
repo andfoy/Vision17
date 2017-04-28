@@ -1,0 +1,4 @@
+48_Parachutist_Paratrooper_Parachutist_Paratrooper_48_678
+2
+5.173618e+02 1.020500e+03 3.662041e+02 6.805000e+02 4.87605
+4 8.289293e+01 68 1.229250e+02 123.251

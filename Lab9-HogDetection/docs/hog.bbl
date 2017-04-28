@@ -1,0 +1,39 @@
+\begin{thebibliography}{1}\itemsep=-1pt
+
+\bibitem{1467360}
+N.~Dalal and B.~Triggs.
+\newblock Histograms of oriented gradients for human detection.
+\newblock In {\em 2005 IEEE Computer Society Conference on Computer Vision and
+  Pattern Recognition (CVPR'05)}, volume~1, pages 886--893 vol. 1, June 2005.
+
+\bibitem{felzenszwalb2010object}
+P.~F. Felzenszwalb, R.~B. Girshick, D.~McAllester, and D.~Ramanan.
+\newblock Object detection with discriminatively trained part-based models.
+\newblock {\em IEEE transactions on pattern analysis and machine intelligence},
+  32(9):1627--1645, 2010.
+
+\bibitem{Lowe:1999:ORL:850924.851523}
+D.~G. Lowe.
+\newblock Object recognition from local scale-invariant features.
+\newblock In {\em Proceedings of the International Conference on Computer
+  Vision-Volume 2 - Volume 2}, ICCV '99, pages 1150--, Washington, DC, USA,
+  1999. IEEE Computer Society.
+
+\bibitem{malisiewicz2011ensemble}
+T.~Malisiewicz, A.~Gupta, and A.~A. Efros.
+\newblock Ensemble of exemplar-svms for object detection and beyond.
+\newblock In {\em Computer Vision (ICCV), 2011 IEEE International Conference
+  on}, pages 89--96. IEEE, 2011.
+
+\bibitem{vedaldi08vlfeat}
+A.~Vedaldi and B.~Fulkerson.
+\newblock {VLFeat}: An open and portable library of computer vision algorithms.
+\newblock \url{http://www.vlfeat.org/}, 2008.
+
+\bibitem{yang2016wider}
+S.~Yang, P.~Luo, C.-C. Loy, and X.~Tang.
+\newblock Wider face: A face detection benchmark.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 5525--5533, 2016.
+
+\end{thebibliography}
