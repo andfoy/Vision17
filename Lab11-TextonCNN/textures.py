@@ -135,7 +135,7 @@ class TextureLoader(data.Dataset):
         textures = dataset['data']
         textures_set = dataset['set']
         texture_labels = dataset['label'].ravel()
-        for i, img_set in sets:
+        for i, img_set in enumerate(sets):
             idx = (textures_set == i + 1)[0]
             imgs = textures[:, :, idx]
             labels = texture_labels[idx][0]
