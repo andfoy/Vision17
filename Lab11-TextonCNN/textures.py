@@ -32,6 +32,7 @@ class TextureLoader(data.Dataset):
         self.test = test
         self.imgs = None
         self.labels = None
+        self.class_to_idx = None
 
         train_path = os.path.join(self.root, self.processed_folder,
                                   self.training_file)

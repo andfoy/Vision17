@@ -93,7 +93,7 @@ class Net(nn.Module):
         return F.log_softmax(x)
 
 
-model = Net()
+model = Net(len(train_loader.class_to_idx))
 if args.cuda:
     model.cuda()
 
