@@ -6,6 +6,7 @@ import errno
 import pickle
 import numpy as np
 import os.path as osp
+from PIL import Image
 import torch.utils.data as data
 from spyder.utils import iofuncs
 
@@ -64,6 +65,10 @@ class TextureLoader(data.Dataset):
     def __getitem__(self, idx):
         img, target = self.imgs[idx, :, :], self.labels[idx]
 
+        # doing this so that it is consistent with all other datasets
+        # to return a PIL Image
+        img = Image.fromarray(img.numpy(), mode='L')
+
         if self.transform is not None:
             img = self.transform(img)
 
@@ -95,9 +100,10 @@ class TextureLoader(data.Dataset):
                 raise
 
         print("Downloading: {0}".format(self.url))
-        wget.download(self.url, out='textureDataset.mat')
+        path = osp.join(self.root, self.raw_folder, self.filename)
+        wget.download(self.url, out=path)
 
-        print("Processing...")
+        print("\nProcessing...")
         train_set, test_set, val_set, class_to_idx = self.read_dataset()
 
         train_path = os.path.join(self.root, self.processed_folder,
