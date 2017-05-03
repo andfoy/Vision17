@@ -144,9 +144,9 @@ class TextureLoader(data.Dataset):
             labels = texture_labels[idx]
 
             imgs = np.transpose(imgs, (-1, 0, 1))
-            print(labels)
             labels = torch.ByteTensor(labels)
             imgs = torch.ByteTensor(imgs)
+
             data[img_set] = (imgs, labels)
 
         return data['train'], data['test'], data['validation'], class_to_idx
