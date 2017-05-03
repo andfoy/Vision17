@@ -12,7 +12,7 @@ from spyder.utils import iofuncs
 
 class TextureLoader(data.Dataset):
     url = 'http://157.253.63.7/texturesPublic'
-    filename = 'texturesPublic'
+    filename = 'textureDataset.mat'
     raw_folder = 'raw'
     processed_folder = 'processed'
     training_file = 'training.pt'
@@ -92,7 +92,7 @@ class TextureLoader(data.Dataset):
                 raise
 
         print("Downloading: {0}".format(self.url))
-        wget.download(self.url)
+        wget.download(self.url, out='textureDataset.mat')
 
         print("Processing...")
         train_set, test_set, val_set, class_to_idx = self.read_dataset()
