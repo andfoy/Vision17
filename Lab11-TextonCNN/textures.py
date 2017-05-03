@@ -58,6 +58,9 @@ class TextureLoader(data.Dataset):
         else:
             self.imgs, self.labels = torch.load(val_path)
 
+    def __len__(self):
+        return self.imgs.size(0)
+
     def __getitem__(self, idx):
         img, target = self.imgs[idx, :, :], self.labels[idx]
 
