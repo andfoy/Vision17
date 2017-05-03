@@ -3,8 +3,9 @@ import os
 import wget
 import torch
 import errno
+import pickle
+import numpy as np
 import os.path as osp
-# import scipy.io as sio
 import torch.utils.data as data
 from spyder.utils import iofuncs
 
@@ -17,15 +18,28 @@ class TextureLoader(data.Dataset):
     training_file = 'training.pt'
     test_file = 'test.pt'
     val_file = 'val.pt'
+    class_file = 'classidx.pickle'
     META = 'meta'
     TEXTURES = 'texturesPublic'
 
-    def __init__(self, root, transform=None, train=False,
-                 test=False, download=False):
+    def __init__(self, root, transform=None, target_transform=None,
+                 train=False, test=False, download=False):
         self.root = root
         self.transform = transform
+        self.target_transform = target_transform
         self.train = train
         self.test = test
+        self.imgs = None
+        self.labels = None
+
+        train_path = os.path.join(self.root, self.processed_folder,
+                                  self.training_file)
+        test_path = os.path.join(self.root, self.processed_folder,
+                                 self.test_file)
+        val_path = os.path.join(self.root, self.processed_folder,
+                                self.val_file)
+        class_path = os.path.join(self.root, self.processed_folder,
+                                  self.class_file)
 
         if download:
             self.download()
@@ -33,6 +47,26 @@ class TextureLoader(data.Dataset):
         if not self._check_exists():
             raise RuntimeError('Dataset not found' +
                                ' You can use download=True to download it')
+
+        with open(class_path, 'rb') as fp:
+            self.class_to_idx = pickle.load(fp)
+
+        if train:
+            self.imgs, self.labels = torch.load(train_path)
+        elif test:
+            self.imgs, self.labels = torch.load(test_path)
+        else:
+            self.imgs, self.labels = torch.load(val_path)
+
+    def __getitem__(self, idx):
+        img, target = self.imgs[idx, :, :], self.labels[idx]
+
+        if self.transform is not None:
+            img = self.transform(img)
+
+        if self.target_transform is not None:
+            target = self.target_transform(target)
+        return img, target
 
     def _check_exists(self):
         train_path = os.path.join(self.root, self.processed_folder,
@@ -61,7 +95,7 @@ class TextureLoader(data.Dataset):
         wget.download(self.url)
 
         print("Processing...")
-        train_set, test_set, val_set = self.read_dataset()
+        train_set, test_set, val_set, class_to_idx = self.read_dataset()
 
         train_path = os.path.join(self.root, self.processed_folder,
                                   self.training_file)
@@ -69,6 +103,8 @@ class TextureLoader(data.Dataset):
                                  self.test_file)
         val_path = os.path.join(self.root, self.processed_folder,
                                 self.val_file)
+        class_path = os.path.join(self.root, self.processed_folder,
+                                  self.class_file)
 
         with open(train_path, 'wb') as fp:
             torch.save(train_set, fp)
@@ -78,6 +114,9 @@ class TextureLoader(data.Dataset):
 
         with open(val_path, 'wb') as fp:
             torch.save(val_set, fp)
+
+        with open(class_path, 'wb') as fp:
+            pickle.dump(class_to_idx, fp, pickle.HIGHEST_PROTOCOL)
 
         print('Done!')
 
@@ -94,4 +133,16 @@ class TextureLoader(data.Dataset):
 
         data = {}
         textures = dataset['data']
+        textures_set = dataset['set']
+        texture_labels = dataset['label'].ravel()
         for i, img_set in sets:
+            idx = (textures_set == i + 1)[0]
+            imgs = textures[:, :, idx]
+            labels = texture_labels[idx][0]
+
+            imgs = np.transpose(imgs, (-1, 0, 1))
+            labels = torch.ByteTensor(labels)
+            imgs = torch.ByteTensor(imgs)
+            data[img_set] = (imgs, labels)
+
+        return data['train'], data['test'], data['validation'], class_to_idx
