@@ -75,7 +75,7 @@ val_loader = torch.utils.data.DataLoader(
 
 
 class Net(nn.Module):
-    def __init__(self, num_classes):
+    def __init__(self, num_classes=25):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(1, 10, kernel_size=5)
         self.conv2 = nn.Conv2d(10, 20, kernel_size=5)
@@ -93,7 +93,7 @@ class Net(nn.Module):
         return F.log_softmax(x)
 
 
-model = Net(len(train_loader.class_to_idx))
+model = Net()
 if args.cuda:
     model.cuda()
 
