@@ -138,9 +138,10 @@ class TextureLoader(data.Dataset):
         for i, img_set in enumerate(sets):
             idx = (textures_set == i + 1)[0]
             imgs = textures[:, :, idx]
-            labels = texture_labels[idx][0]
+            labels = texture_labels[idx]
 
             imgs = np.transpose(imgs, (-1, 0, 1))
+            print(labels)
             labels = torch.ByteTensor(labels)
             imgs = torch.ByteTensor(imgs)
             data[img_set] = (imgs, labels)
