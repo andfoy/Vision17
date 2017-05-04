@@ -114,11 +114,13 @@ class Net(nn.Module):
         return F.log_softmax(x)
 
 
+load_ext = False
 if not osp.exists(args.save):
     model = Net()
 else:
     with open(args.save, 'rb') as f:
         model = torch.load(f)
+    load_ext = True
 
 if args.cuda:
     model.cuda()
@@ -172,7 +174,10 @@ def test(epoch):
 
 
 lr = args.lr
-best_val_loss = None
+if not load_ext:
+    best_val_loss = None
+else:
+    best_val_loss = test(0)
 try:
     for epoch in range(1, args.epochs + 1):
         train(epoch, lr)
