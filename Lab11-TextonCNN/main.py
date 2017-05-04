@@ -84,18 +84,18 @@ class Net(nn.Module):
         self.fc2 = nn.Linear(50, num_classes)
 
     def forward(self, x):
-        print("In: {0}".format(x.size()))
+        # print("In: {0}".format(x.size()))
         x = F.relu(F.max_pool2d(self.conv1(x), 2))
-        print("CONV1: {0}".format(x.size()))
+        # print("CONV1: {0}".format(x.size()))
         x = F.relu(F.max_pool2d(self.conv2_drop(self.conv2(x)), 2))
-        print("CONV2: {0}".format(x.size()))
+        # print("CONV2: {0}".format(x.size()))
         x = x.view(-1, x.size(1) * x.size(2) * x.size(3))
-        print("Reshape: {0}".format(x.size()))
+        # print("Reshape: {0}".format(x.size()))
         x = F.relu(self.fc1(x))
-        print("FC1: {0}".format(x.size()))
+        # print("FC1: {0}".format(x.size()))
         x = F.dropout(x, training=self.training)
         x = F.relu(self.fc2(x))
-        print("FC2: {0}".format(x.size()))
+        # print("FC2: {0}".format(x.size()))
         return F.log_softmax(x)
 
 
