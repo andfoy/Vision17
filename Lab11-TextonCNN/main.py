@@ -173,7 +173,7 @@ try:
         val_loss = test(epoch)
         if not best_val_loss or val_loss < best_val_loss:
             with open(args.save, 'wb') as f:
-                model = torch.save(f)
+                model = torch.save(model, f)
             best_val_loss = val_loss
         else:
             lr /= 4
