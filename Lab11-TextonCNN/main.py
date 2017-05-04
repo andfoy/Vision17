@@ -85,8 +85,8 @@ class Net(nn.Module):
         self.conv3 = nn.Conv2d(64, 128, kernel_size=3)
         self.conv4 = nn.Conv2d(128, 128, kernel_size=3)
         self.conv2_drop = nn.Dropout2d()
-        self.fc1 = nn.Linear(128 * 29 * 29, 50)
-        self.fc2 = nn.Linear(50, num_classes)
+        self.fc1 = nn.Linear(128 * 29 * 29, 4096)
+        self.fc2 = nn.Linear(4096, num_classes)
 
     def forward(self, x):
         # print("In: {0}".format(x.size()))
@@ -125,7 +125,8 @@ else:
 if args.cuda:
     model.cuda()
 
-optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
+optimizer = optim.Adam(model.parameters(), lr=args.lr)
+# optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
 
 
 def train(epoch, lr=args.lr):
