@@ -85,8 +85,8 @@ class Net(nn.Module):
         self.conv3 = nn.Conv2d(64, 128, kernel_size=3)
         self.conv4 = nn.Conv2d(128, 128, kernel_size=3)
         self.conv2_drop = nn.Dropout2d()
-        self.fc1 = nn.Linear(128 * 29 * 29, 4096)
-        self.fc2 = nn.Linear(4096, num_classes)
+        self.fc1 = nn.Linear(128 * 29 * 29, 50)
+        self.fc2 = nn.Linear(50, num_classes)
 
     def forward(self, x):
         # print("In: {0}".format(x.size()))
@@ -98,6 +98,7 @@ class Net(nn.Module):
         x = F.max_pool2d(x, 2)
         x = x.view(-1, x.size(1) * x.size(2) * x.size(3))
         # x = F.dropout()
+        x = F.dropout(x, training=self.training)
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         # x = F.relu(F.max_pool2d(self.conv1(x), 2))
