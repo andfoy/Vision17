@@ -87,7 +87,7 @@ class Net(nn.Module):
         self.conv4 = nn.Conv2d(128, 128, kernel_size=3)
         self.conv5 = nn.Conv2d(128, 256, kernel_size=3)
         self.conv6 = nn.Conv2d(256, 256, kernel_size=3)
-        self.conv7 = nn.Conv2d(256, 256, kernel_size=3)
+        # self.conv7 = nn.Conv2d(256, 256, kernel_size=3)
         # self.conv2_drop = nn.Dropout2d()
         self.fc1 = nn.Linear(256 * 25 * 25, 50)
         self.fc2 = nn.Linear(50, num_classes)
@@ -102,7 +102,7 @@ class Net(nn.Module):
         x = F.max_pool2d(x, 2)
         x = F.relu(self.conv5(x))
         x = F.relu(self.conv6(x))
-        x = F.relu(self.conv7(x))
+        # x = F.relu(self.conv7(x))
         # print("CONV5 {0}".format(x.size()))
         x = x.view(-1, x.size(1) * x.size(2) * x.size(3))
         # x = F.dropout()
@@ -123,11 +123,11 @@ class Net(nn.Module):
 
 
 load_ext = False
-if not osp.exists(args.save):
-    model = Net()
-else:
+model = Net()
+if osp.exists(args.save):
     with open(args.save, 'rb') as f:
-        model = torch.load(f)
+        state_dict = torch.load(f)
+        model.load_state_dict(state_dict)
     load_ext = True
 
 if args.cuda:
@@ -182,25 +182,28 @@ def test(epoch):
     return test_loss
 
 
-lr = args.lr
-if not load_ext:
-    best_val_loss = None
-else:
-    best_val_loss = test(0)
-try:
-    for epoch in range(1, args.epochs + 1):
-        train(epoch, lr)
-        val_loss = test(epoch)
-        if not best_val_loss or val_loss < best_val_loss:
-            with open(args.save, 'wb') as f:
-                torch.save(model, f)
-            best_val_loss = val_loss
-except KeyboardInterrupt:
-    print('-' * 89)
-    print('Exiting from training early')
+if __name__ == '__main__':
+    lr = args.lr
+    if not load_ext:
+        best_val_loss = None
+    else:
+        best_val_loss = test(0)
+    try:
+        for epoch in range(1, args.epochs + 1):
+            train(epoch, lr)
+            val_loss = test(epoch)
+            if not best_val_loss or val_loss < best_val_loss:
+                with open(args.save, 'wb') as f:
+                    torch.save(model, f)
+                best_val_loss = val_loss
+    except KeyboardInterrupt:
+        print('-' * 89)
+        print('Exiting from training early')
 
-# Load the best saved model.
-with open(args.save, 'rb') as f:
-    model = torch.load(f)
+    # Load the best saved model.
+    with open(args.save, 'rb') as f:
+        # model = Net()
+        state_dict = torch.load(f)
+        model.load_state_dict(state_dict)
 
-test(epoch)
+    test(epoch)
