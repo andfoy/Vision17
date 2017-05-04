@@ -80,7 +80,7 @@ class Net(nn.Module):
         self.conv1 = nn.Conv2d(1, 100, kernel_size=5)
         self.conv2 = nn.Conv2d(100, 50, kernel_size=5)
         self.conv2_drop = nn.Dropout2d()
-        self.conv3 = nn.Conv2d(50, 20)
+        self.conv3 = nn.Conv2d(50, 20, kernel_size=5)
         self.fc1 = nn.Linear(50 * 29 * 29, 50)
         self.fc2 = nn.Linear(50, num_classes)
 
