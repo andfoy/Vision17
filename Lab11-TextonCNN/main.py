@@ -132,7 +132,15 @@ if osp.exists(args.save):
             state_dict.pop(key)
         state = model.state_dict()
         state.update(state_dict)
-        model.load_state_dict(state)
+        try:
+            model.load_state_dict(state)
+        except Exception:
+            discard = [x for x in state_dict if x.startswith('fc1')]
+            for key in discard:
+                state_dict.pop(key)
+            state = model.state_dict()
+            state.update(state_dict)
+            model.load_state_dict(state)
     load_ext = True
 
 if args.cuda:
