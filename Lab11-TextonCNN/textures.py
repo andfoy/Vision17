@@ -131,7 +131,8 @@ class TextureLoader(data.Dataset):
         print('Done!')
 
     def read_dataset(self):
-        data, _ = iofuncs.load_matlab(self.filename)
+        path = osp.join(self.root, self.raw_folder, self.filename)
+        data, _ = iofuncs.load_matlab(path)
         meta_info = data[self.META]
         dataset = data[self.TEXTURES]
 
