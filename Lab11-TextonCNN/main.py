@@ -128,14 +128,11 @@ if osp.exists(args.save):
     with open(args.save, 'rb') as f:
         state_dict = torch.load(f)
         discard = [x for x in state_dict if x.startswith('fc1')]
-        for key in discard:
-            state_dict.pop(key)
         state = model.state_dict()
         state.update(state_dict)
         try:
             model.load_state_dict(state)
         except Exception:
-            discard = [x for x in state_dict if x.startswith('fc1')]
             for key in discard:
                 state_dict.pop(key)
             state = model.state_dict()
@@ -207,7 +204,7 @@ if __name__ == '__main__':
             val_loss = test(epoch)
             if not best_val_loss or val_loss < best_val_loss:
                 with open(args.save, 'wb') as f:
-                    torch.save(model, f)
+                    torch.save(model.state_dict(), f)
                 best_val_loss = val_loss
     except KeyboardInterrupt:
         print('-' * 89)
