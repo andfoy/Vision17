@@ -127,7 +127,9 @@ model = Net()
 if osp.exists(args.save):
     with open(args.save, 'rb') as f:
         state_dict = torch.load(f)
-        model.load_state_dict(state_dict)
+        state = model.state_dict()
+        state.update(state_dict)
+        model.load_state_dict(state)
     load_ext = True
 
 if args.cuda:
