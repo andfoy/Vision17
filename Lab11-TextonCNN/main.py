@@ -186,8 +186,6 @@ try:
             with open(args.save, 'wb') as f:
                 torch.save(model, f)
             best_val_loss = val_loss
-        else:
-            lr /= 4
 except KeyboardInterrupt:
     print('-' * 89)
     print('Exiting from training early')
