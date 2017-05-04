@@ -126,8 +126,8 @@ else:
 if args.cuda:
     model.cuda()
 
-optimizer = optim.Adam(model.parameters(), lr=args.lr)
-# optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
+# optimizer = optim.Adam(model.parameters(), lr=args.lr)
+optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
 
 
 def train(epoch, lr=args.lr):
