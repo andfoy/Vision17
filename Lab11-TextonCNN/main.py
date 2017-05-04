@@ -31,6 +31,8 @@ parser.add_argument('--seed', type=int, default=1, metavar='S',
 parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                     help='how many batches to wait before'
                     'logging training status')
+parser.add_argument('--save', type=str, default='model.pt',
+                    help='path to save the final model')
 
 args = parser.parse_args()
 args.cuda = not args.no_cuda and torch.cuda.is_available()
@@ -118,8 +120,12 @@ if args.cuda:
 optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
 
 
-def train(epoch):
+def train(epoch, lr=args.lr):
     model.train()
+
+    for param_group in optimizer.param_groups:
+        param_group['lr'] = lr
+
     for batch_idx, (data, target) in enumerate(train_loader):
         if args.cuda:
             data, target = data.cuda(), target.cuda()
@@ -145,16 +151,38 @@ def test(epoch):
         data, target = Variable(data, volatile=True), Variable(target)
         output = model(data)
         test_loss += F.nll_loss(output, target).data[0]
-        pred = output.data.max(1)[1] # get the index of the max log-probability
+        # get the index of the max log-probability
+        pred = output.data.max(1)[1]
         correct += pred.eq(target.data).cpu().sum()
 
     test_loss = test_loss
-    test_loss /= len(test_loader) # loss function already averages over batch size
-    print('\nVal set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
-        test_loss, correct, len(test_loader.dataset),
-        100. * correct / len(test_loader.dataset)))
+    # loss function already averages over batch size
+    test_loss /= len(test_loader)
+    print('\nVal set: Average loss: {:.4f},'
+          'Accuracy: {}/{} ({:.0f}%)\n'.format(
+              test_loss, correct, len(test_loader.dataset),
+              100. * correct / len(test_loader.dataset)))
+    return test_loss
 
 
-for epoch in range(1, args.epochs + 1):
-    train(epoch)
-    test(epoch)
+lr = args.lr
+best_val_loss = None
+try:
+    for epoch in range(1, args.epochs + 1):
+        train(epoch, lr)
+        val_loss = test(epoch)
+        if not best_val_loss or val_loss < best_val_loss:
+            with open(args.save, 'rb') as f:
+                model = torch.save(f)
+            best_val_loss = val_loss
+        else:
+            lr /= 4
+except KeyboardInterrupt:
+    print('-' * 89)
+    print('Exiting from training early')
+
+# Load the best saved model.
+with open(args.save, 'rb') as f:
+    model = torch.load(f)
+
+test(epoch)
