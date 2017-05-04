@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import argparse
 import torch
+import os.path as osp
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
@@ -113,7 +114,12 @@ class Net(nn.Module):
         return F.log_softmax(x)
 
 
-model = Net()
+if not osp.exists(args.save):
+    model = Net()
+else:
+    with open(args.save, 'rb') as f:
+        model = torch.load(f)
+
 if args.cuda:
     model.cuda()
 
