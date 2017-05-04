@@ -127,6 +127,8 @@ model = Net()
 if osp.exists(args.save):
     with open(args.save, 'rb') as f:
         state_dict = torch.load(f)
+        discard = [state_dict.pop(x)
+                   for x in state_dict if x.startswith('fc1')]
         state = model.state_dict()
         state.update(state_dict)
         model.load_state_dict(state)
