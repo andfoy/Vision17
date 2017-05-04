@@ -98,7 +98,7 @@ class Net(nn.Module):
         x = F.max_pool2d(x, 2)
         x = x.view(-1, x.size(1) * x.size(2) * x.size(3))
         # x = F.dropout()
-        x = F.dropout(x, training=self.training)
+        # x = F.dropout(x, training=self.training)
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         # x = F.relu(F.max_pool2d(self.conv1(x), 2))
