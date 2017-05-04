@@ -127,7 +127,7 @@ def test(epoch):
     model.eval()
     test_loss = 0
     correct = 0
-    for data, target in test_loader:
+    for data, target in val_loader:
         if args.cuda:
             data, target = data.cuda(), target.cuda()
         data, target = Variable(data, volatile=True), Variable(target)
