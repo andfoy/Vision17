@@ -10,6 +10,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import transforms
 from torch.autograd import Variable
+from torchvision import models
 
 from textures import TextureLoader
 
@@ -54,7 +55,7 @@ train_loader = torch.utils.data.DataLoader(
     TextureLoader('data', train=True, download=True,
                   transform=transforms.Compose([
                       transforms.ToTensor(),
-                      transforms.Normalize((0.1307,), (0.3081,))
+                      transforms.Normalize((0.485,), (0.229,))
                   ])),
     batch_size=args.batch_size, shuffle=True, **kwargs)
 
@@ -63,7 +64,7 @@ test_loader = torch.utils.data.DataLoader(
     TextureLoader('data', test=True, download=True,
                   transform=transforms.Compose([
                       transforms.ToTensor(),
-                      transforms.Normalize((0.1307,), (0.3081,))
+                      transforms.Normalize((0.485,), (0.229,))
                   ])),
     batch_size=args.batch_size, shuffle=True, **kwargs)
 
@@ -72,7 +73,7 @@ val_loader = torch.utils.data.DataLoader(
     TextureLoader('data', download=True,
                   transform=transforms.Compose([
                       transforms.ToTensor(),
-                      transforms.Normalize((0.1307,), (0.3081,))
+                      transforms.Normalize((0.485,), (0.229,))
                   ])),
     batch_size=args.batch_size, shuffle=True, **kwargs)
 
