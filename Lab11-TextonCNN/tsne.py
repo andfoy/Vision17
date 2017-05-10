@@ -168,7 +168,7 @@ class VTSNE(nn.Module):
 
 load_ext = False
 model = Net()
-tsne = VTSNE(len(train_loader.dataset), args.n_topics, args.n_dim)
+tsne = VTSNE(args.batch_size, args.n_topics, args.n_dim)
 if osp.exists(args.model):
     with open(args.model, 'rb') as f:
         state_dict = torch.load(f)
