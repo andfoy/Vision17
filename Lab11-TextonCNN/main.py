@@ -15,7 +15,8 @@ from torchvision import models
 from textures import TextureLoader
 
 # Training settings
-parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
+parser = argparse.ArgumentParser(description='PyTorch Texture'
+                                             ' Classification Net')
 parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                     help='input batch size for training (default: 64)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
@@ -45,10 +46,6 @@ if args.cuda:
 
 
 kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
-
-test_loader = torch.utils.data.DataLoader(
-    TextureLoader('data', train=True, download=True),
-    batch_size=args.batch_size, shuffle=True)
 
 
 train_loader = torch.utils.data.DataLoader(
