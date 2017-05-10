@@ -18,6 +18,7 @@ from textures import TextureLoader
 from main import Net
 from sklearn import manifold
 from scipy.spatial.distance import pdist, squareform
+from sklearn.metrics.pairwise import pairwise_distances
 
 
 # Training settings
@@ -93,7 +94,9 @@ def cnn_codes_to_distance(x, model):
     codes = codes.data
     if args.cuda:
         codes = codes.cpu()
-    distances = pdist(codes.numpy())
+    # distances = pdist(codes.numpy())
+    distances = pairwise_distances(codes.numpy(), metric='euclidean',
+                                   squared=True)
     print(distances.shape)
     points = manifold.t_sne._joint_probabilities(distances,
                                                  args.perplexity,

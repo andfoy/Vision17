@@ -100,3 +100,4 @@ Lab7-BSDS500-Benchmark/src/results/*
 *.tar.gz
 Lab8-PHOW/src/data/*
 Lab9-HogDetection/src/data/*
+Lab11-TextonCNN/data/*
