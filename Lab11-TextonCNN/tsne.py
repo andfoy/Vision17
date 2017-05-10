@@ -209,8 +209,8 @@ def train_tsne(epoch):
 
         idx = pos_y != pos_x
         points = Variable(torch.FloatTensor(points[idx]))
-        pos_y = Variable(torch.FloatTensor(pos_y[idx]))
-        pos_x = Variable(torch.FloatTensor(pos_x[idx]))
+        pos_y = Variable(torch.LongTensor(pos_y[idx]))
+        pos_x = Variable(torch.LongTensor(pos_x[idx]))
 
         if args.cuda:
             points = points.cuda()
