@@ -94,6 +94,7 @@ def cnn_codes_to_distance(x, model):
     if args.cuda:
         codes = codes.cpu()
     distances = pdist(codes.numpy())
+    print(distances.shape)
     points = manifold.t_sne._joint_probabilities(distances,
                                                  args.perplexity,
                                                  False)
