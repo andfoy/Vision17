@@ -97,7 +97,7 @@ def cnn_codes_to_distance(x, model):
     # distances = pdist(codes.numpy())
     distances = pairwise_distances(codes.numpy(), metric='euclidean',
                                    squared=True)
-    print(distances.shape)
+    # print(distances.shape)
     points = manifold.t_sne._joint_probabilities(distances,
                                                  args.perplexity,
                                                  False)
