@@ -234,7 +234,7 @@ def write_predictions():
         predictions[head:head + offset] = pred.cpu().numpy().ravel()
         head += offset
     submission = np.vstack((indices, predictions)).T
-    np.savetxt('test.csv', submission, delimiter=",")
+    np.savetxt('test.csv', submission, delimiter=",", fmt="%d")
 
 
 if __name__ == '__main__':
