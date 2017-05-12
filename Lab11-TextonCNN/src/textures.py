@@ -153,6 +153,7 @@ class TextureLoader(data.Dataset):
             imgs = textures[:, :, idx]
             labels = texture_labels[idx] - 1
             img_idx = textures_idx[idx]
+            print(img_idx)
 
             imgs = np.transpose(imgs, (-1, 0, 1))
             labels = torch.ByteTensor(labels)
