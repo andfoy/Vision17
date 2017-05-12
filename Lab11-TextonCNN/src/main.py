@@ -223,8 +223,8 @@ def write_predictions():
     predictions = np.zeros(len(test_loader.dataset))
     head = 0
     offset = args.batch_size
-    for data, _, idx in test_loader:
-        print("Test batch: {0}".format(head % offset))
+    for batch, (data, _, idx)in enumerate(test_loader):
+        print("Test batch: {0}".format(batch))
         if args.cuda:
             data = data.cuda()
         data = Variable(data, volatile=True)
@@ -233,7 +233,7 @@ def write_predictions():
         indices[head:head + offset] = idx.cpu().numpy().ravel()
         predictions[head:head + offset] = pred.cpu().numpy().ravel()
         head += offset
-    submission = np.hstack((indices, predictions))
+    submission = np.vstack((indices, predictions))
     print(submission)
 
 
