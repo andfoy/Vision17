@@ -1,0 +1,41 @@
+\begin{thebibliography}{1}\itemsep=-1pt
+
+\bibitem{Cun:1990:HDR:109230.109279}
+Y.~L. Cun, B.~Boser, J.~S. Denker, R.~E. Howard, W.~Habbard, L.~D. Jackel, and
+  D.~Henderson.
+\newblock Advances in neural information processing systems 2.
+\newblock chapter Handwritten Digit Recognition with a Back-propagation
+  Network, pages 396--404. Morgan Kaufmann Publishers Inc., San Francisco, CA,
+  USA, 1990.
+
+\bibitem{he2016deep}
+K.~He, X.~Zhang, S.~Ren, and J.~Sun.
+\newblock Deep residual learning for image recognition.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 770--778, 2016.
+
+\bibitem{Krizhevsky:2012:ICD:2999134.2999257}
+A.~Krizhevsky, I.~Sutskever, and G.~E. Hinton.
+\newblock Imagenet classification with deep convolutional neural networks.
+\newblock In {\em Proceedings of the 25th International Conference on Neural
+  Information Processing Systems}, NIPS'12, pages 1097--1105, USA, 2012. Curran
+  Associates Inc.
+
+\bibitem{Malik2001}
+J.~Malik, S.~Belongie, T.~Leung, and J.~Shi.
+\newblock Contour and texture analysis for image segmentation.
+\newblock {\em International Journal of Computer Vision}, 43(1):7--27, 2001.
+
+\bibitem{Simonyan14c}
+K.~Simonyan and A.~Zisserman.
+\newblock Very deep convolutional networks for large-scale image recognition.
+\newblock {\em CoRR}, abs/1409.1556, 2014.
+
+\bibitem{szegedy2015going}
+C.~Szegedy, W.~Liu, Y.~Jia, P.~Sermanet, S.~Reed, D.~Anguelov, D.~Erhan,
+  V.~Vanhoucke, and A.~Rabinovich.
+\newblock Going deeper with convolutions.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 1--9, 2015.
+
+\end{thebibliography}
