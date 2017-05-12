@@ -158,7 +158,7 @@ class TextureLoader(data.Dataset):
             imgs = np.transpose(imgs, (-1, 0, 1))
             labels = torch.ByteTensor(labels)
             imgs = torch.ByteTensor(imgs)
-            img_idx = torch.ShortTensor(img_idx.astype(np.uint16))
+            img_idx = torch.ShortTensor(img_idx.astype(np.int16))
 
             data[img_set] = (imgs, labels, img_idx)
 
