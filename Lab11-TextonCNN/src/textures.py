@@ -54,17 +54,18 @@ class TextureLoader(data.Dataset):
             self.class_to_idx = pickle.load(fp)
 
         if train:
-            self.imgs, self.labels = torch.load(train_path)
+            self.imgs, self.labels, self.idx = torch.load(train_path)
         elif test:
-            self.imgs, self.labels = torch.load(test_path)
+            self.imgs, self.labels, self.idx = torch.load(test_path)
         else:
-            self.imgs, self.labels = torch.load(val_path)
+            self.imgs, self.labels, self.idx = torch.load(val_path)
 
     def __len__(self):
         return self.imgs.size(0)
 
     def __getitem__(self, idx):
-        img, target = self.imgs[idx, :, :], self.labels[idx]
+        img, target, img_idx = (self.imgs[idx, :, :], self.labels[idx],
+                                self.idx[idx])
 
         # doing this so that it is consistent with all other datasets
         # to return a PIL Image
@@ -75,7 +76,7 @@ class TextureLoader(data.Dataset):
 
         if self.target_transform is not None:
             target = self.target_transform(target)
-        return img, target
+        return img, target, img_idx
 
     def _check_exists(self):
         train_path = os.path.join(self.root, self.processed_folder,
@@ -144,17 +145,20 @@ class TextureLoader(data.Dataset):
 
         data = {}
         textures = dataset['data']
+        textures_idx = dataset['id'].ravel()
         textures_set = dataset['set']
         texture_labels = dataset['label'].ravel()
         for i, img_set in enumerate(sets):
             idx = (textures_set == i + 1)[0]
             imgs = textures[:, :, idx]
             labels = texture_labels[idx] - 1
+            img_idx = textures_idx[idx]
 
             imgs = np.transpose(imgs, (-1, 0, 1))
             labels = torch.ByteTensor(labels)
             imgs = torch.ByteTensor(imgs)
+            img_idx = torch.ByteTensor(img_idx)
 
-            data[img_set] = (imgs, labels)
+            data[img_set] = (imgs, labels, img_idx)
 
         return data['train'], data['test'], data['validation'], class_to_idx

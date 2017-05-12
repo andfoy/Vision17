@@ -178,7 +178,7 @@ def train(epoch, lr=args.lr):
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
 
-    for batch_idx, (data, target) in enumerate(train_loader):
+    for batch_idx, (data, target, _) in enumerate(train_loader):
         if args.cuda:
             data, target = data.cuda(), target.cuda()
         data, target = Variable(data), Variable(target)
@@ -197,7 +197,7 @@ def test(epoch):
     model.eval()
     test_loss = 0
     correct = 0
-    for data, target in val_loader:
+    for data, target, _ in val_loader:
         if args.cuda:
             data, target = data.cuda(), target.cuda()
         data, target = Variable(data, volatile=True), Variable(target)
@@ -215,6 +215,17 @@ def test(epoch):
               test_loss, correct, len(test_loader.dataset),
               100. * correct / len(test_loader.dataset)))
     return test_loss
+
+
+def write_predictions():
+    model.eval()
+    for data, _, idx in test_loader:
+        if args.cuda:
+            data = data.cuda()
+        data = Variable(data, volatile=True)
+        output = model(data)
+        pred = output.data.max(1)[1]
+        print(pred + 1)
 
 
 if __name__ == '__main__':
