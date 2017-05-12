@@ -219,8 +219,8 @@ def test(epoch):
 
 def write_predictions():
     model.eval()
-    indices = np.zeros((len(test_loader), 1))
-    predictions = np.zeros((len(test_loader), 1))
+    indices = np.zeros(len(test_loader))
+    predictions = np.zeros(len(test_loader))
     head = 0
     offset = args.batch_size
     for data, _, idx in test_loader:
@@ -229,8 +229,8 @@ def write_predictions():
         data = Variable(data, volatile=True)
         output = model(data)
         pred = output.data.max(1)[1] + 1
-        indices[:, head:head + offset] = idx.cpu().numpy()
-        predictions[:, head:head + offset] = pred.cpu().numpy()
+        indices[head:head + offset] = idx.cpu().numpy().ravel()
+        predictions[head:head + offset] = pred.cpu().numpy().ravel()
     submission = np.hstack((indices, predictions))
     print(submission)
 
