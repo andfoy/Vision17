@@ -2,15 +2,15 @@
 
 from __future__ import print_function
 
-import argparse
 import torch
+import argparse
+import numpy as np
 import os.path as osp
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import transforms
 from torch.autograd import Variable
-from torchvision import models
 
 from textures import TextureLoader
 
@@ -219,13 +219,20 @@ def test(epoch):
 
 def write_predictions():
     model.eval()
+    indices = np.zeros(len(test_loader))
+    predictions = np.zeros(len(test_loader))
+    head = 0
+    offset = args.batch_size
     for data, _, idx in test_loader:
         if args.cuda:
             data = data.cuda()
         data = Variable(data, volatile=True)
         output = model(data)
-        pred = output.data.max(1)[1]
-        print(pred + 1)
+        pred = output.data.max(1)[1] + 1
+        indices[head:head + offset] = idx.cpu().numpy()
+        predictions[head:head + offset] = pred.cpu().numpy()
+    submission = np.hstack((indices, predictions))
+    print(submission)
 
 
 if __name__ == '__main__':
