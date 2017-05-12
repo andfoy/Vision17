@@ -232,6 +232,7 @@ def write_predictions():
         pred = output.data.max(1)[1] + 1
         indices[head:head + offset] = idx.cpu().numpy().ravel()
         predictions[head:head + offset] = pred.cpu().numpy().ravel()
+        head += offset
     submission = np.hstack((indices, predictions))
     print(submission)
 
