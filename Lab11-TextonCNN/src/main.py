@@ -219,8 +219,8 @@ def test(epoch):
 
 def write_predictions():
     model.eval()
-    indices = np.zeros(len(test_loader))
-    predictions = np.zeros(len(test_loader))
+    indices = np.zeros((len(test_loader), 1))
+    predictions = np.zeros((len(test_loader), 1))
     head = 0
     offset = args.batch_size
     for data, _, idx in test_loader:
