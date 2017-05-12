@@ -229,8 +229,8 @@ def write_predictions():
         data = Variable(data, volatile=True)
         output = model(data)
         pred = output.data.max(1)[1] + 1
-        indices[head:head + offset] = idx.cpu().numpy()
-        predictions[head:head + offset] = pred.cpu().numpy()
+        indices[:, head:head + offset] = idx.cpu().numpy()
+        predictions[:, head:head + offset] = pred.cpu().numpy()
     submission = np.hstack((indices, predictions))
     print(submission)
 
