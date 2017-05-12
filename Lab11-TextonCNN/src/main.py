@@ -224,6 +224,7 @@ def write_predictions():
     head = 0
     offset = args.batch_size
     for data, _, idx in test_loader:
+        print("Test batch: {0}".format(head % offset))
         if args.cuda:
             data = data.cuda()
         data = Variable(data, volatile=True)
